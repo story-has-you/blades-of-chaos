@@ -61,6 +61,14 @@
         </dependencies>
     </dependencyManagement>
 
+    <distributionManagement>
+        <repository>
+            <id>internal.repo</id>
+            <name>Temporary Staging Repository</name>
+            <url>file://${project.build.directory}/mvn-repo</url>
+        </repository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
@@ -110,7 +118,7 @@
                         <include>**/*</include>
                     </includes>
                     <!--github 仓库的名字-->
-                    <repositoryName>maven-repository-example</repositoryName>
+                    <repositoryName>blades-of-chaos</repositoryName>
                     <!--github 用户名-->
                     <repositoryOwner>story-has-you</repositoryOwner>
                 </configuration>
