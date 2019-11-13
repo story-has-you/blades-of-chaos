@@ -6,7 +6,7 @@
 
     <groupId>com.fxipp.kratos</groupId>
     <artifactId>blades-of-chaos</artifactId>
-    <version>1.0.5.RELEASE</version>
+    <version>1.0.6.RELEASE</version>
 
     <properties>
         <java.version>1.8</java.version>
