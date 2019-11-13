@@ -92,6 +92,11 @@ public class BeanUtils {
 
     }
 
+    public static <T> T deepCopy(T object) {
+        String serialize = JsonUtils.serialize(object);
+        return (T) JsonUtils.parse(serialize, object.getClass());
+    }
+
     private static String remvoeFrefix(String methodName) {
         String prefix = null;
         if (methodName.startsWith("get")) {
