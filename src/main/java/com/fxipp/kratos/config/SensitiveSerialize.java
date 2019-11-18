@@ -20,9 +20,6 @@ public class SensitiveSerialize extends JsonSerializer<Object> implements Contex
 
     private SensitiveTypeEnum type;
 
-    public SensitiveSerialize() {
-    }
-
     public SensitiveSerialize(final SensitiveTypeEnum type) {
         this.type = type;
     }
