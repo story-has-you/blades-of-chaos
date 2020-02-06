@@ -9,9 +9,11 @@ import org.springframework.util.CollectionUtils;
 
 import java.lang.invoke.SerializedLambda;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -95,6 +97,22 @@ public class BeanUtils {
     public static <T> T deepCopy(T object) {
         String serialize = JsonUtils.serialize(object);
         return (T) JsonUtils.parse(serialize, object.getClass());
+    }
+
+    public static Map<String, Object> describe(Object obj) {
+        Class<?> clazz = obj.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+        Map<String, Object> result = new HashMap<>(fields.length);
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                Object value = field.get(obj);
+                result.put(field.getName(), value);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     private static String remvoeFrefix(String methodName) {
