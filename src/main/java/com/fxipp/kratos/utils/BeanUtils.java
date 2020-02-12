@@ -47,7 +47,7 @@ public class BeanUtils {
             return targetInstance;
         } catch (Exception e) {
             log.error("属性拷贝失败", e);
-            throw new RuntimeException("属性拷贝失败");
+            throw new RuntimeException(e);
         }
     }
 
