@@ -24,7 +24,7 @@ public class DateUtils {
     /**
      * yyyy-MM-dd hh:mm:ss
      */
-    public static String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     private DateUtils() {
 

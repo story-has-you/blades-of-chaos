@@ -1,8 +1,8 @@
 package com.fxipp.kratos.utils;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fxipp.kratos.function.SFunction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -23,14 +23,13 @@ import java.util.stream.Collectors;
 /**
  * @author fangxi
  */
+@Slf4j
 public class BeanUtils {
-
-    private static final Logger log = LoggerFactory.getLogger(BeanUtils.class);
 
     /**
      * SerializedLambda 反序列化缓存
      */
-    private static final Map<Class<?>, WeakReference<SerializedLambda>> FUNC_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, WeakReference<SerializedLambda>> FUNC_CACHE = new ConcurrentHashMap<>(1 << 8);
 
     /**
      * @param source 需要被拷贝的对象
@@ -96,7 +95,7 @@ public class BeanUtils {
 
     public static <T> T deepCopy(T object) {
         String serialize = JsonUtils.serialize(object);
-        return (T) JsonUtils.parse(serialize, object.getClass());
+        return JsonUtils.nativeRead(serialize, new TypeReference<T>(){});
     }
 
     public static Map<String, Object> describe(Object obj) {
@@ -135,7 +134,7 @@ public class BeanUtils {
 
     private static SerializedLambda resolve(SFunction<?> lambda) {
         try {
-            Class<? extends SFunction> clazz = lambda.getClass();
+            Class<?> clazz = lambda.getClass();
             if (!clazz.isSynthetic()) {
                 throw new RuntimeException("该方法仅能传入 lambda 表达式产生的合成类");
             }

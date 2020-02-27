@@ -68,13 +68,13 @@ public class SensitiveUtils {
     }
 
 
-    private static String dealString(String str, int head_off, int tail_off) {
+    private static String dealString(String str, int headOff, int tailOff) {
         int length = str.length();
         StringBuilder sb = new StringBuilder();
-        final String head = StringUtils.left(str, head_off);
-        String tail = StringUtils.right(str, tail_off);
+        final String head = StringUtils.left(str, headOff);
+        String tail = StringUtils.right(str, tailOff);
         sb.append(head);
-        int size = length - (head_off + tail_off);
+        int size = length - (headOff + tailOff);
         if (size > 0) {
             while (size > 0) {
                 sb.append("*");
