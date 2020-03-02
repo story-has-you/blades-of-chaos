@@ -30,6 +30,10 @@ public class DateUtils {
 
     }
 
+    public static LocalDateTime now() {
+        return LocalDateTime.now();
+    }
+
     public static String dateTimeToString(LocalDateTime date, String pattern) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return date.format(formatter);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fxipp.kratos.function.SFunction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.cglib.core.Converter;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
@@ -36,18 +37,43 @@ public class BeanUtils {
      * @param target 需要返回的对象类型
      */
     public static <T> T copyProperties(Object source, Class<T> target) {
+        return copyProperties(source, target, null);
+    }
+
+    /**
+     * @param source 需要被拷贝的对象
+     * @param target 需要返回的对象类型
+     * @param converter 转换器
+     */
+    public static <T> T copyProperties(Object source, Class<T> target, Converter converter) {
         try {
             Assert.notNull(source, "Source must not be null");
             Assert.notNull(target, "Target must not be null");
             T targetInstance = target.newInstance();
-            BeanCopier beanCopier = BeanCopier.create(source.getClass(), target, false);
-            beanCopier.copy(source, targetInstance, null);
+            BeanCopier beanCopier = BeanCopier.create(source.getClass(), target, converter != null);
+            beanCopier.copy(source, targetInstance, converter);
             //org.springframework.beans.BeanUtils.copyProperties(source, targetInstance);
             return targetInstance;
         } catch (Exception e) {
             log.error("属性拷贝失败", e);
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Copy list properties list.
+     *
+     * @param <T>    the type parameter
+     * @param <E>    the type parameter
+     * @param source the source
+     * @param target the target
+     * @return the list
+     */
+    public static <T, E> List<T> copyProperties(Collection<E> source, Class<T> target,Converter converter) {
+        if (CollectionUtils.isEmpty(source)) {
+            return Collections.emptyList();
+        }
+        return source.stream().map(x -> copyProperties(x, target, converter)).collect(Collectors.toList());
     }
 
     /**
