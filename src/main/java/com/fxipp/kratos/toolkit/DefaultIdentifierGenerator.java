@@ -1,6 +1,4 @@
-package com.fxipp.kratos.incrementer;
-
-import com.fxipp.kratos.toolkit.Sequence;
+package com.fxipp.kratos.toolkit;
 
 /**
  * @author fangxi

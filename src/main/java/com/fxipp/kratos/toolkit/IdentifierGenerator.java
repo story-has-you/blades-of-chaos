@@ -1,4 +1,4 @@
-package com.fxipp.kratos.incrementer;
+package com.fxipp.kratos.toolkit;
 
 import com.fxipp.kratos.utils.IdWorker;
 

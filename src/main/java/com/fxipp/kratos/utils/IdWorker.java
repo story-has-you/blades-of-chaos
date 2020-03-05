@@ -1,7 +1,7 @@
 package com.fxipp.kratos.utils;
 
-import com.fxipp.kratos.incrementer.DefaultIdentifierGenerator;
-import com.fxipp.kratos.incrementer.IdentifierGenerator;
+import com.fxipp.kratos.toolkit.DefaultIdentifierGenerator;
+import com.fxipp.kratos.toolkit.IdentifierGenerator;
 import com.fxipp.kratos.toolkit.StringPool;
 
 import java.time.LocalDateTime;

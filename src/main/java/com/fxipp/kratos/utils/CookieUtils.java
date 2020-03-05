@@ -182,8 +182,8 @@ public final class CookieUtils {
      * @param isEncode
      * @Description: 设置Cookie的值，并使其在指定时间内生效
      */
-    private static final void doSetCookie(HttpServletRequest request, HttpServletResponse response,
-                                          String cookieName, String cookieValue, int cookieMaxage, boolean isEncode) {
+    private static void doSetCookie(HttpServletRequest request, HttpServletResponse response,
+                                    String cookieName, String cookieValue, int cookieMaxage, boolean isEncode) {
         try {
             if (cookieValue == null) {
                 cookieValue = "";
@@ -217,8 +217,8 @@ public final class CookieUtils {
      * @param encodeString
      * @Description: 设置Cookie的值，并使其在指定时间内生效
      */
-    private static final void doSetCookie(HttpServletRequest request, HttpServletResponse response,
-                                          String cookieName, String cookieValue, int cookieMaxage, String encodeString) {
+    private static void doSetCookie(HttpServletRequest request, HttpServletResponse response,
+                                    String cookieName, String cookieValue, int cookieMaxage, String encodeString) {
         try {
             if (cookieValue == null) {
                 cookieValue = "";
@@ -251,7 +251,7 @@ public final class CookieUtils {
         String domainName = null;
 
         String serverName = request.getRequestURL().toString();
-        if (serverName == null || serverName.equals("")) {
+        if (serverName == null || "".equals(serverName)) {
             domainName = "";
         } else {
             serverName = serverName.toLowerCase();
@@ -259,7 +259,7 @@ public final class CookieUtils {
             final int end = serverName.indexOf("/");
             serverName = serverName.substring(0, end);
             if (serverName.indexOf(":") > 0) {
-                String[] ary = serverName.split("\\:");
+                String[] ary = serverName.split(":");
                 serverName = ary[0];
             }
 
@@ -280,7 +280,7 @@ public final class CookieUtils {
 
     public static String trimSpaces(String IP) {//去掉IP字符串前后所有的空格
         while (IP.startsWith(" ")) {
-            IP = IP.substring(1, IP.length()).trim();
+            IP = IP.substring(1).trim();
         }
         while (IP.endsWith(" ")) {
             IP = IP.substring(0, IP.length() - 1).trim();

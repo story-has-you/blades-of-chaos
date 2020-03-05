@@ -72,7 +72,7 @@ public class DateUtils {
     }
 
 
-    public static String dateTimeToString(Date date, String pattern) {
+    public static String dateToString(Date date, String pattern) {
         if (date == null) {
             return null;
         }
@@ -85,8 +85,8 @@ public class DateUtils {
         }
     }
 
-    public static String dateTimeToString(Date date) {
-        return dateTimeToString(date, DATETIME_PATTERN);
+    public static String dateToString(Date date) {
+        return dateToString(date, DATETIME_PATTERN);
     }
 
     public static String currentDateTime() {
