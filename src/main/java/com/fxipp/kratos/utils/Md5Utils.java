@@ -1,11 +1,11 @@
 package com.fxipp.kratos.utils;
 
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 /**
  * @author fangxi
@@ -16,13 +16,15 @@ public class Md5Utils {
 	/**
 	 *
 	 */
-	public static String md5(String strValue) {
-		MessageDigest md5 = null;
+	public static String md5(String str) {
+		//确定计算方法
 		try {
-			md5 = MessageDigest.getInstance("MD5");
-		} catch (NoSuchAlgorithmException e) {
-			log.error("加密失败", e);
+			MessageDigest md5 = MessageDigest.getInstance("md5");
+			//加密后的字符串
+			byte[] src = md5.digest(str.getBytes(StandardCharsets.UTF_8));
+			return Base64.getEncoder().encodeToString(src);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return Base64.encodeBase64String(md5.digest(strValue.getBytes()));
 	}
 }

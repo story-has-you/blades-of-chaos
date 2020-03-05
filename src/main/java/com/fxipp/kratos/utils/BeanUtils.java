@@ -104,7 +104,7 @@ public class BeanUtils {
      * @param <T> 字段类型
      * @return 返回字段名
      */
-    public static <T> String convertToFieldName(SFunction<T> function) {
+    public static <T> String convertToFieldName(SFunction<T, ?> function) {
         Class<?> clazz = function.getClass();
         return Optional.ofNullable(FUNC_CACHE.get(clazz))
                 .map(WeakReference::get)
@@ -158,7 +158,7 @@ public class BeanUtils {
         }
     }
 
-    private static SerializedLambda resolve(SFunction<?> lambda) {
+    private static <T> SerializedLambda resolve(SFunction<T, ?> lambda) {
         try {
             Class<?> clazz = lambda.getClass();
             if (!clazz.isSynthetic()) {

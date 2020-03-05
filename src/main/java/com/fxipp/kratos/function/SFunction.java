@@ -1,13 +1,12 @@
 package com.fxipp.kratos.function;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 /**
  * @author fangxi
  */
 @FunctionalInterface
-public interface SFunction<T> extends Serializable {
-
-    Object get(T source);
+public interface SFunction<T, R> extends Function<T, R>, Serializable {
 
 }
