@@ -55,7 +55,7 @@ public class JsonUtils {
         try {
             return OBJECT_MAPPER.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            log.error("json序列化出错：" + obj, e);
+            log.error("json序列化出错: {}", obj, e);
             throw new RuntimeException(e);
         }
     }
@@ -64,7 +64,7 @@ public class JsonUtils {
         try {
             return OBJECT_MAPPER.readValue(json, tClass);
         } catch (IOException e) {
-            log.error("json解析出错：" + json, e);
+            log.error("json解析出错: {}", json, e);
             throw new RuntimeException(e);
         }
     }
@@ -73,7 +73,7 @@ public class JsonUtils {
         try {
             return OBJECT_MAPPER.readValue(json, OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, eClass));
         } catch (IOException e) {
-            log.error("json解析出错：" + json, e);
+            log.error("json解析出错: {}", json, e);
             throw new RuntimeException(e);
         }
     }
@@ -82,7 +82,7 @@ public class JsonUtils {
         try {
             return OBJECT_MAPPER.readValue(json, OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, kClass, vClass));
         } catch (IOException e) {
-            log.error("json解析出错：" + json, e);
+            log.error("json解析出错: {}", json, e);
             throw new RuntimeException(e);
         }
     }
@@ -91,7 +91,7 @@ public class JsonUtils {
         try {
             return OBJECT_MAPPER.readValue(json, type);
         } catch (IOException e) {
-            log.error("json解析出错：" + json, e);
+            log.error("json解析出错: {}", json, e);
             throw new RuntimeException(e);
         }
     }
