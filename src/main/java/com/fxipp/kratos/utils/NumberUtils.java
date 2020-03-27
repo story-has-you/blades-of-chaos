@@ -73,7 +73,16 @@ public class NumberUtils {
      * @param amount
      * @return
      */
-    public static int yuan2Minute(BigDecimal amount) {
+    public static int decimal2Minute(BigDecimal amount) {
         return amount.multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_DOWN).intValue();
+    }
+
+    /**
+     * 将分转成金额
+     * @param amount
+     * @return
+     */
+    public static BigDecimal minute2Decimal(int amount) {
+        return BigDecimal.valueOf(amount).divide(BigDecimal.valueOf(100L), 2, BigDecimal.ROUND_DOWN);
     }
 }
