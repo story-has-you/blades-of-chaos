@@ -67,4 +67,13 @@ public class NumberUtils {
                 .mapToObj(String::valueOf)
                 .collect(Collectors.joining());
     }
+
+    /**
+     * 将金额转成分
+     * @param amount
+     * @return
+     */
+    public static int yuan2Minute(BigDecimal amount) {
+        return amount.multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_DOWN).intValue();
+    }
 }
