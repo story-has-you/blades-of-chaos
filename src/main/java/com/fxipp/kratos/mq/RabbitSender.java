@@ -11,7 +11,6 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.retry.support.RetryTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.util.Map;
@@ -23,7 +22,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author fangxi
  */
 @Slf4j
-@Component
 public class RabbitSender {
 
     /**
