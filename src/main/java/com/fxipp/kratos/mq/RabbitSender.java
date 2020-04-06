@@ -1,5 +1,6 @@
 package com.fxipp.kratos.mq;
 
+import com.fxipp.kratos.utils.IdWorker;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.MessagePostProcessor;
@@ -14,7 +15,6 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.Assert;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -62,6 +62,7 @@ public class RabbitSender {
 
     public <T> void sendDelay(T body, String exchange, String routingKey, long ttl) {
         this.send(body, Maps.newHashMap(), exchange, routingKey, null, message -> {
+            message.getMessageProperties().setHeader("x-delay", ttl);
             message.getMessageProperties().setExpiration(String.valueOf(ttl));
             return message;
         });
@@ -80,7 +81,7 @@ public class RabbitSender {
         MessageHeaders messageHeaders = new MessageHeaders(properties);
         Message<T> msg = MessageBuilder.createMessage(body, messageHeaders);
 
-        CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
+        CorrelationData correlationData = new CorrelationData(IdWorker.get32UUID());
         RabbitTemplate rabbitTemplate = this.getRabbitTemplate(exchange, routingKey, confirmCallback);
         if (messagePostProcessor == null) {
             rabbitTemplate.convertAndSend(exchange, routingKey, msg, correlationData);

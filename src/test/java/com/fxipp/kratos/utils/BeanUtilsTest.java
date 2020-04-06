@@ -2,11 +2,11 @@ package com.fxipp.kratos.utils;
 
 import com.fxipp.kratos.converter.Converters;
 import lombok.Data;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author fangxi
@@ -23,6 +23,11 @@ public class BeanUtilsTest {
         user.setCreateTime(DateUtils.now());
         UserDTO userDTO = BeanUtils.copyProperties(user, UserDTO.class, Converters.STRING_CONVERTERS);
         System.out.println(userDTO);
+    }
+
+    @Test
+    public void test() {
+        System.out.println(TimeUnit.DAYS.toMillis(1));
     }
 
     @Data
