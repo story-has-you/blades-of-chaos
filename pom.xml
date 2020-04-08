@@ -6,7 +6,7 @@
 
     <groupId>com.fxipp.kratos</groupId>
     <artifactId>blades-of-chaos</artifactId>
-    <version>1.2.5.RELEASE</version>
+    <version>1.2.6.RELEASE</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -119,5 +119,22 @@
             <url>https://repo.rdc.aliyun.com/repository/80472-snapshot-JrqSLt/</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

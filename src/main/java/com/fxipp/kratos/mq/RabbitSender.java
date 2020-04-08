@@ -74,7 +74,8 @@ public class RabbitSender {
         this.send(body, Maps.newHashMap(), exchange, routingKey, null, messagePostProcessor);
     }
 
-    public <T> void send(T body, Map<String, Object> properties, String exchange, String routingKey, RabbitTemplate.ConfirmCallback confirmCallback, MessagePostProcessor messagePostProcessor) {
+    public <T> void send(T body, Map<String, Object> properties, String exchange, String routingKey,
+                         RabbitTemplate.ConfirmCallback confirmCallback, MessagePostProcessor messagePostProcessor) {
         if (log.isDebugEnabled()) {
             log.debug("发送mq消息, 内容: {}, 附加属性: {}, wxchange: {}, routingKey: {}", body, properties, exchange, routingKey);
         }
