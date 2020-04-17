@@ -10,6 +10,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.lang.invoke.SerializedLambda;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -25,55 +26,33 @@ import java.util.stream.Collectors;
  * @author fangxi
  */
 @Slf4j
-public class BeanUtils {
+public class BeanUtils extends org.springframework.beans.BeanUtils {
 
     /**
      * SerializedLambda 反序列化缓存
      */
     private static final Map<Class<?>, WeakReference<SerializedLambda>> FUNC_CACHE = new ConcurrentHashMap<>(1 << 8);
 
+
+
     /**
      * @param source 需要被拷贝的对象
      * @param target 需要返回的对象类型
      */
     public static <T> T copyProperties(Object source, Class<T> target) {
-        return copyProperties(source, target, null);
-    }
-
-    /**
-     * @param source 需要被拷贝的对象
-     * @param target 需要返回的对象类型
-     * @param converter 转换器
-     */
-    public static <T> T copyProperties(Object source, Class<T> target, Converter converter) {
         try {
             Assert.notNull(source, "Source must not be null");
             Assert.notNull(target, "Target must not be null");
-            T targetInstance = target.newInstance();
-            BeanCopier beanCopier = BeanCopier.create(source.getClass(), target, converter != null);
-            beanCopier.copy(source, targetInstance, converter);
+            final Constructor<T> constructor = target.getConstructor();
+            final T targetInstance = constructor.newInstance();
+            BeanCopier beanCopier = BeanCopier.create(source.getClass(), target, false);
+            beanCopier.copy(source, targetInstance, null);
             //org.springframework.beans.BeanUtils.copyProperties(source, targetInstance);
             return targetInstance;
         } catch (Exception e) {
             log.error("属性拷贝失败", e);
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * Copy list properties list.
-     *
-     * @param <T>    the type parameter
-     * @param <E>    the type parameter
-     * @param source the source
-     * @param target the target
-     * @return the list
-     */
-    public static <T, E> List<T> copyProperties(Collection<E> source, Class<T> target,Converter converter) {
-        if (CollectionUtils.isEmpty(source)) {
-            return Collections.emptyList();
-        }
-        return source.stream().map(x -> copyProperties(x, target, converter)).collect(Collectors.toList());
     }
 
     /**
@@ -92,6 +71,11 @@ public class BeanUtils {
         return source.stream().map(x -> copyProperties(x, target)).collect(Collectors.toList());
     }
 
+    /**
+     *
+     * @param source 需要被拷贝的对象
+     * @param target 目标对象
+     */
     public static void copyProperties(Object source, Object target) {
         BeanCopier beanCopier = BeanCopier.create(source.getClass(), target.getClass(), false);
         beanCopier.copy(source, target, null);
@@ -121,10 +105,16 @@ public class BeanUtils {
 
     public static <T> T deepCopy(T object) {
         String serialize = JsonUtils.serialize(object);
-        return JsonUtils.nativeRead(serialize, new TypeReference<T>(){});
+        return JsonUtils.nativeRead(serialize, new TypeReference<>() {});
     }
 
+    /**
+     *  将对象转成Map
+     * @param obj 需要转换的对象
+     * @return map
+     */
     public static Map<String, Object> describe(Object obj) {
+        Assert.notNull(obj, "obj must not be null");
         Class<?> clazz = obj.getClass();
         Field[] fields = clazz.getDeclaredFields();
         Map<String, Object> result = new HashMap<>(fields.length);

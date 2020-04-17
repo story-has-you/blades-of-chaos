@@ -74,7 +74,7 @@ public class NumberUtils {
      * @return
      */
     public static int decimal2Minute(BigDecimal amount) {
-        return amount.multiply(new BigDecimal(100)).setScale(0, BigDecimal.ROUND_DOWN).intValue();
+        return amount.multiply(new BigDecimal(100)).setScale(0, RoundingMode.DOWN).intValue();
     }
 
     /**
@@ -83,6 +83,6 @@ public class NumberUtils {
      * @return
      */
     public static BigDecimal minute2Decimal(int amount) {
-        return BigDecimal.valueOf(amount).divide(BigDecimal.valueOf(100L), 2, BigDecimal.ROUND_DOWN);
+        return BigDecimal.valueOf(amount).divide(BigDecimal.valueOf(100L), 2, RoundingMode.DOWN);
     }
 }

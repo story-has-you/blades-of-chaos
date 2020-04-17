@@ -1,6 +1,5 @@
 package com.fxipp.kratos.utils;
 
-import com.fxipp.kratos.converter.Converters;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +20,7 @@ public class BeanUtilsTest {
         user.setAmount(BigDecimal.TEN);
         user.setAge(25);
         user.setCreateTime(DateUtils.now());
-        UserDTO userDTO = BeanUtils.copyProperties(user, UserDTO.class, Converters.STRING_CONVERTERS);
+        UserDTO userDTO = BeanUtils.copyProperties(user, UserDTO.class);
         System.out.println(userDTO);
     }
 
