@@ -100,7 +100,6 @@ public class RabbitSender {
             return rabbitTemplate;
         }
         RabbitTemplate newRabbitTemplate = new RabbitTemplate(connectionFactory);
-        newRabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
         newRabbitTemplate.setExchange(topic);
         newRabbitTemplate.setRetryTemplate(new RetryTemplate());
         newRabbitTemplate.setRoutingKey(routingKey);
