@@ -11,13 +11,21 @@ public class Result<T> implements Serializable {
     private String message;
     private T data;
 
-    protected Result() {
+    public Result() {
     }
 
-    protected Result(Long code, String message, T data) {
+    public Result(Long code, String message, T data) {
         this.code = code;
         this.message = message;
         this.data = data;
+    }
+
+    /**
+     * 成功返回结果
+     *
+     */
+    public static <T> Result<T> ok() {
+        return ok(null);
     }
 
     /**
