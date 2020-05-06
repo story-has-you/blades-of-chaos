@@ -25,7 +25,7 @@ public class Result<T> implements Serializable {
      *
      * @param data 获取的数据
      */
-    public static <T> Result<T> success(T data) {
+    public static <T> Result<T> ok(T data) {
         return new Result<T>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
     }
 
@@ -35,7 +35,7 @@ public class Result<T> implements Serializable {
      * @param data    获取的数据
      * @param message 提示信息
      */
-    public static <T> Result<T> success(T data, String message) {
+    public static <T> Result<T> ok(T data, String message) {
         return new Result<T>(ResultCode.SUCCESS.getCode(), message, data);
     }
 
@@ -44,7 +44,7 @@ public class Result<T> implements Serializable {
      *
      * @param errorCode 错误码
      */
-    public static <T> Result<T> failed(ErrorCode errorCode) {
+    public static <T> Result<T> error(ErrorCode errorCode) {
         return new Result<T>(errorCode.getCode(), errorCode.getMessage(), null);
     }
 
@@ -54,7 +54,7 @@ public class Result<T> implements Serializable {
      * @param errorCode 错误码
      * @param message   错误信息
      */
-    public static <T> Result<T> failed(ErrorCode errorCode, String message) {
+    public static <T> Result<T> error(ErrorCode errorCode, String message) {
         return new Result<T>(errorCode.getCode(), message, null);
     }
 
@@ -63,22 +63,22 @@ public class Result<T> implements Serializable {
      *
      * @param message 提示信息
      */
-    public static <T> Result<T> failed(String message) {
+    public static <T> Result<T> error(String message) {
         return new Result<T>(ResultCode.FAILED.getCode(), message, null);
     }
 
     /**
      * 失败返回结果
      */
-    public static <T> Result<T> failed() {
-        return failed(ResultCode.FAILED);
+    public static <T> Result<T> error() {
+        return error(ResultCode.FAILED);
     }
 
     /**
      * 参数验证失败返回结果
      */
     public static <T> Result<T> validateFailed() {
-        return failed(ResultCode.VALIDATE_FAILED);
+        return error(ResultCode.VALIDATE_FAILED);
     }
 
     /**
