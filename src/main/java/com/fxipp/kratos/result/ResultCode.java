@@ -12,16 +12,16 @@ public enum ResultCode implements ErrorCode {
     UNAUTHORIZED(401, "暂未登录或token已经过期"),
     FORBIDDEN(403, "没有相关权限");
 
-    private final Long code;
+    private final Integer code;
     private final String message;
 
-    ResultCode(long code, String message) {
+    ResultCode(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
 
     @Override
-    public Long getCode() {
+    public Integer getCode() {
         return code;
     }
 

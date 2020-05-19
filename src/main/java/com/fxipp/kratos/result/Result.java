@@ -7,20 +7,20 @@ import java.io.Serializable;
  * 通用返回对象
  */
 public class Result<T> implements Serializable {
-    private Long status;
+    private Integer status;
     private String message;
     private T data;
 
     public Result() {
     }
 
-    public Result(Long status, String message, T data) {
+    public Result(Integer status, String message, T data) {
         this.status = status;
         this.message = message;
         this.data = data;
     }
 
-    public Boolean isOk() {
+    public boolean isOk() {
         return ResultCode.SUCCESS.getCode().equals(status);
     }
 
@@ -37,7 +37,7 @@ public class Result<T> implements Serializable {
      * @param data 获取的数据
      */
     public static <T> Result<T> ok(T data) {
-        return new Result<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
+        return ok(data, ResultCode.SUCCESS.getMessage());
     }
 
     /**
@@ -75,7 +75,7 @@ public class Result<T> implements Serializable {
      * @param message 提示信息
      */
     public static <T> Result<T> error(String message) {
-        return new Result<>(ResultCode.FAILED.getCode(), message, null);
+        return error(ResultCode.FAILED, message);
     }
 
     /**
@@ -115,11 +115,11 @@ public class Result<T> implements Serializable {
         return new Result<>(ResultCode.FORBIDDEN.getCode(), ResultCode.FORBIDDEN.getMessage(), data);
     }
 
-    public Long getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
