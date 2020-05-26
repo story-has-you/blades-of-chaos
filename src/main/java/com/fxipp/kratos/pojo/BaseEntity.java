@@ -5,16 +5,15 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * @author fangxi
  */
 @Data
-@Accessors(chain = true)
-public class BaseEntity {
+public class BaseEntity implements Serializable {
 
     /**
      * 主键id
