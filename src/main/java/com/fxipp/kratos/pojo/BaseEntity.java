@@ -1,9 +1,6 @@
 package com.fxipp.kratos.pojo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,7 +10,7 @@ import java.time.LocalDateTime;
  * @author fangxi
  */
 @Data
-public class BaseEntity implements Serializable {
+public abstract class BaseEntity implements Serializable {
 
     /**
      * 主键id
@@ -24,17 +21,19 @@ public class BaseEntity implements Serializable {
     /**
      * 创建时间 默认当前时间
      */
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     /**
      * 更新时间 默认当前时间
      */
+    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
     /**
      * 删除标识位 默认不删除
      */
-    @TableField(value = "is_deleted")
+    @TableField(value = "is_deleted", fill = FieldFill.INSERT)
     @TableLogic
     private Integer deleted;
 }

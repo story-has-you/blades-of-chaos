@@ -10,14 +10,16 @@ public class Result<T> implements Serializable {
     private Integer status;
     private String message;
     private T data;
+    private Boolean ok;
 
     public Result() {
     }
 
-    public Result(Integer status, String message, T data) {
+    public Result(Integer status, String message, T data, Boolean ok) {
         this.status = status;
         this.message = message;
         this.data = data;
+        this.ok = ok;
     }
 
     public boolean isOk() {
@@ -47,7 +49,7 @@ public class Result<T> implements Serializable {
      * @param message 提示信息
      */
     public static <T> Result<T> ok(T data, String message) {
-        return new Result<>(ResultCode.SUCCESS.getCode(), message, data);
+        return new Result<>(ResultCode.SUCCESS.getCode(), message, data,true);
     }
 
     /**
@@ -56,7 +58,7 @@ public class Result<T> implements Serializable {
      * @param errorCode 错误码
      */
     public static <T> Result<T> error(ErrorCode errorCode) {
-        return new Result<>(errorCode.getCode(), errorCode.getMessage(), null);
+        return error(errorCode, null);
     }
 
     /**
@@ -66,7 +68,7 @@ public class Result<T> implements Serializable {
      * @param message   错误信息
      */
     public static <T> Result<T> error(ErrorCode errorCode, String message) {
-        return new Result<>(errorCode.getCode(), message, null);
+        return new Result<>(errorCode.getCode(), message, null, false);
     }
 
     /**
@@ -92,28 +94,6 @@ public class Result<T> implements Serializable {
         return error(ResultCode.VALIDATE_FAILED);
     }
 
-    /**
-     * 参数验证失败返回结果
-     *
-     * @param message 提示信息
-     */
-    public static <T> Result<T> validateFailed(String message) {
-        return new Result<>(ResultCode.VALIDATE_FAILED.getCode(), message, null);
-    }
-
-    /**
-     * 未登录返回结果
-     */
-    public static <T> Result<T> unauthorized(T data) {
-        return new Result<>(ResultCode.UNAUTHORIZED.getCode(), ResultCode.UNAUTHORIZED.getMessage(), data);
-    }
-
-    /**
-     * 未授权返回结果
-     */
-    public static <T> Result<T> forbidden(T data) {
-        return new Result<>(ResultCode.FORBIDDEN.getCode(), ResultCode.FORBIDDEN.getMessage(), data);
-    }
 
     public Integer getStatus() {
         return status;
