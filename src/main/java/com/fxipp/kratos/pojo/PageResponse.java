@@ -57,5 +57,12 @@ public class PageResponse<T> {
         return PageResponse.of(rows, total, pages, size);
     }
 
+    public static <T> PageResponse<T> of(IPage<?> iPage, List<T> rows) {
+        long total = iPage.getTotal();
+        long pages = iPage.getPages();
+        long size = iPage.getSize();
+        return PageResponse.of(rows, total, pages, size);
+    }
+
 }
 
