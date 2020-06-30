@@ -1,5 +1,6 @@
 package com.fxipp.kratos.pojo;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -36,6 +37,15 @@ public class PageResponse<T> {
      */
     @NonNull
     private Long size;
+
+
+    public static PageResponse<?> of(IPage<?> iPage) {
+        List<?> records = iPage.getRecords();
+        long total = iPage.getTotal();
+        long pages = iPage.getPages();
+        long size = iPage.getSize();
+        return PageResponse.of(records, total, pages, size);
+    }
 
 }
 
