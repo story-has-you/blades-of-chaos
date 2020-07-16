@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -92,6 +93,24 @@ public class JsonUtils {
             return OBJECT_MAPPER.readValue(json, type);
         } catch (IOException e) {
             log.error("json解析出错: {}", json, e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T parse(@NonNull InputStream in, @NonNull Class<T> tClass) {
+        try {
+            return OBJECT_MAPPER.readValue(in, tClass);
+        } catch (IOException e) {
+            log.error("json解析出错:", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <K, V> Map<K, V> parseMap(@NonNull InputStream in, @NonNull Class<K> kClass, @NonNull Class<V> vClass) {
+        try {
+            return OBJECT_MAPPER.readValue(in, OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, kClass, vClass));
+        } catch (IOException e) {
+            log.error("json解析出错:", e);
             throw new RuntimeException(e);
         }
     }
