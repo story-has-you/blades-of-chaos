@@ -1,4 +1,4 @@
-package com.storyhasyou.kratos.toolkit;
+package com.storyhasyou.kratos.idworker;
 
 import java.sql.Timestamp;
 import java.util.concurrent.Executors;

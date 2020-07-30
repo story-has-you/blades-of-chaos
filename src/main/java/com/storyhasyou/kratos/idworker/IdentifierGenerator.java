@@ -1,6 +1,4 @@
-package com.storyhasyou.kratos.toolkit;
-
-import com.storyhasyou.kratos.utils.IdWorker;
+package com.storyhasyou.kratos.idworker;
 
 /**
  * Id生成器接口

@@ -1,8 +1,4 @@
-package com.storyhasyou.kratos.utils;
-
-import com.storyhasyou.kratos.toolkit.DefaultIdentifierGenerator;
-import com.storyhasyou.kratos.toolkit.IdentifierGenerator;
-import com.storyhasyou.kratos.toolkit.StringPool;
+package com.storyhasyou.kratos.idworker;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

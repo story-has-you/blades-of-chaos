@@ -1,4 +1,4 @@
-package com.storyhasyou.kratos.config;
+package com.storyhasyou.kratos.toolkit;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanProperty;
@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 public class SensitiveSerialize extends JsonSerializer<Object> implements ContextualSerializer {
 
-    private SensitiveTypeEnum type;
+    private final SensitiveTypeEnum type;
 
     public SensitiveSerialize(final SensitiveTypeEnum type) {
         this.type = type;

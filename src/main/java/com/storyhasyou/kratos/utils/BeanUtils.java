@@ -1,7 +1,6 @@
 package com.storyhasyou.kratos.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.storyhasyou.kratos.function.SFunction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.util.Assert;
@@ -12,13 +11,9 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -31,7 +26,6 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
      * SerializedLambda 反序列化缓存
      */
     private static final Map<Class<?>, WeakReference<SerializedLambda>> FUNC_CACHE = new ConcurrentHashMap<>(1 << 8);
-
 
 
     /**
@@ -71,7 +65,6 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
     }
 
     /**
-     *
      * @param source 需要被拷贝的对象
      * @param target 目标对象
      */
@@ -83,11 +76,12 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 
     /**
      * 通过Lambda的get方法引用拿到私有属性名
+     *
      * @param function lambda表达式
-     * @param <T> 字段类型
+     * @param <T>      字段类型
      * @return 返回字段名
      */
-    public static <T> String convertToFieldName(SFunction<T, ?> function) {
+    public static <T> String convertToFieldName(Function<T, ?> function) {
         Class<?> clazz = function.getClass();
         return Optional.ofNullable(FUNC_CACHE.get(clazz))
                 .map(WeakReference::get)
@@ -102,31 +96,42 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 
     }
 
+    /**
+     * 深拷贝
+     *
+     * @param object
+     * @param <T>
+     * @return
+     */
     public static <T> T deepCopy(T object) {
         String serialize = JsonUtils.serialize(object);
-        return JsonUtils.nativeRead(serialize, new TypeReference<T>() {});
+        return JsonUtils.nativeRead(serialize, new TypeReference<T>() {
+        });
     }
 
     /**
-     *  将对象转成Map
+     * 将对象转成Map
+     *
      * @param obj 需要转换的对象
      * @return map
      */
     public static Map<String, Object> describe(Object obj) {
-        Assert.notNull(obj, "obj must not be null");
-        Class<?> clazz = obj.getClass();
-        Field[] fields = clazz.getDeclaredFields();
-        Map<String, Object> result = new HashMap<>(fields.length);
-        for (Field field : fields) {
-            field.setAccessible(true);
-            try {
+        try {
+            Assert.notNull(obj, "obj must not be null");
+            Class<?> clazz = obj.getClass();
+            Field[] fields = clazz.getDeclaredFields();
+            Map<String, Object> result = new HashMap<>(fields.length);
+            for (Field field : fields) {
+                field.setAccessible(true);
                 Object value = field.get(obj);
                 result.put(field.getName(), value);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
             }
+            return result;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
-        return result;
+
+        return null;
     }
 
     private static String remvoeFrefix(String methodName) {
@@ -147,7 +152,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         }
     }
 
-    private static <T> SerializedLambda resolve(SFunction<T, ?> lambda) {
+    private static <T> SerializedLambda resolve(Function<T, ?> lambda) {
         try {
             Class<?> clazz = lambda.getClass();
             if (!clazz.isSynthetic()) {

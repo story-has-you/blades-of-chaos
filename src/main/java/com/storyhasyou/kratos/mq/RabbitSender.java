@@ -1,6 +1,6 @@
 package com.storyhasyou.kratos.mq;
 
-import com.storyhasyou.kratos.utils.IdWorker;
+import com.storyhasyou.kratos.idworker.IdWorker;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.MessagePostProcessor;

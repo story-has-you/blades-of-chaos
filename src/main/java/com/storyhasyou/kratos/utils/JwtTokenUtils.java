@@ -19,7 +19,7 @@ public class JwtTokenUtils {
     private static final String CLAIM_KEY_CREATED = "created";
     private static final String CLAIM_KEY_USERID = "id";
 
-    private static final String SECRET = "yuzuriha_inori";
+    private static final String SECRET = "storyhasyou";
     private static final Long EXPIRATION = Duration.ofDays(1).toMillis();
 
 

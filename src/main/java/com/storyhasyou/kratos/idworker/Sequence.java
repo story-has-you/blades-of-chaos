@@ -1,4 +1,4 @@
-package com.storyhasyou.kratos.toolkit;
+package com.storyhasyou.kratos.idworker;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
