@@ -30,8 +30,8 @@ public class DateUtils {
 
     }
 
-    public static LocalDateTime now() {
-        return LocalDateTime.now();
+    public static String now() {
+        return dateTimeToString(LocalDateTime.now(), DATETIME_PATTERN);
     }
 
     public static String dateTimeToString(LocalDateTime date, String pattern) {
