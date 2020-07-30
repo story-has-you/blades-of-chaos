@@ -19,7 +19,7 @@ public class BeanUtilsTest {
         user.setUsername("fangxi");
         user.setAmount(BigDecimal.TEN);
         user.setAge(25);
-        user.setCreateTime(DateUtils.now());
+        user.setCreateTime(LocalDateTime.now());
         UserDTO userDTO = BeanUtils.copyProperties(user, UserDTO.class);
         System.out.println(userDTO);
     }
