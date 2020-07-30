@@ -6,7 +6,7 @@
 
     <groupId>com.fxipp.kratos</groupId>
     <artifactId>blades-of-chaos</artifactId>
-    <version>1.5.0.RELEASE</version>
+    <version>1.5.1.RELEASE</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -20,6 +20,7 @@
         <guava.version>28.1-jre</guava.version>
         <mybatis-plus.version>3.3.2</mybatis-plus.version>
         <okhttp.version>4.8.0</okhttp.version>
+        <jjwt.version>0.9.1</jjwt.version>
     </properties>
 
     <dependencies>
@@ -104,6 +105,13 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>${okhttp.version}</version>
+        </dependency>
+
+        <!--JWT(Json Web Token)登录支持-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
         </dependency>
     </dependencies>
 
