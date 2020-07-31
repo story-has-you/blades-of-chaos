@@ -23,11 +23,11 @@ public class Result<T> implements Serializable {
     }
 
     public boolean isOk() {
-        return ResultCode.SUCCESS.getCode() == status;
+        return ok;
     }
 
     public boolean isError() {
-        return !isOk();
+        return !ok;
     }
 
     /**
