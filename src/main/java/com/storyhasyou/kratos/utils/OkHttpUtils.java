@@ -2,8 +2,8 @@ package com.storyhasyou.kratos.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpMethod;
+import org.springframework.lang.NonNull;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.Assert;
 
@@ -108,12 +108,12 @@ public class OkHttpUtils {
      *
      * @param url
      * @param headers
-     * @param body
+     * @param content
      * @return
      */
-    public static String post(String url, String body, Map<String, String> headers) {
+    public static String post(String url, String content, Map<String, String> headers) {
         Assert.hasLength(url, "url must not be null");
-        RequestBody requestBody = RequestBody.create(body, MediaType.parse(HTTP_JSON));
+        RequestBody requestBody = RequestBody.create(MediaType.parse(HTTP_FORM), content);
         Request.Builder requestBuilder = new Request.Builder().url(url);
         if (CollectionUtils.isNotEmpty(headers)) {
             headers.forEach(requestBuilder::addHeader);
@@ -122,9 +122,9 @@ public class OkHttpUtils {
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
             if (response.code() == 200) {
-                log.info("http Post 请求成功; [url={}, requestContent={}]", url, body);
+                log.info("http Post 请求成功; [url={}, requestContent={}]", url, content);
             } else {
-                log.warn("Http POST 请求失败; [ errorCode = {}, url={}, param={}]", response.code(), url, body);
+                log.warn("Http POST 请求失败; [ errorCode = {}, url={}, param={}]", response.code(), url, content);
             }
             return response.body().string();
         } catch (IOException e) {
@@ -134,6 +134,7 @@ public class OkHttpUtils {
 
     /**
      * 提交表单
+     *
      * @param url
      * @param content
      * @param headers
@@ -141,7 +142,7 @@ public class OkHttpUtils {
      */
     public static String form(String url, String content, Map<String, String> headers) {
         Assert.hasLength(url, "url must not be null");
-        RequestBody body = RequestBody.create(content, MediaType.parse(HTTP_FORM));
+        RequestBody body = RequestBody.create(MediaType.parse(HTTP_FORM), content);
 
         Request.Builder requestBuilder = new Request.Builder().url(url);
         if (CollectionUtils.isNotEmpty(headers)) {
@@ -168,6 +169,7 @@ public class OkHttpUtils {
 
     /**
      * 提交表单
+     *
      * @param url
      * @param content
      * @return
@@ -175,6 +177,7 @@ public class OkHttpUtils {
     public static String form(String url, String content) {
         return form(url, content, null);
     }
+
     /**
      * 异步Http调用参考模板：Get、Post、Put
      * 需要异步调用的接口一般情况下你需要定制一个专门的Http方法
@@ -185,11 +188,11 @@ public class OkHttpUtils {
      * @return
      */
     public static <T> AsyncResult<T> asyncHttpByJson(HttpMethod httpMethod,
-                                              String url,
-                                              Map<String, String> headers,
-                                              String content,
-                                              Consumer<Response> respConsumer) {
-        RequestBody body = RequestBody.create(content, MediaType.parse(HTTP_JSON));
+                                                     String url,
+                                                     Map<String, String> headers,
+                                                     String content,
+                                                     Consumer<Response> respConsumer) {
+        RequestBody body = RequestBody.create(MediaType.parse(HTTP_JSON), content);
 
         Request.Builder requestBuilder = new Request.Builder()
                 .url(url);
@@ -212,13 +215,13 @@ public class OkHttpUtils {
         Call call = OK_HTTP_CLIENT.newCall(request);
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 log.error("异步http {} 请求失败,[url={}, param={}]", httpMethod.name(), url, content);
                 throw new RuntimeException("异步http请求失败,url:" + url);
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull final Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
                 if (response.code() == 200) {
                     respConsumer.accept(response);
                 } else {
@@ -239,12 +242,12 @@ public class OkHttpUtils {
     public static void asyncCall(Request request, Consumer<Exception> failure, Consumer<Response> responseConsumer) {
         OK_HTTP_CLIENT.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 failure.accept(e);
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 responseConsumer.accept(response);
             }
         });
