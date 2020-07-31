@@ -1,5 +1,7 @@
 package com.storyhasyou.kratos.idworker;
 
+import com.storyhasyou.kratos.utils.IdUtils;
+
 /**
  * Id生成器接口
  *
@@ -24,6 +26,6 @@ public interface IdentifierGenerator {
      * @return uuid
      */
     default String nextUUID(Object entity) {
-        return IdWorker.get32UUID();
+        return IdUtils.get32UUID();
     }
 }

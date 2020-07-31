@@ -1,5 +1,7 @@
 package com.storyhasyou.kratos.annotation;
 
+import com.storyhasyou.kratos.valid.MobileConstraintValidator;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
@@ -9,7 +11,7 @@ import java.lang.annotation.*;
  */
 @Documented
 @Constraint(
-        validatedBy = {}
+        validatedBy = {MobileConstraintValidator.class}
 )
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)

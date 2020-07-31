@@ -1,4 +1,8 @@
-package com.storyhasyou.kratos.idworker;
+package com.storyhasyou.kratos.utils;
+
+import com.storyhasyou.kratos.idworker.DefaultIdentifierGenerator;
+import com.storyhasyou.kratos.idworker.IdentifierGenerator;
+import com.storyhasyou.kratos.idworker.StringPool;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author fangxi
  * @date 2020/3/5
  */
-public class IdWorker {
+public class IdUtils {
 
     /**
      * 主机和进程的机器码

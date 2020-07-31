@@ -5,7 +5,7 @@ import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.util.CollectionUtils;
+import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.util.Map;
@@ -42,54 +42,16 @@ public class OkHttpUtils {
      * @return
      */
     public static String get(String url) {
-        if (url == null || "".equals(url)) {
-            log.error("url为null!");
-            return "";
-        }
-
-        Request.Builder builder = new Request.Builder();
-        Request request = builder.get().url(url).build();
-        try {
-            Response response = OK_HTTP_CLIENT.newCall(request).execute();
-            if (response.code() == 200) {
-                log.info("http GET 请求成功; [url={}]", url);
-            } else {
-                log.warn("Http GET 请求失败; [errorCode = {} , url={}]", response.code(), url);
-            }
-            return response.body().string();
-        } catch (IOException e) {
-            throw new RuntimeException("同步http GET 请求失败,url:" + url, e);
-        }
+        return get(url, null);
     }
 
-    public static byte[] getByte(String url) {
-        if (url == null || "".equals(url)) {
-            log.error("url为null!");
-            return null;
-        }
-
-        Request.Builder builder = new Request.Builder();
-        Request request = builder.get().url(url).build();
-        try {
-            Response response = OK_HTTP_CLIENT.newCall(request).execute();
-            if (response.code() == 200) {
-                log.info("http GET 请求成功; [url={}]", url);
-            } else {
-                log.warn("Http GET 请求失败; [errorCode = {} , url={}]", response.code(), url);
-            }
-            return response.body().bytes();
-        } catch (IOException e) {
-            throw new RuntimeException("同步http GET 请求失败,url:" + url, e);
-        }
-    }
 
     public static String get(String url, Map<String, String> headers) {
-        if (CollectionUtils.isEmpty(headers)) {
-            return get(url);
-        }
-
+        Assert.hasLength(url, "url must not be null");
         Request.Builder builder = new Request.Builder();
-        headers.forEach(builder::header);
+        if (CollectionUtils.isNotEmpty(headers)) {
+            headers.forEach(builder::header);
+        }
         Request request = builder.get().url(url).build();
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
@@ -105,14 +67,16 @@ public class OkHttpUtils {
         return null;
     }
 
+    public static byte[] getByte(String url) {
+        return getByte(url, null);
+    }
 
     public static byte[] getByte(String url, Map<String, String> headers) {
-        if (CollectionUtils.isEmpty(headers)) {
-            return getByte(url);
-        }
-
+        Assert.hasLength(url, "url must not be null");
         Request.Builder builder = new Request.Builder();
-        headers.forEach(builder::header);
+        if (CollectionUtils.isNotEmpty(headers)) {
+            headers.forEach(builder::header);
+        }
         Request request = builder.get().url(url).build();
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
@@ -136,13 +100,24 @@ public class OkHttpUtils {
      * @return
      */
     public static String post(String url, String body) {
-        if (url == null || "".equals(url)) {
-            log.error("url为null!");
-            return "";
-        }
+        return post(url, body, null);
+    }
 
+    /**
+     * 同步 POST调用 有Header
+     *
+     * @param url
+     * @param headers
+     * @param body
+     * @return
+     */
+    public static String post(String url, String body, Map<String, String> headers) {
+        Assert.hasLength(url, "url must not be null");
         RequestBody requestBody = RequestBody.create(body, MediaType.parse(HTTP_JSON));
         Request.Builder requestBuilder = new Request.Builder().url(url);
+        if (CollectionUtils.isNotEmpty(headers)) {
+            headers.forEach(requestBuilder::addHeader);
+        }
         Request request = requestBuilder.post(requestBody).build();
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
@@ -158,48 +133,18 @@ public class OkHttpUtils {
     }
 
     /**
-     * 同步 POST调用 有Header
-     *
-     * @param url
-     * @param headers
-     * @param json
-     * @return
-     */
-    public static String post(String url, Map<String, String> headers, String json) {
-        if (CollectionUtils.isEmpty(headers)) {
-            post(url, json);
-        }
-
-        RequestBody body = RequestBody.create(json, MediaType.parse(HTTP_JSON));
-        Request.Builder requestBuilder = new Request.Builder().url(url);
-        headers.forEach(requestBuilder::addHeader);
-        Request request = requestBuilder.post(body).build();
-        try {
-            Response response = OK_HTTP_CLIENT.newCall(request).execute();
-            if (response.code() == 200) {
-                log.info("http Post 请求成功; [url={}, requestContent={}]", url, json);
-                return response.body().string();
-            } else {
-                log.warn("Http POST 请求失败; [ errorCode = {}, url={}, param={}]", response.code(), url, json);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("同步http请求失败,url:" + url, e);
-        }
-        return null;
-    }
-
-    /**
      * 提交表单
      * @param url
      * @param content
      * @param headers
      * @return
      */
-    public static String postDataByForm(String url, String content, Map<String, String> headers) {
-        RequestBody body = RequestBody.create(content, MediaType.parse(HTTP_JSON));
+    public static String form(String url, String content, Map<String, String> headers) {
+        Assert.hasLength(url, "url must not be null");
+        RequestBody body = RequestBody.create(content, MediaType.parse(HTTP_FORM));
 
         Request.Builder requestBuilder = new Request.Builder().url(url);
-        if (headers != null && headers.size() > 0) {
+        if (CollectionUtils.isNotEmpty(headers)) {
             headers.forEach(requestBuilder::addHeader);
         }
         Request request = requestBuilder
@@ -221,6 +166,15 @@ public class OkHttpUtils {
         }
     }
 
+    /**
+     * 提交表单
+     * @param url
+     * @param content
+     * @return
+     */
+    public static String form(String url, String content) {
+        return form(url, content, null);
+    }
     /**
      * 异步Http调用参考模板：Get、Post、Put
      * 需要异步调用的接口一般情况下你需要定制一个专门的Http方法

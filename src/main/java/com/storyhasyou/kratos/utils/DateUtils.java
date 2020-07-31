@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * @author fangxi
@@ -99,6 +100,24 @@ public class DateUtils {
         LocalDate now = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ISO_EXPANDED_DATE_FORMAT);
         return now.format(formatter);
+    }
+
+    /**
+     * 获取今年年份
+     * @return
+     */
+    public static int thisYear() {
+        return LocalDate.now().getYear();
+    }
+
+    /**
+     * 是否闰年
+     *
+     * @param year 年
+     * @return 是否闰年
+     */
+    public static boolean isLeapYear(int year) {
+        return new GregorianCalendar().isLeapYear(year);
     }
 
 }

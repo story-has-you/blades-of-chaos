@@ -24,6 +24,10 @@ public class SensitiveSerialize extends JsonSerializer<Object> implements Contex
         this.type = type;
     }
 
+    public SensitiveSerialize() {
+        this.type = SensitiveTypeEnum.NAME;
+    }
+
 
     @Override
     public void serialize(Object value, JsonGenerator jsonGenerator, SerializerProvider serializers) throws IOException {

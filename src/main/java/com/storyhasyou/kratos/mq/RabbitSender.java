@@ -1,6 +1,6 @@
 package com.storyhasyou.kratos.mq;
 
-import com.storyhasyou.kratos.idworker.IdWorker;
+import com.storyhasyou.kratos.utils.IdUtils;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.MessagePostProcessor;
@@ -82,7 +82,7 @@ public class RabbitSender {
         MessageHeaders messageHeaders = new MessageHeaders(properties);
         Message<T> msg = MessageBuilder.createMessage(body, messageHeaders);
 
-        CorrelationData correlationData = new CorrelationData(IdWorker.get32UUID());
+        CorrelationData correlationData = new CorrelationData(IdUtils.get32UUID());
         RabbitTemplate rabbitTemplate = this.getRabbitTemplate(exchange, routingKey, confirmCallback);
         if (messagePostProcessor == null) {
             rabbitTemplate.convertAndSend(exchange, routingKey, msg, correlationData);
