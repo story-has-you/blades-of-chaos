@@ -1,7 +1,5 @@
 package com.storyhasyou.kratos.toolkit;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
@@ -142,7 +140,6 @@ public class SimpleCache<K, V> implements Iterable<Map.Entry<K, V>>, Serializabl
 		}
 	}
 
-	@NotNull
 	@Override
 	public Iterator<Map.Entry<K, V>> iterator() {
 		return this.cache.entrySet().iterator();
