@@ -33,7 +33,7 @@ public abstract class BaseEntity implements Serializable {
     /**
      * 删除标识位 默认不删除
      */
-    @TableField(value = "is_deleted", fill = FieldFill.INSERT)
+    @TableField(value = "deleted", fill = FieldFill.INSERT)
     @TableLogic
     private Integer deleted;
 }
