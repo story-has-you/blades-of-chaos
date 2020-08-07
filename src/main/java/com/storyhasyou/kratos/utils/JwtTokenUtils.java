@@ -89,11 +89,18 @@ public class JwtTokenUtils {
     /**
      * 根据用户名生成token
      */
-    public static String generateToken(String username, Long avatar) {
+    public static String generateToken(String username, Long userId) {
+        return generateToken(username, String.valueOf(userId));
+    }
+
+    /**
+     * 根据用户名生成token
+     */
+    public static String generateToken(String username, String userId) {
         Map<String, Object> claims = new HashMap<>(3);
         claims.put(CLAIM_KEY_USERNAME, username);
         claims.put(CLAIM_KEY_CREATED, new Date());
-        claims.put(CLAIM_KEY_USERID, avatar);
+        claims.put(CLAIM_KEY_USERID, userId);
         return generateToken(claims);
     }
 
