@@ -1,5 +1,7 @@
 package com.storyhasyou.kratos.result;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 /**
@@ -22,10 +24,12 @@ public class Result<T> implements Serializable {
         this.ok = ok;
     }
 
+    @JsonIgnore
     public boolean isOk() {
         return ok;
     }
 
+    @JsonIgnore
     public boolean isError() {
         return !ok;
     }
