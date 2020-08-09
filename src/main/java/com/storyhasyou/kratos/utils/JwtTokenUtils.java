@@ -20,16 +20,22 @@ public class JwtTokenUtils {
     private static final String CLAIM_KEY_USERID = "id";
 
     private static final String SECRET = "storyhasyou";
-    private static final Long EXPIRATION = Duration.ofDays(1).toMillis();
 
 
     /**
      * 根据负责生成JWT的token
      */
     public static String generateToken(Map<String, Object> claims) {
+        return generateToken(claims, Duration.ofDays(1));
+    }
+
+    /**
+     * 根据负责生成JWT的token
+     */
+    public static String generateToken(Map<String, Object> claims, Duration expiration) {
         return Jwts.builder()
                 .setClaims(claims)
-                .setExpiration(generateExpirationDate())
+                .setExpiration(generateExpirationDate(expiration))
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
     }
@@ -52,8 +58,8 @@ public class JwtTokenUtils {
     /**
      * 生成token的过期时间
      */
-    private static Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + EXPIRATION);
+    private static Date generateExpirationDate(Duration expiration) {
+        return new Date(System.currentTimeMillis() + expiration.toMillis());
     }
 
     /**
