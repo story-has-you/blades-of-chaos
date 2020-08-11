@@ -32,6 +32,28 @@ public class OkHttpUtils {
         return OK_HTTP_CLIENT;
     }
 
+    public static String get(String url, Object params) {
+        Map<String, Object> paramsMap = BeanUtils.describe(params);
+        StringBuilder sb = new StringBuilder(url).append("?");
+        paramsMap.forEach((key, value) -> {
+            if (key != null && value != null) {
+                sb.append(key).append("=").append(value).append("&");
+            }
+        });
+        url = sb.substring(0, sb.length() - 1);
+        Request.Builder builder = new Request.Builder();
+        Request request = builder.get().url(url).build();
+        try {
+            Response response = OK_HTTP_CLIENT.newCall(request).execute();
+            if (response.code() == 200) {
+                return response.body().string();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("同步http GET 请求失败,url:" + url, e);
+        }
+        return null;
+    }
+
     /**
      * get请求
      * 对于小文档，响应体上的string()方法非常方便和高效。
@@ -56,10 +78,9 @@ public class OkHttpUtils {
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
             if (response.code() == 200) {
-                log.info("http GET 请求成功; [url={}]", url);
                 return response.body().string();
             } else {
-                log.warn("Http GET 请求失败; [errorxxCode = {} , url={}]", response.code(), url);
+                log.error("Http GET 请求失败; [errorxxCode = {} , url={}]", response.code(), url);
             }
         } catch (IOException e) {
             throw new RuntimeException("同步http GET 请求失败,url:" + url, e);
@@ -81,10 +102,9 @@ public class OkHttpUtils {
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
             if (response.code() == 200) {
-                log.info("http GET 请求成功; [url={}]", url);
                 return response.body().bytes();
             } else {
-                log.warn("Http GET 请求失败; [errorxxCode = {} , url={}]", response.code(), url);
+                log.error("Http GET 请求失败; [errorxxCode = {} , url={}]", response.code(), url);
             }
         } catch (IOException e) {
             throw new RuntimeException("同步http GET 请求失败,url:" + url, e);
@@ -124,7 +144,7 @@ public class OkHttpUtils {
             if (response.code() == 200) {
                 log.info("http Post 请求成功; [url={}, requestContent={}]", url, content);
             } else {
-                log.warn("Http POST 请求失败; [ errorCode = {}, url={}, param={}]", response.code(), url, content);
+                log.error("Http POST 请求失败; [ errorCode = {}, url={}, param={}]", response.code(), url, content);
             }
             return response.body().string();
         } catch (IOException e) {
@@ -158,7 +178,7 @@ public class OkHttpUtils {
             if (response.code() == 200) {
                 log.info("postDataByForm; [postUrl={}, requestContent={}, responseCode={}]", url, content, response.code());
             } else {
-                log.warn("Http Post Form请求失败,[url={}, param={}]", url, content);
+                log.error("Http Post Form请求失败,[url={}, param={}]", url, content);
             }
             return response.body().string();
         } catch (IOException e) {

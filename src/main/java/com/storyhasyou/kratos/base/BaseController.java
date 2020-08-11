@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.storyhasyou.kratos.result.Result.ok;
+
 /**
  * 通用请求处理
  *
@@ -29,7 +31,7 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
     public Result<Boolean> create(@RequestBody T entity) {
         // 业务逻辑
         boolean created = baseService.save(entity);
-        return Result.ok(created);
+        return ok(created);
     }
 
     /**
@@ -42,7 +44,7 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
     public Result<Boolean> remove(@PathVariable Long id) {
         // 业务逻辑
         boolean deleted = baseService.removeById(id);
-        return Result.ok(deleted);
+        return ok(deleted);
     }
 
     /**
@@ -55,7 +57,7 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
     public Result<Boolean> removeBatch(@RequestBody List<Long> ids) {
         // 业务逻辑
         boolean deleted = baseService.removeByIds(ids);
-        return Result.ok(deleted);
+        return ok(deleted);
     }
 
     /**
@@ -68,7 +70,7 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
     public Result<Boolean> update(@RequestBody T entity) {
         // 业务逻辑
         boolean updated = baseService.updateById(entity);
-        return Result.ok(updated);
+        return ok(updated);
 
     }
 
@@ -81,7 +83,7 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
     @GetMapping("/get/{id}")
     public Result<T> get(@PathVariable Long id) {
         T entity = baseService.get(id);
-        return Result.ok(entity);
+        return ok(entity);
     }
 
     /**
@@ -94,6 +96,6 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
     public Result<PageResponse<?>> page(@ModelAttribute @Validated PageRequest pageRequest,
                                         @ModelAttribute T entity) {
         PageResponse<?> pageResponse = baseService.page(pageRequest.getCurrent(), pageRequest.getLimit(), entity);
-        return Result.ok(pageResponse);
+        return ok(pageResponse);
     }
 }
