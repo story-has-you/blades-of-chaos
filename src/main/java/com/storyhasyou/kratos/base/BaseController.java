@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 import static com.storyhasyou.kratos.result.Result.ok;
@@ -41,7 +42,7 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @return {@link Result}
      */
     @DeleteMapping("/remove/{id}")
-    public Result<Boolean> remove(@PathVariable Long id) {
+    public Result<Boolean> remove(@PathVariable Serializable id) {
         // 业务逻辑
         boolean deleted = baseService.removeById(id);
         return ok(deleted);
@@ -54,7 +55,7 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @return {@link Result}
      */
     @DeleteMapping("/batch/remove")
-    public Result<Boolean> removeBatch(@RequestBody List<Long> ids) {
+    public Result<Boolean> removeBatch(@RequestBody List<Serializable> ids) {
         // 业务逻辑
         boolean deleted = baseService.removeByIds(ids);
         return ok(deleted);
@@ -81,7 +82,7 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @return {@link Result}
      */
     @GetMapping("/get/{id}")
-    public Result<T> get(@PathVariable Long id) {
+    public Result<T> get(@PathVariable Serializable id) {
         T entity = baseService.get(id);
         return ok(entity);
     }

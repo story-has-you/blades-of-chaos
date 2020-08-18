@@ -8,6 +8,7 @@ import com.storyhasyou.kratos.exceptions.NotFountException;
 import com.storyhasyou.kratos.pojo.PageResponse;
 import org.springframework.util.Assert;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * @param id {@code Long} ID
      * @return 领域模型
      */
-    default T get(Long id) {
+    default T get(Serializable id) {
         T entity = getById(id);
         if (null == entity) {
             throw new NotFountException();
@@ -40,7 +41,7 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * @param id {@code Long} ID
      * @return 领域模型
      */
-    default Optional<T> getOpt(Long id) {
+    default Optional<T> getOpt(Serializable id) {
         return Optional.ofNullable(getById(id));
     }
 
@@ -64,7 +65,7 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * @param ids
      * @return
      */
-    default Map<Long, T> mapByIds(List<Long> ids) {
+    default Map<Serializable, T> mapByIds(List<Serializable> ids) {
         Assert.notEmpty(ids, "ids must not null or empty");
         List<T> entitys = listByIds(ids);
         if (CollectionUtils.isEmpty(entitys)) {
