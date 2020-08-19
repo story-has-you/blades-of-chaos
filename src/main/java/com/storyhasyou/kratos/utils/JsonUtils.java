@@ -88,7 +88,7 @@ public class JsonUtils {
         }
     }
 
-    public static <T> T nativeRead(@NonNull String json, @NonNull TypeReference<T> type) {
+    public static <T> T parse(@NonNull String json, @NonNull TypeReference<T> type) {
         try {
             return OBJECT_MAPPER.readValue(json, type);
         } catch (IOException e) {

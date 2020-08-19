@@ -24,7 +24,7 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
     /**
      * 获取
      *
-     * @param id {@code Long} ID
+     * @param id {@code Serializable} ID
      * @return 领域模型
      */
     default T get(Serializable id) {
@@ -38,7 +38,7 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
     /**
      * 获取
      *
-     * @param id {@code Long} ID
+     * @param id {@code Serializable} ID
      * @return 领域模型
      */
     default Optional<T> getOpt(Serializable id) {

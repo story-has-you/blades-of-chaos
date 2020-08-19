@@ -105,7 +105,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
      */
     public static <T> T deepCopy(T object) {
         String serialize = JsonUtils.serialize(object);
-        return JsonUtils.nativeRead(serialize, new TypeReference<T>() {
+        return JsonUtils.parse(serialize, new TypeReference<T>() {
         });
     }
 

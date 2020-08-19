@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
@@ -95,14 +96,7 @@ public class JwtTokenUtils {
     /**
      * 根据用户名生成token
      */
-    public static String generateToken(String username, Long userId) {
-        return generateToken(username, String.valueOf(userId));
-    }
-
-    /**
-     * 根据用户名生成token
-     */
-    public static String generateToken(String username, String userId) {
+    public static String generateToken(String username, Serializable userId) {
         Map<String, Object> claims = new HashMap<>(3);
         claims.put(CLAIM_KEY_USERNAME, username);
         claims.put(CLAIM_KEY_CREATED, new Date());
