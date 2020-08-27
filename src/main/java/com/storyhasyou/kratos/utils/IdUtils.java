@@ -2,7 +2,7 @@ package com.storyhasyou.kratos.utils;
 
 import com.storyhasyou.kratos.idworker.DefaultIdentifierGenerator;
 import com.storyhasyou.kratos.idworker.IdentifierGenerator;
-import com.storyhasyou.kratos.idworker.StringPool;
+import com.storyhasyou.kratos.toolkit.StringPool;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

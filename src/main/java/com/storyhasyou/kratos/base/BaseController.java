@@ -3,6 +3,8 @@ package com.storyhasyou.kratos.base;
 import com.storyhasyou.kratos.pojo.PageRequest;
 import com.storyhasyou.kratos.pojo.PageResponse;
 import com.storyhasyou.kratos.result.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,8 @@ import static com.storyhasyou.kratos.result.Result.ok;
  * @author fangxi
  */
 public abstract class BaseController<T extends BaseEntity, S extends BaseService<T>> {
+
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     protected S baseService;

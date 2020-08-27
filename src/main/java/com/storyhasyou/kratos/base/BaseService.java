@@ -28,11 +28,7 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * @return 领域模型
      */
     default T get(Serializable id) {
-        T entity = getById(id);
-        if (null == entity) {
-            throw new NotFountException();
-        }
-        return entity;
+        return getOpt(id).orElseThrow(NotFountException::new);
     }
 
     /**
@@ -67,10 +63,10 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      */
     default Map<Serializable, T> mapByIds(List<Serializable> ids) {
         Assert.notEmpty(ids, "ids must not null or empty");
-        List<T> entitys = listByIds(ids);
-        if (CollectionUtils.isEmpty(entitys)) {
+        List<T> entities = listByIds(ids);
+        if (CollectionUtils.isEmpty(entities)) {
             return Collections.emptyMap();
         }
-        return entitys.stream().collect(Collectors.toMap(T::getId, Function.identity()));
+        return entities.stream().collect(Collectors.toMap(T::getId, Function.identity()));
     }
 }

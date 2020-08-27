@@ -16,7 +16,7 @@ public abstract class BaseEntity implements Serializable {
      * 主键id
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+    private Serializable id;
 
     /**
      * 创建时间 默认当前时间

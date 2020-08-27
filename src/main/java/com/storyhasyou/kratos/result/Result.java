@@ -1,18 +1,22 @@
 package com.storyhasyou.kratos.result;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @author fangxi
  * 通用返回对象
  */
+@Data
 public class Result<T> implements Serializable {
     private Integer status;
     private String message;
     private T data;
     private Boolean ok;
+    private Map<String, Object> attachment;
 
     public Result() {
     }
@@ -102,36 +106,4 @@ public class Result<T> implements Serializable {
         return error(ResultCode.VALIDATE_FAILED);
     }
 
-
-    public Boolean getOk() {
-        return ok;
-    }
-
-    public void setOk(Boolean ok) {
-        this.ok = ok;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
 }

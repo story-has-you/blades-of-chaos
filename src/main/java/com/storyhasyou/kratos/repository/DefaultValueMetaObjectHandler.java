@@ -1,4 +1,4 @@
-package com.storyhasyou.kratos.base;
+package com.storyhasyou.kratos.repository;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;

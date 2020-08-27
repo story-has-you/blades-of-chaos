@@ -1,4 +1,4 @@
-package com.storyhasyou.kratos.idworker;
+package com.storyhasyou.kratos.toolkit;
 
 /**
  * Copy to jodd.util

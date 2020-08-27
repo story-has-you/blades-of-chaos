@@ -47,9 +47,6 @@ public class JsonUtils {
     }
 
     public static String serialize(@NonNull Object obj) {
-        if (obj == null) {
-            return null;
-        }
         if (obj.getClass() == String.class) {
             return (String) obj;
         }
