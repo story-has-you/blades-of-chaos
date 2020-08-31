@@ -17,4 +17,8 @@ public class JudgeUtils {
         }
         return null;
     }
+
+    public static <T> T process(boolean condition, T result) {
+        return process(condition, () -> result);
+    }
 }
