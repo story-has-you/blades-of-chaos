@@ -7,8 +7,7 @@ import lombok.Getter;
  * @author fangxi
  */
 @AllArgsConstructor
-@Getter
-public enum YesNoEnum {
+public enum YesNoEnum implements IntBaseEnum {
 
     YES(1, "是"),
     NO(0, "否"),
@@ -22,4 +21,13 @@ public enum YesNoEnum {
         return code == 1 ? YES : NO;
     }
 
+    @Override
+    public Integer getCode() {
+        return this.code;
+    }
+
+    @Override
+    public String getMessage() {
+        return this.value;
+    }
 }
