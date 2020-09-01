@@ -79,7 +79,7 @@ public class IdUtils {
     /**
      * 使用ThreadLocalRandom获取UUID获取更优的效果 去掉"-"
      */
-    public static String get32UUID() {
+    public static String uuid() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         return new UUID(random.nextLong(), random.nextLong()).toString().replace(StringPool.DASH, StringPool.EMPTY);
     }

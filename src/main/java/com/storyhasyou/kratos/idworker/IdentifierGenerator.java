@@ -26,6 +26,6 @@ public interface IdentifierGenerator {
      * @return uuid
      */
     default String nextUUID(Object entity) {
-        return IdUtils.get32UUID();
+        return IdUtils.uuid();
     }
 }

@@ -1,16 +1,30 @@
 package com.storyhasyou.kratos.utils;
 
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.*;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.Assert;
-
-import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 /**
  * @author fangxi
@@ -21,10 +35,14 @@ public class OkHttpUtils {
     private static final String HTTP_JSON = "application/json; charset=utf-8";
     private static final String HTTP_FORM = "application/x-www-form-urlencoded; charset=utf-8";
 
+    private static final int TIMEOUT = 120;
+
     private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
-            .connectTimeout(120, TimeUnit.SECONDS)
-            .readTimeout(120, TimeUnit.SECONDS)
-            .writeTimeout(120, TimeUnit.SECONDS)
+            .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(TIMEOUT, TimeUnit.SECONDS)
+            .sslSocketFactory(sslSocketFactory(), x509TrustManager())
+            .retryOnConnectionFailure(true)
             .build();
 
 
@@ -34,6 +52,9 @@ public class OkHttpUtils {
 
     public static String get(String url, Object params) {
         Map<String, Object> paramsMap = BeanUtils.describe(params);
+        if (CollectionUtils.isEmpty(paramsMap)) {
+            return null;
+        }
         StringBuilder sb = new StringBuilder(url).append("?");
         paramsMap.forEach((key, value) -> {
             if (key != null && value != null) {
@@ -45,8 +66,8 @@ public class OkHttpUtils {
         Request request = builder.get().url(url).build();
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
-            if (response.code() == 200) {
-                return response.body().string();
+            if (response.code() == HttpStatus.OK.value()) {
+                return Objects.requireNonNull(response.body()).string();
             }
         } catch (IOException e) {
             throw new RuntimeException("同步http GET 请求失败,url:" + url, e);
@@ -67,7 +88,6 @@ public class OkHttpUtils {
         return get(url, null);
     }
 
-
     public static String get(String url, Map<String, String> headers) {
         Assert.hasLength(url, "url must not be null");
         Request.Builder builder = new Request.Builder();
@@ -77,8 +97,8 @@ public class OkHttpUtils {
         Request request = builder.get().url(url).build();
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
-            if (response.code() == 200) {
-                return response.body().string();
+            if (response.code() == HttpStatus.OK.value()) {
+                return Objects.requireNonNull(response.body()).string();
             } else {
                 log.error("Http GET 请求失败; [errorxxCode = {} , url={}]", response.code(), url);
             }
@@ -101,8 +121,8 @@ public class OkHttpUtils {
         Request request = builder.get().url(url).build();
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
-            if (response.code() == 200) {
-                return response.body().bytes();
+            if (response.code() == HttpStatus.OK.value()) {
+                return Objects.requireNonNull(response.body()).bytes();
             } else {
                 log.error("Http GET 请求失败; [errorxxCode = {} , url={}]", response.code(), url);
             }
@@ -141,7 +161,7 @@ public class OkHttpUtils {
         Request request = requestBuilder.post(requestBody).build();
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
-            if (response.code() == 200) {
+            if (response.code() == HttpStatus.OK.value()) {
                 log.info("http Post 请求成功; [url={}, requestContent={}]", url, content);
             } else {
                 log.error("Http POST 请求失败; [ errorCode = {}, url={}, param={}]", response.code(), url, content);
@@ -175,12 +195,12 @@ public class OkHttpUtils {
         Response response;
         try {
             response = OK_HTTP_CLIENT.newCall(request).execute();
-            if (response.code() == 200) {
+            if (response.code() == HttpStatus.OK.value()) {
                 log.info("postDataByForm; [postUrl={}, requestContent={}, responseCode={}]", url, content, response.code());
             } else {
                 log.error("Http Post Form请求失败,[url={}, param={}]", url, content);
             }
-            return response.body().string();
+            return Objects.requireNonNull(response.body()).string();
         } catch (IOException e) {
             log.error("Http Post Form请求失败,[url={}, param={}]", url, content, e);
             throw new RuntimeException("Http Post Form请求失败,url:" + url);
@@ -271,6 +291,36 @@ public class OkHttpUtils {
                 responseConsumer.accept(response);
             }
         });
+    }
+
+
+    private static X509TrustManager x509TrustManager() {
+        return new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(X509Certificate[] x509Certificates, String s) {
+            }
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] x509Certificates, String s) {
+            }
+
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return new X509Certificate[0];
+            }
+        };
+    }
+
+    private static SSLSocketFactory sslSocketFactory() {
+        try {
+            //信任任何链接
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, null, new SecureRandom());
+            return sslContext.getSocketFactory();
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            e.printStackTrace();
+            throw new RuntimeException("SSL 初始化失败");
+        }
     }
 
 }

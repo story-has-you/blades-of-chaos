@@ -82,7 +82,7 @@ public class RabbitSender {
         MessageHeaders messageHeaders = new MessageHeaders(properties);
         Message<T> msg = MessageBuilder.createMessage(body, messageHeaders);
 
-        CorrelationData correlationData = new CorrelationData(IdUtils.get32UUID());
+        CorrelationData correlationData = new CorrelationData(IdUtils.uuid());
         RabbitTemplate rabbitTemplate = this.getRabbitTemplate(exchange, routingKey, confirmCallback);
         if (messagePostProcessor == null) {
             rabbitTemplate.convertAndSend(exchange, routingKey, msg, correlationData);
