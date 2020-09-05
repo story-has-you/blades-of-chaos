@@ -32,5 +32,4 @@ public enum SensitiveTypeEnum {
     ACCOUNT_NO;
 
 
-
 }

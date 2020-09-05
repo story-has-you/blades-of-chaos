@@ -1,6 +1,7 @@
 package com.storyhasyou.kratos.valid;
 
 import org.springframework.util.CollectionUtils;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.ValidationException;

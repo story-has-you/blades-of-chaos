@@ -1,7 +1,6 @@
 package com.storyhasyou.kratos.enums;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 /**
  * @author fangxi

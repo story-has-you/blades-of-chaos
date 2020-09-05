@@ -1,10 +1,11 @@
 package com.storyhasyou.kratos.result;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.storyhasyou.kratos.enums.IntBaseEnum;
+import com.storyhasyou.kratos.exceptions.BusinessException;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * @author fangxi
@@ -16,7 +17,6 @@ public class Result<T> implements Serializable {
     private String message;
     private T data;
     private Boolean ok;
-    private Map<String, Object> attachment;
 
     public Result() {
     }
@@ -26,16 +26,6 @@ public class Result<T> implements Serializable {
         this.message = message;
         this.data = data;
         this.ok = ok;
-    }
-
-    @JsonIgnore
-    public boolean isOk() {
-        return ok;
-    }
-
-    @JsonIgnore
-    public boolean isError() {
-        return !ok;
     }
 
     /**
@@ -61,7 +51,7 @@ public class Result<T> implements Serializable {
      * @param message 提示信息
      */
     public static <T> Result<T> ok(T data, String message) {
-        return new Result<>(ResultCode.SUCCESS.getCode(), message, data,true);
+        return new Result<>(ResultCode.SUCCESS.getCode(), message, data, true);
     }
 
     /**
@@ -69,7 +59,7 @@ public class Result<T> implements Serializable {
      *
      * @param errorCode 错误码
      */
-    public static <T> Result<T> error(ErrorCode errorCode) {
+    public static <T> Result<T> error(IntBaseEnum errorCode) {
         return error(errorCode, null);
     }
 
@@ -79,7 +69,7 @@ public class Result<T> implements Serializable {
      * @param errorCode 错误码
      * @param message   错误信息
      */
-    public static <T> Result<T> error(ErrorCode errorCode, String message) {
+    public static <T> Result<T> error(IntBaseEnum errorCode, String message) {
         return new Result<>(errorCode.getCode(), message, null, false);
     }
 
@@ -104,6 +94,23 @@ public class Result<T> implements Serializable {
      */
     public static <T> Result<T> validateFailed() {
         return error(ResultCode.VALIDATE_FAILED);
+    }
+
+    @JsonIgnore
+    public boolean isOk() {
+        return ok;
+    }
+
+    @JsonIgnore
+    public boolean isError() {
+        return !ok;
+    }
+
+    public T serviceData() {
+        if (isError()) {
+            throw new BusinessException(message);
+        }
+        return data;
     }
 
 }

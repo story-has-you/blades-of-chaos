@@ -1,11 +1,13 @@
 package com.storyhasyou.kratos.result;
 
+import com.storyhasyou.kratos.enums.IntBaseEnum;
+
 /**
  * 枚举了一些常用API操作码
  *
  * @author fangxi
  */
-public enum ResultCode implements ErrorCode {
+public enum ResultCode implements IntBaseEnum {
     SUCCESS(200, "操作成功"),
     FAILED(500, "操作失败"),
     NOT_FOUNT(404, "找不到数据"),
@@ -21,8 +23,9 @@ public enum ResultCode implements ErrorCode {
         this.message = message;
     }
 
+
     @Override
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 
@@ -30,4 +33,5 @@ public enum ResultCode implements ErrorCode {
     public String getMessage() {
         return message;
     }
+
 }

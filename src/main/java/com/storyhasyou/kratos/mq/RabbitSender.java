@@ -1,7 +1,7 @@
 package com.storyhasyou.kratos.mq;
 
-import com.storyhasyou.kratos.utils.IdUtils;
 import com.google.common.collect.Maps;
+import com.storyhasyou.kratos.utils.IdUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -25,11 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RabbitSender {
 
     /**
-     * key: topic
-     */
-    private Map<String, RabbitTemplate> rabbitTemplateMap = new ConcurrentHashMap<>(1 << 7);
-
-    /**
      * 确认消息的回掉监听，用于确认消息是否已经投递
      * <p>
      * CorrelationData correlationData, boolean ack, String cause
@@ -40,14 +35,17 @@ public class RabbitSender {
      */
     public final RabbitTemplate.ConfirmCallback defaultConfirmCallback = (correlationData, ack, cause) ->
             log.info("消息ack结果: {}, correlationData: {}", ack, correlationData);
-
+    /**
+     * key: topic
+     */
+    private Map<String, RabbitTemplate> rabbitTemplateMap = new ConcurrentHashMap<>(1 << 7);
     @Autowired
     private ConnectionFactory connectionFactory;
 
     /**
      * 发送消息的方法
      *
-     * @param body       消息主体
+     * @param body 消息主体
      */
     public <T> void send(T body, String exchange, String routingKey) {
         this.send(body, exchange, routingKey, null);

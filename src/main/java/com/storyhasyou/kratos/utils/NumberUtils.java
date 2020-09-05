@@ -22,17 +22,23 @@ import java.util.stream.Collectors;
 @SuppressWarnings("all")
 public class NumberUtils {
 
+    /**
+     * 默认除法运算精度
+     */
+    private static final int DEFAUT_DIV_SCALE = 10;
+
     public static boolean isInt(Double num) {
         return num.intValue() == num;
     }
 
     /**
      * 判断字符串是否是数值格式
+     *
      * @param str
      * @return
      */
-    public static boolean isDigit(String str){
-        if(str == null || "".equals(str.trim())){
+    public static boolean isDigit(String str) {
+        if (str == null || "".equals(str.trim())) {
             return false;
         }
         return str.matches("^\\d+$");
@@ -40,6 +46,7 @@ public class NumberUtils {
 
     /**
      * 将一个小数精确到指定位数
+     *
      * @param num
      * @param scale
      * @return
@@ -49,11 +56,11 @@ public class NumberUtils {
         return bd.setScale(scale, RoundingMode.HALF_UP).doubleValue();
     }
 
-    public static Double[] searchNumber(String value, String regex){
+    public static Double[] searchNumber(String value, String regex) {
         List<Double> doubles = new ArrayList<>();
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(value);
-        if(matcher.find()) {
+        if (matcher.find()) {
             MatchResult result = matcher.toMatchResult();
             for (int i = 1; i <= result.groupCount(); i++) {
                 doubles.add(Double.valueOf(result.group(i)));
@@ -64,11 +71,12 @@ public class NumberUtils {
 
     /**
      * 生成指定位数的随机数字
+     *
      * @param len
      * @return
      */
-    public static String generateCode(int len){
-       return ThreadLocalRandom.current()
+    public static String generateCode(int len) {
+        return ThreadLocalRandom.current()
                 .ints(0, 10)
                 .limit(len)
                 .mapToObj(String::valueOf)
@@ -77,6 +85,7 @@ public class NumberUtils {
 
     /**
      * 将金额转成分
+     *
      * @param amount
      * @return
      */
@@ -86,17 +95,13 @@ public class NumberUtils {
 
     /**
      * 将分转成金额
+     *
      * @param amount
      * @return
      */
     public static BigDecimal minute2Decimal(int amount) {
         return BigDecimal.valueOf(amount).divide(BigDecimal.valueOf(100L), 2, RoundingMode.DOWN);
     }
-
-    /**
-     * 默认除法运算精度
-     */
-    private static final int DEFAUT_DIV_SCALE = 10;
 
     /**
      * 提供精确的加法运算
@@ -810,13 +815,13 @@ public class NumberUtils {
     /**
      * 补充Math.ceilDiv() JDK8中添加了和Math.floorDiv()但却没有ceilDiv()
      *
-     * @param v1           被除数
-     * @param v2           除数
+     * @param v1 被除数
+     * @param v2 除数
      * @return 两个参数的商
      * @since 5.3.3
      */
     public static int ceilDiv(int v1, int v2) {
-        return (int)Math.ceil((double)v1 / v2);
+        return (int) Math.ceil((double) v1 / v2);
     }
 
     // ------------------------------------------------------------------------------------------- round

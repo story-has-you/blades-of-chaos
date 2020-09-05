@@ -2,8 +2,6 @@ package com.storyhasyou.kratos.utils;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * @author fangxi created by 2020/7/31
  */

@@ -3,7 +3,6 @@ package com.storyhasyou.kratos.utils;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

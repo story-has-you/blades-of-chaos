@@ -16,14 +16,13 @@ import java.util.concurrent.ThreadLocalRandom;
 public class IdUtils {
 
     /**
-     * 主机和进程的机器码
-     */
-    private static final IdentifierGenerator IDENTIFIER_GENERATOR = new DefaultIdentifierGenerator();
-
-    /**
      * 毫秒格式化时间
      */
     public static final DateTimeFormatter MILLISECOND = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+    /**
+     * 主机和进程的机器码
+     */
+    private static final IdentifierGenerator IDENTIFIER_GENERATOR = new DefaultIdentifierGenerator();
 
     /**
      * 获取唯一ID

@@ -395,8 +395,8 @@ public class IdcardUtils {
     /**
      * 根据身份编号获取指定日期当时的年龄年龄，只支持15或18位身份证号码
      *
-     * @param idCard        身份编号
-     * @param date 以此日期为界，计算年龄。
+     * @param idCard 身份编号
+     * @param date   以此日期为界，计算年龄。
      * @return 年龄
      */
     public static int getAge(String idCard, LocalDate date) {

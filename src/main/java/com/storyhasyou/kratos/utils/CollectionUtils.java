@@ -46,7 +46,7 @@ public class CollectionUtils extends org.springframework.util.CollectionUtils {
      * @param map the map
      * @return the map
      */
-    public static <K, V> Map<K,V> nonNull(Map<K, V> map) {
+    public static <K, V> Map<K, V> nonNull(Map<K, V> map) {
         return isEmpty(map) ? Collections.emptyMap() : map;
     }
 

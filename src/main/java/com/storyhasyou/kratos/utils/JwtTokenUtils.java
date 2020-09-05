@@ -47,9 +47,9 @@ public class JwtTokenUtils {
     private static Claims getClaimsFromToken(String token) {
         try {
             return Jwts.parser()
-                .setSigningKey(SECRET)
-                .parseClaimsJws(token)
-                .getBody();
+                    .setSigningKey(SECRET)
+                    .parseClaimsJws(token)
+                    .getBody();
         } catch (Exception e) {
             log.error("JWT格式验证失败:{}", token);
             throw new RuntimeException(e);

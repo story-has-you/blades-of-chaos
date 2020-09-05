@@ -25,7 +25,7 @@ public class MobileVaildTest {
     }
 
     @Data
-     static class Student {
+    static class Student {
         @NotBlank(message = "用户名不能为空")
         @Sensitive(SensitiveTypeEnum.NAME)
         private String username;

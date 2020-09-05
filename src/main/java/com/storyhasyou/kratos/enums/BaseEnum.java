@@ -1,7 +1,5 @@
 package com.storyhasyou.kratos.enums;
 
-import java.util.Map;
-
 /**
  * The interface Base enum.
  *

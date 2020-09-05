@@ -155,9 +155,9 @@ public class Sequence {
          */
         long timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
         return ((timestamp - twepoch) << timestampLeftShift)
-            | (datacenterId << datacenterIdShift)
-            | (workerId << sequenceBits)
-            | sequence;
+                | (datacenterId << datacenterIdShift)
+                | (workerId << sequenceBits)
+                | sequence;
     }
 
     protected long tilNextMillis(long lastTimestamp) {

@@ -23,6 +23,7 @@ public class CaptchaUtils {
 
     /**
      * 生成4位验证码，默认120x35
+     *
      * @return
      */
     public static Capatcha generateCapatcha() {
@@ -82,6 +83,7 @@ public class CaptchaUtils {
 
     /**
      * 随机生成制定长度的验证码字符
+     *
      * @param length
      * @return
      */

@@ -22,7 +22,7 @@ public class RegexUtils {
      * @return 验证成功返回true，验证失败返回false
      */
     public static boolean checkEmail(String email) {
-        String regex = "\\w+@\\w+\\.[a-z]+(\\.[a-z]+)?";
+        String regex = "^[A-Za-z0-9]+([_.][A-Za-z0-9]+)*@([A-Za-z0-9\\\\-]+\\\\.)+[A-Za-z]{2,6}$";
         return Pattern.matches(regex, email);
     }
 

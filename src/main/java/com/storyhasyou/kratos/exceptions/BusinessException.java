@@ -1,8 +1,6 @@
 package com.storyhasyou.kratos.exceptions;
 
 
-import com.storyhasyou.kratos.result.ErrorCode;
-
 /**
  * @author fangxi created by 2020/6/17
  */
