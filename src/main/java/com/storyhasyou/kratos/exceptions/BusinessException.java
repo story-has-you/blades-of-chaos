@@ -1,6 +1,8 @@
 package com.storyhasyou.kratos.exceptions;
 
 
+import com.storyhasyou.kratos.enums.IntBaseEnum;
+
 /**
  * @author fangxi created by 2020/6/17
  */
@@ -23,7 +25,7 @@ public class BusinessException extends RuntimeException {
         this.code = code;
     }
 
-    public BusinessException(ErrorCode status) {
+    public BusinessException(IntBaseEnum status) {
         super(status.getMessage());
         this.code = status.getCode();
     }
