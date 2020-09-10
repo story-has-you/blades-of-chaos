@@ -12,6 +12,8 @@ import java.net.URLEncoder;
 
 
 /**
+ * The type Cookie utils.
+ *
  * @author fangxi
  */
 public final class CookieUtils {
@@ -19,9 +21,11 @@ public final class CookieUtils {
     private final static Logger logger = LoggerFactory.getLogger(CookieUtils.class);
 
     /**
-     * @param request
-     * @param cookieName
-     * @return
+     * Gets cookie value.
+     *
+     * @param request    the request
+     * @param cookieName the cookie name
+     * @return cookie value
      * @Description: 得到Cookie的值, 不编码
      */
     public static String getCookieValue(HttpServletRequest request, String cookieName) {
@@ -29,10 +33,12 @@ public final class CookieUtils {
     }
 
     /**
-     * @param request
-     * @param cookieName
-     * @param isDecoder
-     * @return
+     * Gets cookie value.
+     *
+     * @param request    the request
+     * @param cookieName the cookie name
+     * @param isDecoder  the is decoder
+     * @return cookie value
      * @Description: 得到Cookie的值
      */
     public static String getCookieValue(HttpServletRequest request, String cookieName, boolean isDecoder) {
@@ -59,10 +65,12 @@ public final class CookieUtils {
     }
 
     /**
-     * @param request
-     * @param cookieName
-     * @param encodeString
-     * @return
+     * Gets cookie value.
+     *
+     * @param request      the request
+     * @param cookieName   the cookie name
+     * @param encodeString the encode string
+     * @return cookie value
      * @Description: 得到Cookie的值
      */
     public static String getCookieValue(HttpServletRequest request, String cookieName, String encodeString) {
@@ -85,10 +93,12 @@ public final class CookieUtils {
     }
 
     /**
-     * @param request
-     * @param response
-     * @param cookieName
-     * @param cookieValue
+     * Sets cookie.
+     *
+     * @param request     the request
+     * @param response    the response
+     * @param cookieName  the cookie name
+     * @param cookieValue the cookie value
      * @Description: 设置Cookie的值 不设置生效时间默认浏览器关闭即失效,也不编码
      */
     public static void setCookie(HttpServletRequest request, HttpServletResponse response, String cookieName,
@@ -97,11 +107,13 @@ public final class CookieUtils {
     }
 
     /**
-     * @param request
-     * @param response
-     * @param cookieName
-     * @param cookieValue
-     * @param cookieMaxage
+     * Sets cookie.
+     *
+     * @param request      the request
+     * @param response     the response
+     * @param cookieName   the cookie name
+     * @param cookieValue  the cookie value
+     * @param cookieMaxage the cookie maxage
      * @Description: 设置Cookie的值 在指定时间内生效,但不编码
      */
     public static void setCookie(HttpServletRequest request, HttpServletResponse response, String cookieName,
@@ -110,16 +122,14 @@ public final class CookieUtils {
     }
 
     /**
-     * @param request
-     * @param response
-     * @param cookieName
-     * @param cookieValue
-     * @param isEncode
-     * @Description: 设置Cookie的值 不设置生效时间,但编码
-     * 在服务器被创建，返回给客户端，并且保存客户端
-     * 如果设置了SETMAXAGE(int seconds)，会把cookie保存在客户端的硬盘中
-     * 如果没有设置，会默认把cookie保存在浏览器的内存中
-     * 一旦设置setPath()：只能通过设置的路径才能获取到当前的cookie信息
+     * Sets cookie.
+     *
+     * @param request     the request
+     * @param response    the response
+     * @param cookieName  the cookie name
+     * @param cookieValue the cookie value
+     * @param isEncode    the is encode
+     * @Description: 设置Cookie的值 不设置生效时间,但编码 在服务器被创建，返回给客户端，并且保存客户端 如果设置了SETMAXAGE(int seconds)，会把cookie保存在客户端的硬盘中 如果没有设置，会默认把cookie保存在浏览器的内存中 一旦设置setPath()：只能通过设置的路径才能获取到当前的cookie信息
      */
     public static void setCookie(HttpServletRequest request, HttpServletResponse response, String cookieName,
                                  String cookieValue, boolean isEncode) {
@@ -127,12 +137,14 @@ public final class CookieUtils {
     }
 
     /**
-     * @param request
-     * @param response
-     * @param cookieName
-     * @param cookieValue
-     * @param cookieMaxage
-     * @param isEncode
+     * Sets cookie.
+     *
+     * @param request      the request
+     * @param response     the response
+     * @param cookieName   the cookie name
+     * @param cookieValue  the cookie value
+     * @param cookieMaxage the cookie maxage
+     * @param isEncode     the is encode
      * @Description: 设置Cookie的值 在指定时间内生效, 编码参数
      */
     public static void setCookie(HttpServletRequest request, HttpServletResponse response, String cookieName,
@@ -141,12 +153,14 @@ public final class CookieUtils {
     }
 
     /**
-     * @param request
-     * @param response
-     * @param cookieName
-     * @param cookieValue
-     * @param cookieMaxage
-     * @param encodeString
+     * Sets cookie.
+     *
+     * @param request      the request
+     * @param response     the response
+     * @param cookieName   the cookie name
+     * @param cookieValue  the cookie value
+     * @param cookieMaxage the cookie maxage
+     * @param encodeString the encode string
      * @Description: 设置Cookie的值 在指定时间内生效, 编码参数(指定编码)
      */
     public static void setCookie(HttpServletRequest request, HttpServletResponse response, String cookieName,
@@ -155,9 +169,11 @@ public final class CookieUtils {
     }
 
     /**
-     * @param request
-     * @param response
-     * @param cookieName
+     * Delete cookie.
+     *
+     * @param request    the request
+     * @param response   the response
+     * @param cookieName the cookie name
      * @Description: 删除Cookie带cookie域名
      */
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response,
@@ -272,6 +288,12 @@ public final class CookieUtils {
         return domainName;
     }
 
+    /**
+     * Trim spaces string.
+     *
+     * @param IP the ip
+     * @return the string
+     */
     public static String trimSpaces(String IP) {//去掉IP字符串前后所有的空格
         while (IP.startsWith(" ")) {
             IP = IP.substring(1).trim();
@@ -282,6 +304,12 @@ public final class CookieUtils {
         return IP;
     }
 
+    /**
+     * Is ip boolean.
+     *
+     * @param IP the ip
+     * @return the boolean
+     */
     public static boolean isIp(String IP) {//判断是否是一个IP
         boolean b = false;
         IP = trimSpaces(IP);

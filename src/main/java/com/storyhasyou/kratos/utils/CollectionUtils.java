@@ -78,7 +78,7 @@ public class CollectionUtils extends org.springframework.util.CollectionUtils {
      * @param <R>      the type parameter
      * @param source   the source
      * @param function the function
-     * @return list
+     * @return list list
      */
     public static <E, R> List<R> map(Collection<E> source, Function<E, R> function) {
         Assert.notNull(function, "function must not be null");

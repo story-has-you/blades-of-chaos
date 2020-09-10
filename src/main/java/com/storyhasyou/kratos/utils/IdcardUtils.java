@@ -108,7 +108,7 @@ public class IdcardUtils {
      * 将15位身份证号码转换为18位
      *
      * @param idCard 15位身份编码
-     * @return 18位身份编码
+     * @return 18位身份编码 string
      */
     public static String convert15To18(String idCard) {
         StringBuilder idCard18;
@@ -140,7 +140,7 @@ public class IdcardUtils {
      * 是否有效身份证号
      *
      * @param idCard 身份证号，支持18位、15位和港澳台的10位
-     * @return 是否有效
+     * @return 是否有效 boolean
      */
     public static boolean isValidCard(String idCard) {
         idCard = idCard.trim();
@@ -188,7 +188,7 @@ public class IdcardUtils {
      * </ol>
      *
      * @param idCard 待验证的身份证
-     * @return 是否有效的18位身份证
+     * @return 是否有效的18位身份证 boolean
      */
     public static boolean isValidCard18(String idCard) {
         if (CHINA_ID_MAX_LENGTH != idCard.length()) {
@@ -222,7 +222,7 @@ public class IdcardUtils {
      * 验证15位身份编码是否合法
      *
      * @param idCard 身份编码
-     * @return 是否合法
+     * @return 是否合法 boolean
      */
     public static boolean isValidCard15(String idCard) {
         if (CHINA_ID_MIN_LENGTH != idCard.length()) {
@@ -246,10 +246,7 @@ public class IdcardUtils {
      * 验证10位身份编码是否合法
      *
      * @param idCard 身份编码
-     * @return 身份证信息数组
-     * <p>
-     * [0] - 台湾、澳门、香港 [1] - 性别(男M,女F,未知N) [2] - 是否合法(合法true,不合法false) 若不是身份证件号码则返回null
-     * </p>
+     * @return 身份证信息数组  <p> [0] - 台湾、澳门、香港 [1] - 性别(男M,女F,未知N) [2] - 是否合法(合法true,不合法false) 若不是身份证件号码则返回null </p>
      */
     public static String[] isValidCard10(String idCard) {
         if (StringUtils.isBlank(idCard)) {
@@ -290,7 +287,7 @@ public class IdcardUtils {
      * 验证台湾身份证号码
      *
      * @param idCard 身份证号码
-     * @return 验证码是否符合
+     * @return 验证码是否符合 boolean
      */
     public static boolean isValidTWCard(String idCard) {
         if (StringUtils.isEmpty(idCard)) {
@@ -323,7 +320,7 @@ public class IdcardUtils {
      * </p>
      *
      * @param idCard 身份证号码
-     * @return 验证码是否符合
+     * @return 验证码是否符合 boolean
      */
     public static boolean isValidHKCard(String idCard) {
         String card = idCard.replaceAll("[()]", "");
@@ -358,7 +355,7 @@ public class IdcardUtils {
      * 根据身份编号获取生日，只支持15或18位身份证号码
      *
      * @param idCard 身份编号
-     * @return 生日(yyyyMMdd)
+     * @return 生日(yyyyMMdd) birth
      */
     public static String getBirth(String idCard) {
         final int len = idCard.length();
@@ -375,7 +372,7 @@ public class IdcardUtils {
      * 从身份证号码中获取生日日期，只支持15或18位身份证号码
      *
      * @param idCard 身份证号码
-     * @return 日期
+     * @return 日期 birth date
      */
     public static LocalDate getBirthDate(String idCard) {
         final String birthByIdCard = getBirth(idCard);
@@ -386,7 +383,7 @@ public class IdcardUtils {
      * 根据身份编号获取年龄，只支持15或18位身份证号码
      *
      * @param idCard 身份编号
-     * @return 年龄
+     * @return 年龄 age
      */
     public static int getAge(String idCard) {
         return getAge(idCard, LocalDate.now());
@@ -397,7 +394,7 @@ public class IdcardUtils {
      *
      * @param idCard 身份编号
      * @param date   以此日期为界，计算年龄。
-     * @return 年龄
+     * @return 年龄 age
      */
     public static int getAge(String idCard, LocalDate date) {
         String birth = getBirth(idCard);
@@ -408,7 +405,7 @@ public class IdcardUtils {
      * 根据身份编号获取生日年，只支持15或18位身份证号码
      *
      * @param idCard 身份编号
-     * @return 生日(yyyy)
+     * @return 生日(yyyy) year
      */
     public static Short getYear(String idCard) {
         final int len = idCard.length();
@@ -424,7 +421,7 @@ public class IdcardUtils {
      * 根据身份编号获取生日月，只支持15或18位身份证号码
      *
      * @param idCard 身份编号
-     * @return 生日(MM)
+     * @return 生日(MM) month
      */
     public static Short getMonth(String idCard) {
         final int len = idCard.length();
@@ -440,7 +437,7 @@ public class IdcardUtils {
      * 根据身份编号获取生日天，只支持15或18位身份证号码
      *
      * @param idCard 身份编号
-     * @return 生日(dd)
+     * @return 生日(dd) day by id card
      */
     public static Short getDayByIdCard(String idCard) {
         final int len = idCard.length();
@@ -456,7 +453,7 @@ public class IdcardUtils {
      * 根据身份编号获取性别，只支持15或18位身份证号码
      *
      * @param idCard 身份编号
-     * @return 性别(1 : 男 ， 0 : 女)
+     * @return 性别(1 : 男 ， 0 : 女) gender
      */
     public static int getGender(String idCard) {
         final int len = idCard.length();
@@ -475,7 +472,7 @@ public class IdcardUtils {
      * 根据身份编号获取户籍省份，只支持15或18位身份证号码
      *
      * @param idCard 身份编码
-     * @return 省级编码。
+     * @return 省级编码 。
      */
     public static String getProvince(String idCard) {
         int len = idCard.length();

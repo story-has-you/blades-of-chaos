@@ -14,16 +14,26 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
+ * The type Sensitive serialize.
+ *
  * @author fangxi
  */
 public class SensitiveSerialize extends JsonSerializer<Object> implements ContextualSerializer {
 
     private final SensitiveTypeEnum type;
 
+    /**
+     * Instantiates a new Sensitive serialize.
+     *
+     * @param type the type
+     */
     public SensitiveSerialize(final SensitiveTypeEnum type) {
         this.type = type;
     }
 
+    /**
+     * Instantiates a new Sensitive serialize.
+     */
     public SensitiveSerialize() {
         this.type = SensitiveTypeEnum.NAME;
     }

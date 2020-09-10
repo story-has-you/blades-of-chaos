@@ -22,6 +22,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
+ * The type Ok http utils.
+ *
  * @author fangxi
  */
 @Slf4j
@@ -41,14 +43,31 @@ public class OkHttpUtils {
             .build();
 
 
+    /**
+     * Gets ok http client.
+     *
+     * @return the ok http client
+     */
     public static OkHttpClient getOkHttpClient() {
         return OK_HTTP_CLIENT;
     }
 
-    public static String get(String url, Object params) {
+    /**
+     * Get string.
+     *
+     * @param url     the url
+     * @param headers the headers
+     * @param params  the params
+     * @return the string
+     */
+    public static String get(String url, Map<String, String> headers, Object params) {
         Map<String, Object> paramsMap = BeanUtils.describe(params);
         if (CollectionUtils.isEmpty(paramsMap)) {
-            return null;
+            return get(url, headers);
+        }
+        Request.Builder builder = new Request.Builder();
+        if (CollectionUtils.isNotEmpty(headers)) {
+            headers.forEach(builder::header);
         }
         StringBuilder sb = new StringBuilder(url).append("?");
         paramsMap.forEach((key, value) -> {
@@ -57,7 +76,6 @@ public class OkHttpUtils {
             }
         });
         url = sb.substring(0, sb.length() - 1);
-        Request.Builder builder = new Request.Builder();
         Request request = builder.get().url(url).build();
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
@@ -71,18 +89,36 @@ public class OkHttpUtils {
     }
 
     /**
+     * Get string.
+     *
+     * @param url    the url
+     * @param params the params
+     * @return the string
+     */
+    public static String get(String url, Object params) {
+        return get(url, null, params);
+    }
+
+    /**
      * get请求
      * 对于小文档，响应体上的string()方法非常方便和高效。
      * 但是，如果响应主体很大(大于1 MB)，则应避免string()，
      * 因为它会将整个文档加载到内存中。在这种情况下，将主体处理为流。
      *
-     * @param url
-     * @return
+     * @param url the url
+     * @return string string
      */
     public static String get(String url) {
         return get(url, null);
     }
 
+    /**
+     * Get string.
+     *
+     * @param url     the url
+     * @param headers the headers
+     * @return the string
+     */
     public static String get(String url, Map<String, String> headers) {
         Assert.hasLength(url, "url must not be null");
         Request.Builder builder = new Request.Builder();
@@ -103,10 +139,23 @@ public class OkHttpUtils {
         return null;
     }
 
+    /**
+     * Get byte byte [ ].
+     *
+     * @param url the url
+     * @return the byte [ ]
+     */
     public static byte[] getByte(String url) {
         return getByte(url, null);
     }
 
+    /**
+     * Get byte byte [ ].
+     *
+     * @param url     the url
+     * @param headers the headers
+     * @return the byte [ ]
+     */
     public static byte[] getByte(String url, Map<String, String> headers) {
         Assert.hasLength(url, "url must not be null");
         Request.Builder builder = new Request.Builder();
@@ -130,9 +179,9 @@ public class OkHttpUtils {
     /**
      * 同步 POST调用 无Header
      *
-     * @param url
-     * @param body
-     * @return
+     * @param url  the url
+     * @param body the body
+     * @return string string
      */
     public static String post(String url, String body) {
         return post(url, body, null);
@@ -141,10 +190,10 @@ public class OkHttpUtils {
     /**
      * 同步 POST调用 有Header
      *
-     * @param url
-     * @param headers
-     * @param content
-     * @return
+     * @param url     the url
+     * @param content the content
+     * @param headers the headers
+     * @return string string
      */
     public static String post(String url, String content, Map<String, String> headers) {
         Assert.hasLength(url, "url must not be null");
@@ -170,10 +219,10 @@ public class OkHttpUtils {
     /**
      * 提交表单
      *
-     * @param url
-     * @param content
-     * @param headers
-     * @return
+     * @param url     the url
+     * @param content the content
+     * @param headers the headers
+     * @return string string
      */
     public static String form(String url, String content, Map<String, String> headers) {
         Assert.hasLength(url, "url must not be null");
@@ -205,9 +254,9 @@ public class OkHttpUtils {
     /**
      * 提交表单
      *
-     * @param url
-     * @param content
-     * @return
+     * @param url     the url
+     * @param content the content
+     * @return string string
      */
     public static String form(String url, String content) {
         return form(url, content, null);
@@ -217,10 +266,13 @@ public class OkHttpUtils {
      * 异步Http调用参考模板：Get、Post、Put
      * 需要异步调用的接口一般情况下你需要定制一个专门的Http方法
      *
-     * @param httpMethod
-     * @param url
-     * @param content
-     * @return
+     * @param <T>          the type parameter
+     * @param httpMethod   the http method
+     * @param url          the url
+     * @param headers      the headers
+     * @param content      the content
+     * @param respConsumer the resp consumer
+     * @return async result
      */
     public static <T> AsyncResult<T> asyncHttpByJson(HttpMethod httpMethod,
                                                      String url,
@@ -270,9 +322,9 @@ public class OkHttpUtils {
     /**
      * lambda表达式异步调用http模板,不建议使用
      *
-     * @param request
-     * @param failure
-     * @param responseConsumer
+     * @param request          the request
+     * @param failure          the failure
+     * @param responseConsumer the response consumer
      */
     public static void asyncCall(Request request, Consumer<Exception> failure, Consumer<Response> responseConsumer) {
         OK_HTTP_CLIENT.newCall(request).enqueue(new Callback() {

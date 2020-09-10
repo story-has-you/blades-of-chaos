@@ -1,6 +1,8 @@
 package com.storyhasyou.kratos.enums;
 
 /**
+ * The enum Sensitive type enum.
+ *
  * @author fangxi
  */
 public enum SensitiveTypeEnum {

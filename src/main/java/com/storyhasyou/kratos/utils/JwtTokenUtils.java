@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * The type Jwt token utils.
+ *
  * @author fangxi
  */
 @Slf4j
@@ -25,6 +27,9 @@ public class JwtTokenUtils {
 
     /**
      * 根据负责生成JWT的token
+     *
+     * @param claims the claims
+     * @return the string
      */
     public static String generateToken(Map<String, Object> claims) {
         return generateToken(claims, Duration.ofDays(1));
@@ -32,6 +37,10 @@ public class JwtTokenUtils {
 
     /**
      * 根据负责生成JWT的token
+     *
+     * @param claims     the claims
+     * @param expiration the expiration
+     * @return the string
      */
     public static String generateToken(Map<String, Object> claims, Duration expiration) {
         return Jwts.builder()
@@ -65,6 +74,9 @@ public class JwtTokenUtils {
 
     /**
      * 从token中获取登录用户名
+     *
+     * @param token the token
+     * @return the user name from token
      */
     public static String getUserNameFromToken(String token) {
         String username;
@@ -79,6 +91,9 @@ public class JwtTokenUtils {
 
     /**
      * 判断token是否已经失效
+     *
+     * @param token the token
+     * @return the boolean
      */
     public static boolean tokenExpired(String token) {
         Date expiredDate = getExpiredDateFromToken(token);
@@ -95,6 +110,10 @@ public class JwtTokenUtils {
 
     /**
      * 根据用户名生成token
+     *
+     * @param username the username
+     * @param userId   the user id
+     * @return the string
      */
     public static String generateToken(String username, Serializable userId) {
         Map<String, Object> claims = new HashMap<>(3);
@@ -106,6 +125,9 @@ public class JwtTokenUtils {
 
     /**
      * 判断token是否可以被刷新
+     *
+     * @param token the token
+     * @return the boolean
      */
     public static boolean canRefresh(String token) {
         return tokenExpired(token);
@@ -113,6 +135,9 @@ public class JwtTokenUtils {
 
     /**
      * 刷新token
+     *
+     * @param token the token
+     * @return the string
      */
     public static String refreshToken(String token) {
         Claims claims = getClaimsFromToken(token);

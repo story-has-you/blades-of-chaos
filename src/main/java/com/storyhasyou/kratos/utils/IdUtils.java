@@ -10,8 +10,10 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
+ * The type Id utils.
+ *
  * @author fangxi
- * @date 2020/3/5
+ * @date 2020 /3/5
  */
 public class IdUtils {
 
@@ -27,7 +29,7 @@ public class IdUtils {
     /**
      * 获取唯一ID
      *
-     * @return id
+     * @return id id
      */
     public static long getId() {
         return getId(new Object());
@@ -36,7 +38,8 @@ public class IdUtils {
     /**
      * 获取唯一ID
      *
-     * @return id
+     * @param entity the entity
+     * @return id id
      */
     public static long getId(Object entity) {
         return IDENTIFIER_GENERATOR.nextId(entity).longValue();
@@ -45,7 +48,7 @@ public class IdUtils {
     /**
      * 获取唯一ID
      *
-     * @return id
+     * @return id id str
      */
     public static String getIdStr() {
         return getIdStr(new Object());
@@ -54,7 +57,8 @@ public class IdUtils {
     /**
      * 获取唯一ID
      *
-     * @return id
+     * @param entity the entity
+     * @return id id str
      */
     public static String getIdStr(Object entity) {
         return IDENTIFIER_GENERATOR.nextId(entity).toString();
@@ -62,6 +66,8 @@ public class IdUtils {
 
     /**
      * 格式化的毫秒时间
+     *
+     * @return the millisecond
      */
     public static String getMillisecond() {
         return LocalDateTime.now().format(MILLISECOND);
@@ -70,6 +76,8 @@ public class IdUtils {
     /**
      * 时间 ID = Time + ID
      * <p>例如：可用于商品订单 ID</p>
+     *
+     * @return the time id
      */
     public static String getTimeId() {
         return getMillisecond() + getIdStr();
@@ -77,6 +85,8 @@ public class IdUtils {
 
     /**
      * 使用ThreadLocalRandom获取UUID获取更优的效果 去掉"-"
+     *
+     * @return the string
      */
     public static String uuid() {
         ThreadLocalRandom random = ThreadLocalRandom.current();

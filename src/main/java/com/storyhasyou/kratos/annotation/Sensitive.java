@@ -9,6 +9,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
+ * The interface Sensitive.
+ *
  * @author fangxi
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -16,6 +18,11 @@ import java.lang.annotation.RetentionPolicy;
 @JsonSerialize(using = SensitiveSerialize.class)
 public @interface Sensitive {
 
+    /**
+     * Value sensitive type enum.
+     *
+     * @return the sensitive type enum
+     */
     SensitiveTypeEnum value() default SensitiveTypeEnum.PASSWORD;
 
 }

@@ -6,6 +6,8 @@ import org.apache.ibatis.reflection.MetaObject;
 import java.time.LocalDateTime;
 
 /**
+ * The type Default value meta object handler.
+ *
  * @author fangxi created by 2020/6/17
  */
 public class DefaultValueMetaObjectHandler implements MetaObjectHandler {

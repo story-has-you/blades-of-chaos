@@ -11,17 +11,26 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.storyhasyou.kratos.result.Result.error;
 import static com.storyhasyou.kratos.result.Result.ok;
 
 /**
  * 通用请求处理
  *
+ * @param <T> the type parameter
+ * @param <S> the type parameter
  * @author fangxi
  */
 public abstract class BaseController<T extends BaseEntity, S extends BaseService<T>> {
 
+    /**
+     * The Log.
+     */
     protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * The Base service.
+     */
     @Autowired
     protected S baseService;
 
@@ -32,10 +41,10 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @return {@link Result}
      */
     @PostMapping("/create")
-    public Result<Boolean> create(@RequestBody T entity) {
+    public Result<Long> create(@RequestBody T entity) {
         // 业务逻辑
         boolean created = baseService.save(entity);
-        return ok(created);
+        return created ? ok(entity.getId()) : error();
     }
 
     /**
@@ -94,6 +103,7 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * 分页
      *
      * @param pageRequest 分页对象
+     * @param entity      the entity
      * @return {@link Result}
      */
     @GetMapping("/page")

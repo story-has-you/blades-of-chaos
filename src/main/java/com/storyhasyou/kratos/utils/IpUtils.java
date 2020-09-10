@@ -3,6 +3,8 @@ package com.storyhasyou.kratos.utils;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * The type Ip utils.
+ *
  * @author fangxi
  */
 public class IpUtils {
@@ -19,8 +21,8 @@ public class IpUtils {
      * <p>
      * 用户真实IP为： 192.168.1.110
      *
-     * @param request
-     * @return
+     * @param request the request
+     * @return ip
      */
     public static String getIp(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");

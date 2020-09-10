@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 
 import java.lang.invoke.SerializedLambda;
 import java.lang.ref.WeakReference;
@@ -17,6 +16,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
+ * The type Bean utils.
+ *
  * @author fangxi
  */
 @Slf4j
@@ -29,8 +30,12 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
 
 
     /**
+     * Copy properties t.
+     *
+     * @param <T>    the type parameter
      * @param source 需要被拷贝的对象
      * @param target 需要返回的对象类型
+     * @return the t
      */
     public static <T> T copyProperties(Object source, Class<T> target) {
         try {
@@ -65,6 +70,8 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
     }
 
     /**
+     * Copy properties.
+     *
      * @param source 需要被拷贝的对象
      * @param target 目标对象
      */
@@ -77,9 +84,9 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
     /**
      * 通过Lambda的get方法引用拿到私有属性名
      *
-     * @param function lambda表达式
      * @param <T>      字段类型
-     * @return 返回字段名
+     * @param function lambda表达式
+     * @return 返回字段名 string
      */
     public static <T> String convertToFieldName(Function<T, ?> function) {
         Class<?> clazz = function.getClass();
@@ -99,40 +106,59 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
     /**
      * 深拷贝
      *
-     * @param object
-     * @param <T>
-     * @return
+     * @param <T>    the type parameter
+     * @param object the object
+     * @return t t
      */
     public static <T> T deepCopy(T object) {
         String serialize = JsonUtils.serialize(object);
-        return JsonUtils.parse(serialize, new TypeReference<T>() {
-        });
+        return JsonUtils.parse(serialize, new TypeReference<T>() {});
     }
+
+
+    /**
+     * Describe list.
+     *
+     * @param <T>   the type parameter
+     * @param beans the beans
+     * @return the list
+     */
+    public static <T> List<Map<String, Object>> describe(List<T> beans) {
+        if (CollectionUtils.isEmpty(beans)) {
+            return Collections.emptyList();
+        }
+        return beans.stream().map(BeanUtils::describe).collect(Collectors.toList());
+    }
+
 
     /**
      * 将对象转成Map
      *
-     * @param obj 需要转换的对象
-     * @return map
+     * @param obj the obj
+     * @return map map
      */
     public static Map<String, Object> describe(Object obj) {
+        if (obj == null) {
+            return null;
+        }
         try {
-            Assert.notNull(obj, "obj must not be null");
             Class<?> clazz = obj.getClass();
             Field[] fields = clazz.getDeclaredFields();
             Map<String, Object> result = new HashMap<>(fields.length);
             for (Field field : fields) {
                 field.setAccessible(true);
                 Object value = field.get(obj);
-                result.put(field.getName(), value);
+                if (value != null) {
+                    result.put(field.getName(), value);
+                }
             }
             return result;
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-
         return null;
     }
+
 
     private static String remvoeFrefix(String methodName) {
         String prefix = null;

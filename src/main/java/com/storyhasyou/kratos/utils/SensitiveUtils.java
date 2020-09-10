@@ -3,10 +3,16 @@ package com.storyhasyou.kratos.utils;
 import com.storyhasyou.kratos.enums.SensitiveTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * The type Sensitive utils.
+ */
 public class SensitiveUtils {
 
     /**
      * [真实姓名] 显示最后四位，其他隐藏。共计18位或者15位。<例子：*************5762>
+     *
+     * @param realName the real name
+     * @return the string
      */
     public static String realName(final String realName) {
         if (StringUtils.isBlank(realName)) {
@@ -17,6 +23,9 @@ public class SensitiveUtils {
 
     /**
      * [身份证号] 显示最后四位，其他隐藏。共计18位或者15位。<例子：*************5762>
+     *
+     * @param idCard the id card
+     * @return the string
      */
     public static String idCard(final String idCard) {
         if (StringUtils.isBlank(idCard)) {
@@ -27,6 +36,9 @@ public class SensitiveUtils {
 
     /**
      * [手机号] 显示最后四位，其他隐藏。共计18位或者15位。<例子：*************5762>
+     *
+     * @param idCard the id card
+     * @return the string
      */
     public static String mobilePhone(final String idCard) {
         if (StringUtils.isBlank(idCard)) {
@@ -37,6 +49,9 @@ public class SensitiveUtils {
 
     /**
      * [邮箱] 显示最后四位，其他隐藏。共计18位或者15位。<例子：*************5762>
+     *
+     * @param email the email
+     * @return the string
      */
     public static String email(final String email) {
         if (StringUtils.isBlank(email)) {
@@ -48,6 +63,9 @@ public class SensitiveUtils {
 
     /**
      * [账号] 显示最后四位，其他隐藏。共计18位或者15位。<例子：*************5762>
+     *
+     * @param idCard the id card
+     * @return the string
      */
     public static String acctNo(final String idCard) {
         if (StringUtils.isBlank(idCard)) {
@@ -59,6 +77,9 @@ public class SensitiveUtils {
 
     /**
      * [密码] 隐藏。<例子：*************>
+     *
+     * @param password the password
+     * @return the string
      */
     public static String password(final String password) {
         if (StringUtils.isBlank(password)) {
@@ -89,9 +110,9 @@ public class SensitiveUtils {
     /**
      * 提供给外部进行直接脱敏处理
      *
-     * @param type
-     * @param value
-     * @return
+     * @param type  the type
+     * @param value the value
+     * @return string
      */
     public static String sensitveValue(SensitiveTypeEnum type, String value) {
         switch (type) {

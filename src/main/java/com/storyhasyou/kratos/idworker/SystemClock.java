@@ -34,10 +34,20 @@ public class SystemClock {
         return InstanceHolder.INSTANCE;
     }
 
+    /**
+     * Now long.
+     *
+     * @return the long
+     */
     public static long now() {
         return instance().currentTimeMillis();
     }
 
+    /**
+     * Now date string.
+     *
+     * @return the string
+     */
     public static String nowDate() {
         return new Timestamp(instance().currentTimeMillis()).toString();
     }
@@ -56,6 +66,9 @@ public class SystemClock {
     }
 
     private static class InstanceHolder {
+        /**
+         * The constant INSTANCE.
+         */
         public static final SystemClock INSTANCE = new SystemClock(1);
     }
 }

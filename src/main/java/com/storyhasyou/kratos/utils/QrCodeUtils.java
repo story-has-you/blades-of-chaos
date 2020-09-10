@@ -14,13 +14,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * The type Qr code utils.
+ *
  * @author fangxi
- * @date 2020/3/23
+ * @date 2020 /3/23
  * @since 1.0.0
  */
 @Slf4j
 public class QrCodeUtils {
 
+    /**
+     * Generate qr code byte [ ].
+     *
+     * @param content the content
+     * @param width   the width
+     * @param height  the height
+     * @return the byte [ ]
+     */
     public static byte[] generateQrCode(String content, int width, int height) {
         try {
             Map<EncodeHintType, Object> hintMap = new HashMap<>(2);
@@ -38,7 +48,10 @@ public class QrCodeUtils {
 
 
     /**
-     * 生成二维码并写到对应的输出流
+     * 生成二维码并写到对应的输出流,  默认400 x 400
+     *
+     * @param content the content
+     * @return the byte [ ]
      */
     public static byte[] generateQrCode(String content) {
         return generateQrCode(content, 400, 400);

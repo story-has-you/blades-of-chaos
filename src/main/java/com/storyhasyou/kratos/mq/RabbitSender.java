@@ -19,6 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
+ * The type Rabbit sender.
+ *
  * @author fangxi
  */
 @Slf4j
@@ -45,7 +47,10 @@ public class RabbitSender {
     /**
      * 发送消息的方法
      *
-     * @param body 消息主体
+     * @param <T>        the type parameter
+     * @param body       消息主体
+     * @param exchange   the exchange
+     * @param routingKey the routing key
      */
     public <T> void send(T body, String exchange, String routingKey) {
         this.send(body, exchange, routingKey, null);
@@ -53,11 +58,29 @@ public class RabbitSender {
     }
 
 
+    /**
+     * Send.
+     *
+     * @param <T>             the type parameter
+     * @param body            the body
+     * @param exchange        the exchange
+     * @param routingKey      the routing key
+     * @param confirmCallback the confirm callback
+     */
     public <T> void send(T body, String exchange, String routingKey, RabbitTemplate.ConfirmCallback confirmCallback) {
         this.send(body, Maps.newHashMap(), exchange, routingKey, confirmCallback, null);
 
     }
 
+    /**
+     * Send delay.
+     *
+     * @param <T>        the type parameter
+     * @param body       the body
+     * @param exchange   the exchange
+     * @param routingKey the routing key
+     * @param ttl        the ttl
+     */
     public <T> void sendDelay(T body, String exchange, String routingKey, long ttl) {
         this.send(body, Maps.newHashMap(), exchange, routingKey, null, message -> {
             message.getMessageProperties().setHeader("x-delay", ttl);
@@ -67,10 +90,30 @@ public class RabbitSender {
 
     }
 
+    /**
+     * Send delay.
+     *
+     * @param <T>                  the type parameter
+     * @param body                 the body
+     * @param exchange             the exchange
+     * @param routingKey           the routing key
+     * @param messagePostProcessor the message post processor
+     */
     public <T> void sendDelay(T body, String exchange, String routingKey, MessagePostProcessor messagePostProcessor) {
         this.send(body, Maps.newHashMap(), exchange, routingKey, null, messagePostProcessor);
     }
 
+    /**
+     * Send.
+     *
+     * @param <T>                  the type parameter
+     * @param body                 the body
+     * @param properties           the properties
+     * @param exchange             the exchange
+     * @param routingKey           the routing key
+     * @param confirmCallback      the confirm callback
+     * @param messagePostProcessor the message post processor
+     */
     public <T> void send(T body, Map<String, Object> properties, String exchange, String routingKey,
                          RabbitTemplate.ConfirmCallback confirmCallback, MessagePostProcessor messagePostProcessor) {
         if (log.isDebugEnabled()) {

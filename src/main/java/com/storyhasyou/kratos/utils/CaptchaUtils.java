@@ -7,13 +7,17 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
+ * The type Captcha utils.
+ *
  * @author fangxi created by 2020/8/5
  */
 public class CaptchaUtils {
 
     private static final char[] DIST = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+            'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+            'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
     };
 
 
@@ -24,7 +28,7 @@ public class CaptchaUtils {
     /**
      * 生成4位验证码，默认120x35
      *
-     * @return
+     * @return capatcha capatcha
      */
     public static Capatcha generateCapatcha() {
         return generateCapatcha(120, 35, 4, 10);
@@ -38,6 +42,7 @@ public class CaptchaUtils {
      * @param height 高度
      * @param length 验证码字符的长度
      * @param line   干扰线行数
+     * @return the capatcha
      */
     public static Capatcha generateCapatcha(int width, int height, int length, int line) {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -84,8 +89,8 @@ public class CaptchaUtils {
     /**
      * 随机生成制定长度的验证码字符
      *
-     * @param length
-     * @return
+     * @param length the length
+     * @return string string
      */
     public static String randomCode(int length) {
         StringBuilder builder = new StringBuilder();

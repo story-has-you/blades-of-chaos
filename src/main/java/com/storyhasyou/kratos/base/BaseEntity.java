@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
+ * The type Base entity.
+ *
  * @author fangxi
  */
 @Data

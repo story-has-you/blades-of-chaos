@@ -15,12 +15,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.stream.Collectors;
 
 /**
+ * The type Business exception handler.
+ *
  * @author fangxi created by 2020/6/17
  */
 @Slf4j
 @RestControllerAdvice
 public class BusinessExceptionHandler {
 
+    /**
+     * Handler exception result.
+     *
+     * @param ex the ex
+     * @return the result
+     */
     @ExceptionHandler(Exception.class)
     public Result<?> handlerException(Exception ex) {
         Result<?> result = new Result<>();
@@ -28,7 +36,7 @@ public class BusinessExceptionHandler {
         if (ex instanceof BusinessException) {
             result.setStatus(((BusinessException) ex).getCode());
             result.setMessage(ex.getMessage());
-            log.warn("[全局业务异常]\r\n业务编码：{}\r\n异常记录：{}", result.getStatus(), result.getMessage());
+            log.warn("[全局业务异常]业务编码：{}, 异常记录：{}", result.getStatus(), result.getMessage());
         } else if (ex instanceof MethodArgumentNotValidException) {
             MethodArgumentNotValidException methodArgumentNotValidException = (MethodArgumentNotValidException) ex;
             BindingResult bindingResult = methodArgumentNotValidException.getBindingResult();

@@ -42,6 +42,9 @@ public class Sequence {
      */
     private long lastTimestamp = -1L;
 
+    /**
+     * Instantiates a new Sequence.
+     */
     public Sequence() {
         this.datacenterId = getDatacenterId();
         this.workerId = getMaxWorkerId(datacenterId);
@@ -60,6 +63,9 @@ public class Sequence {
 
     /**
      * 获取 maxWorkerId
+     *
+     * @param datacenterId the datacenter id
+     * @return the max worker id
      */
     protected static long getMaxWorkerId(long datacenterId) {
         StringBuilder mpid = new StringBuilder();
@@ -79,6 +85,8 @@ public class Sequence {
 
     /**
      * 数据标识id部分
+     *
+     * @return the datacenter id
      */
     protected static long getDatacenterId() {
         long id = 0L;
@@ -160,6 +168,12 @@ public class Sequence {
                 | sequence;
     }
 
+    /**
+     * Til next millis long.
+     *
+     * @param lastTimestamp the last timestamp
+     * @return the long
+     */
     protected long tilNextMillis(long lastTimestamp) {
         long timestamp = timeGen();
         while (timestamp <= lastTimestamp) {
@@ -168,6 +182,11 @@ public class Sequence {
         return timestamp;
     }
 
+    /**
+     * Time gen long.
+     *
+     * @return the long
+     */
     protected long timeGen() {
         return SystemClock.now();
     }

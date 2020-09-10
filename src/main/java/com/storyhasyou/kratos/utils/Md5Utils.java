@@ -8,13 +8,18 @@ import java.security.MessageDigest;
 import java.util.Base64;
 
 /**
+ * The type Md 5 utils.
+ *
  * @author fangxi
  */
 public class Md5Utils {
     private static final Logger log = LoggerFactory.getLogger(Md5Utils.class);
 
     /**
+     * Md 5 string.
      *
+     * @param str the str
+     * @return the string
      */
     public static String md5(String str) {
         //确定计算方法

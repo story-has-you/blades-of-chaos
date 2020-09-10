@@ -1,10 +1,12 @@
 package com.storyhasyou.kratos.utils;
 
+import cn.hutool.core.lang.Console;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,6 +29,15 @@ public class BeanUtilsTest {
     @Test
     public void test() {
         System.out.println(TimeUnit.DAYS.toMillis(1));
+    }
+
+    @Test
+    public void describe() {
+        User user = new User();
+        user.setUsername("fangxi");
+        user.setAge(25);
+        Map<String, Object> describe = BeanUtils.describe(user);
+        Console.log(describe);
     }
 
     @Data

@@ -6,6 +6,8 @@ import lombok.Data;
 import java.awt.image.BufferedImage;
 
 /**
+ * The type Capatcha.
+ *
  * @author fangxi
  */
 @Data

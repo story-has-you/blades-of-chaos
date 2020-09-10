@@ -7,6 +7,8 @@ import javax.validation.Payload;
 import java.lang.annotation.*;
 
 /**
+ * The interface Mobile.
+ *
  * @author fangxi created by 2020/7/30
  */
 @Documented
@@ -17,9 +19,24 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Mobile {
 
+    /**
+     * Message string.
+     *
+     * @return the string
+     */
     String message() default "{Mobile.message}";
 
+    /**
+     * Groups class [ ].
+     *
+     * @return the class [ ]
+     */
     Class<?>[] groups() default {};
 
+    /**
+     * Payload class [ ].
+     *
+     * @return the class [ ]
+     */
     Class<? extends Payload>[] payload() default {};
 }

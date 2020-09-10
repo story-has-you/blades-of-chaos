@@ -1,5 +1,6 @@
 package com.storyhasyou.kratos.utils;
 
+import cn.hutool.core.lang.Console;
 import org.junit.jupiter.api.Test;
 
 /**
