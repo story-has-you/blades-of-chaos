@@ -29,6 +29,13 @@ public class CollectionUtilsTest {
 
     }
 
+    @Test
+    public void find() {
+        List<Person> people = Lists.newArrayList(new Person(11, "a"), new Person(12, "b"), new Person(13, "c1"));
+        Person one = CollectionUtils.find(people, person -> person.getAge() == 111);
+        Console.log(one);
+    }
+
 
     @Data
     @AllArgsConstructor

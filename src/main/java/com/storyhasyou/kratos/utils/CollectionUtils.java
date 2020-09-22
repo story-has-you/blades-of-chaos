@@ -7,6 +7,7 @@ import org.springframework.util.Assert;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -119,5 +120,21 @@ public class CollectionUtils extends org.springframework.util.CollectionUtils {
         return result;
     }
 
+
+    /**
+     * 根据条件查找list的某一个元素
+     *
+     * @param <T>       the type parameter
+     * @param source    the source
+     * @param predicate the predicate
+     * @return the t
+     */
+    public static <T> T find(Collection<T> source, Predicate<T> predicate) {
+        if (isEmpty(source)) {
+            return null;
+        }
+        return source.stream().filter(predicate).findFirst().orElse(null);
+
+    }
 
 }

@@ -11,7 +11,7 @@ public class EnumUtilsTest {
 
     @Test
     public void getMessage() throws Exception {
-        String message = EnumUtils.getMessage(ResultCode.class, 200);
+        String message = EnumUtils.getMessage(ResultCode.class, 403);
         Console.log(message);
     }
 }
