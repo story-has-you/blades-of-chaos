@@ -2,8 +2,7 @@ package com.storyhasyou.kratos.utils;
 
 import cn.hutool.core.util.EnumUtil;
 import com.storyhasyou.kratos.enums.BaseEnum;
-
-import java.lang.reflect.Field;
+import org.apache.commons.lang3.ObjectUtils;
 
 /**
  * The type Enum utils.
@@ -23,17 +22,18 @@ public class EnumUtils extends EnumUtil {
      * @param code      the code
      * @return message
      */
-    public static String getMessage(Class<? extends BaseEnum<Integer>> enumClass, int code) {
-        Field[] fields = enumClass.getFields();
-        try {
-            for (Field field : fields) {
-                BaseEnum<?> baseEnum = (BaseEnum<?>) field.get(null);
-                if (baseEnum.getCode().equals(code)) {
-                    return baseEnum.getMessage();
-                }
+    public static <T> String getMessage(Class<? extends BaseEnum<T>> enumClass, T code) {
+        if (ObjectUtils.isEmpty(enumClass) || ObjectUtils.isEmpty(code)) {
+            return null;
+        }
+        if (!enumClass.isEnum()) {
+            throw new IllegalArgumentException("请传入枚举实体类class");
+        }
+
+        for (BaseEnum<T> baseEnum : enumClass.getEnumConstants()) {
+            if (baseEnum.getCode().equals(code)) {
+                return baseEnum.getMessage();
             }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
         }
         return null;
     }
