@@ -490,7 +490,7 @@ public class CollectionUtils {
                                           Function<E, ?> operator1, Function<T, ?> operator2,
                                           BiFunction<E, T, R> function) {
 
-        if (isEmpty(source1) || isEmpty(source2) || ObjectUtils.anyNotNull(operator1, operator2) || function == null) {
+        if (isEmpty(source1) || isEmpty(source2) || operator1 == null || operator2 == null || function == null) {
             return Collections.emptyList();
         }
 
