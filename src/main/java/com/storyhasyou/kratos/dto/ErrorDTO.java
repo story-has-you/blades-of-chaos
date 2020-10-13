@@ -1,11 +1,10 @@
-package com.storyhasyou.kratos.pojo;
+package com.storyhasyou.kratos.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import org.springframework.http.HttpStatus;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import lombok.Data;
+import org.springframework.http.HttpStatus;
 
 /**
  * The type Error dto.

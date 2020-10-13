@@ -1,7 +1,7 @@
 package com.storyhasyou.kratos.base;
 
-import com.storyhasyou.kratos.pojo.PageRequest;
-import com.storyhasyou.kratos.pojo.PageResponse;
+import com.storyhasyou.kratos.dto.PageRequest;
+import com.storyhasyou.kratos.dto.PageResponse;
 import com.storyhasyou.kratos.result.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

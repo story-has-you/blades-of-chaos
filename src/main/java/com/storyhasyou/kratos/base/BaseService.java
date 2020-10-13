@@ -5,16 +5,15 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.storyhasyou.kratos.dto.PageResponse;
 import com.storyhasyou.kratos.exceptions.NotFountException;
-import com.storyhasyou.kratos.pojo.PageResponse;
-import org.springframework.util.Assert;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.springframework.util.Assert;
 
 /**
  * The interface Base service.
@@ -33,6 +32,7 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
     default T get(Long id) {
         return getOpt(id).orElseThrow(() -> new NotFountException(StrUtil.format("找不到id={}的对象", id)));
     }
+
     /**
      * 获取
      *
@@ -52,8 +52,18 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * @return 管理员分页数据 page response
      */
     default PageResponse<?> page(int current, int limit, T entity) {
-        Page<?> page = page(new Page<>(current, limit), Wrappers.query(entity));
-        return PageResponse.of(page.getRecords(), page.getTotal(), page.getPages(), page.getSize());
+        Page<?> page = page(new Page<>(current, limit), entity == null ? Wrappers.emptyWrapper() : Wrappers.query(entity));
+        return PageResponse.of(page.getRecords(), page.getTotal(), page.getPages(), page.getSize(), page.hasNext());
+    }
+
+    /**
+     * 分页
+     *
+     * @param current {@code int} 页码
+     * @param limit   {@code int} 笔数
+     */
+    default PageResponse<?> page(int current, int limit) {
+        return page(current, limit, null);
     }
 
 

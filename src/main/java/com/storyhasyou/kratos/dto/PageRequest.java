@@ -1,4 +1,4 @@
-package com.storyhasyou.kratos.pojo;
+package com.storyhasyou.kratos.dto;
 
 import lombok.Data;
 
