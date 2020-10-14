@@ -1,10 +1,12 @@
 package com.storyhasyou.kratos.utils;
 
+import com.beust.jcommander.internal.Lists;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,7 +19,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
@@ -523,30 +524,51 @@ public class CollectionUtils {
     }
 
     /**
-     * Iterator wrapping an Enumeration.
+     * 映射键值（参考Python的zip()函数）<br>
+     * 例如：<br>
+     * keys =    [a,b,c,d]<br>
+     * values = [1,2,3,4]<br>
+     * 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
+     * 如果两个数组长度不同，则只对应最短部分
+     *
+     * @param <T>    the type parameter
+     * @param <K>    the type parameter
+     * @param keys   键列表
+     * @param values 值列表
+     * @return Map map
      */
-    private static class EnumerationIterator<E> implements Iterator<E> {
-
-        private final Enumeration<E> enumeration;
-
-        public EnumerationIterator(Enumeration<E> enumeration) {
-            this.enumeration = enumeration;
+    public static <T, K> Map<T, K> zip(Collection<T> keys, Collection<K> values) {
+        if (isEmpty(keys) || isEmpty(values)) {
+            return null;
         }
 
-        @Override
-        public boolean hasNext() {
-            return this.enumeration.hasMoreElements();
-        }
+        final List<T> keyList = new ArrayList<>(keys);
+        final List<K> valueList = new ArrayList<>(values);
 
-        @Override
-        public E next() {
-            return this.enumeration.nextElement();
+        final int size = Math.min(keys.size(), values.size());
+        final Map<T, K> map = new HashMap<>((int) (size / 0.75));
+        for (int i = 0; i < size; i++) {
+            map.put(keyList.get(i), valueList.get(i));
         }
+        return map;
+    }
 
-        @Override
-        public void remove() throws UnsupportedOperationException {
-            throw new UnsupportedOperationException("Not supported");
-        }
+    /**
+     * 映射键值（参考Python的zip()函数）<br>
+     * 例如：<br>
+     * keys =    [a,b,c,d]<br>
+     * values = [1,2,3,4]<br>
+     * 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
+     * 如果两个数组长度不同，则只对应最短部分
+     *
+     * @param <T>    the type parameter
+     * @param <K>    the type parameter
+     * @param keys   键列表
+     * @param values 值列表
+     * @return Map map
+     */
+    public static <T, K> Map<T, K> zip(T[] keys, K[] values) {
+        return zip(Lists.newArrayList(keys), Lists.newArrayList(values));
     }
 
 }

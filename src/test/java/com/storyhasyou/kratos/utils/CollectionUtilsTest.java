@@ -2,6 +2,7 @@ package com.storyhasyou.kratos.utils;
 
 import cn.hutool.core.lang.Console;
 import com.google.common.collect.Lists;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,12 @@ public class CollectionUtilsTest {
         List<Person> people = Lists.newArrayList(new Person(11, "a"), new Person(12, "b"), new Person(13, "c1"));
         Person one = CollectionUtils.find(people, person -> person.getAge() == 111);
         Console.log(one);
+    }
+
+    @Test
+    public void zip() {
+        Map<Integer, String> zip = CollectionUtils.zip(Lists.newArrayList(1, 2, 3), Lists.newArrayList("a", "b", "c"));
+        System.out.println(zip);
     }
 
 
