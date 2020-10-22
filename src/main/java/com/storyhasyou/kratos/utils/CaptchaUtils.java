@@ -1,6 +1,6 @@
 package com.storyhasyou.kratos.utils;
 
-import com.storyhasyou.kratos.toolkit.Capatcha;
+import com.storyhasyou.kratos.toolkit.Captcha;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -30,7 +30,7 @@ public class CaptchaUtils {
      *
      * @return capatcha capatcha
      */
-    public static Capatcha generateCapatcha() {
+    public static Captcha generateCapatcha() {
         return generateCapatcha(120, 35, 4, 10);
     }
 
@@ -44,7 +44,7 @@ public class CaptchaUtils {
      * @param line   干扰线行数
      * @return the capatcha
      */
-    public static Capatcha generateCapatcha(int width, int height, int length, int line) {
+    public static Captcha generateCapatcha(int width, int height, int length, int line) {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = bufferedImage.getGraphics();
         // 背景色
@@ -83,7 +83,7 @@ public class CaptchaUtils {
             graphics.drawString(code, x, y);
             sb.append(code);
         }
-        return new Capatcha(sb.toString(), bufferedImage);
+        return new Captcha(sb.toString(), bufferedImage);
     }
 
     /**

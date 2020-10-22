@@ -40,7 +40,7 @@ public class RabbitSender {
     /**
      * key: topic
      */
-    private Map<String, RabbitTemplate> rabbitTemplateMap = new ConcurrentHashMap<>(1 << 7);
+    private final Map<String, RabbitTemplate> rabbitTemplateMap = new ConcurrentHashMap<>(1 << 7);
     @Autowired
     private ConnectionFactory connectionFactory;
 

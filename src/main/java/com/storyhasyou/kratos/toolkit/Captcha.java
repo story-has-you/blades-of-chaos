@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
  */
 @Data
 @AllArgsConstructor
-public class Capatcha {
+public class Captcha {
 
     private String code;
     private BufferedImage image;
