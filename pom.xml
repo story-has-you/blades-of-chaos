@@ -5,7 +5,7 @@
 
     <groupId>com.storyhasyou.kratos</groupId>
     <artifactId>blades-of-chaos</artifactId>
-    <version>1.8.3.RELEASE</version>
+    <version>1.8.4.RELEASE</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -43,6 +43,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

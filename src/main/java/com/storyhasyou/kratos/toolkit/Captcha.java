@@ -1,13 +1,10 @@
 package com.storyhasyou.kratos.toolkit;
 
+import java.awt.image.BufferedImage;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.awt.image.BufferedImage;
-
 /**
- * The type Capatcha.
- *
  * @author fangxi
  */
 @Data

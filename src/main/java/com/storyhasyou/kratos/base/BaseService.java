@@ -1,6 +1,7 @@
 package com.storyhasyou.kratos.base;
 
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -52,7 +53,8 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * @return 管理员分页数据 page response
      */
     default PageResponse<?> page(int current, int limit, T entity) {
-        Page<?> page = page(new Page<>(current, limit), entity == null ? Wrappers.emptyWrapper() : Wrappers.query(entity));
+        QueryWrapper<T> queryWrapper = entity == null ? Wrappers.emptyWrapper() : Wrappers.query(entity);
+        Page<?> page = page(new Page<>(current, limit), queryWrapper);
         return PageResponse.of(page.getRecords(), page.getTotal(), page.getPages(), page.getSize(), page.hasNext());
     }
 
@@ -61,6 +63,7 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      *
      * @param current {@code int} 页码
      * @param limit   {@code int} 笔数
+     * @return the page response
      */
     default PageResponse<?> page(int current, int limit) {
         return page(current, limit, null);
@@ -71,7 +74,7 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * 根据ids返回map
      *
      * @param ids the ids
-     * @return map
+     * @return map map
      */
     default Map<Long, T> mapByIds(List<Long> ids) {
         Assert.notEmpty(ids, "ids must not null or empty");

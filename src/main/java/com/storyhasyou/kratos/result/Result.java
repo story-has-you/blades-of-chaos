@@ -3,9 +3,8 @@ package com.storyhasyou.kratos.result;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.storyhasyou.kratos.enums.IntBaseEnum;
 import com.storyhasyou.kratos.exceptions.BusinessException;
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 /**
  * The type Result.
@@ -83,6 +82,19 @@ public class Result<T> implements Serializable {
      */
     public static <T> Result<T> error(IntBaseEnum errorCode) {
         return error(errorCode, null);
+    }
+
+
+    /**
+     * 失败返回结果
+     *
+     * @param <T>       the type parameter
+     * @param errorCode 错误码
+     * @param message   错误信息
+     * @return the result
+     */
+    public static <T> Result<T> error(int errorCode, String message) {
+        return new Result<>(errorCode, message, null, false);
     }
 
     /**

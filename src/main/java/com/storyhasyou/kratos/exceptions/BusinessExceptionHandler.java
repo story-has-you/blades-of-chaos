@@ -1,7 +1,7 @@
 package com.storyhasyou.kratos.exceptions;
 
 import com.storyhasyou.kratos.result.Result;
-import com.storyhasyou.kratos.result.ResultCode;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -12,8 +12,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.stream.Collectors;
-
 /**
  * The type Business exception handler.
  *
@@ -23,6 +21,54 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class BusinessExceptionHandler {
 
+
+    /**
+     * Business exception result.
+     *
+     * @param ex the ex
+     * @return the result
+     */
+    @ExceptionHandler(BusinessException.class)
+    public Result<?> businessException(BusinessException ex) {
+        return Result.error(ex.getCode(), ex.getMessage());
+    }
+
+    /**
+     * Method argument not valid exception result.
+     *
+     * @param ex the ex
+     * @return the result
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Result<?> methodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        BindingResult bindingResult = ex.getBindingResult();
+        String msg = bindingResult
+                .getFieldErrors()
+                .stream()
+                .map(FieldError::getDefaultMessage)
+                .distinct()
+                .collect(Collectors.joining(","));
+        return Result.error(HttpStatus.BAD_REQUEST.value(), msg);
+    }
+
+    /**
+     * Bind exception result.
+     *
+     * @param ex the ex
+     * @return the result
+     */
+    @ExceptionHandler(BindException.class)
+    public Result<?> bindException(BindException ex) {
+        String msg = ex.getBindingResult()
+                .getAllErrors()
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .distinct()
+                .collect(Collectors.joining(","));
+        return Result.error(HttpStatus.BAD_REQUEST.value(), msg);
+    }
+
+
     /**
      * Handler exception result.
      *
@@ -31,42 +77,8 @@ public class BusinessExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public Result<?> handlerException(Exception ex) {
-        Result<?> result = new Result<>();
-        // 业务异常
-        if (ex instanceof BusinessException) {
-            result.setStatus(((BusinessException) ex).getCode());
-            result.setMessage(ex.getMessage());
-            log.warn("[全局业务异常]业务编码：{}, 异常记录：{}", result.getStatus(), result.getMessage());
-        } else if (ex instanceof MethodArgumentNotValidException) {
-            MethodArgumentNotValidException methodArgumentNotValidException = (MethodArgumentNotValidException) ex;
-            BindingResult bindingResult = methodArgumentNotValidException.getBindingResult();
-            String msg = bindingResult
-                    .getFieldErrors()
-                    .stream()
-                    .map(FieldError::getDefaultMessage)
-                    .distinct()
-                    .collect(Collectors.joining(","));
-            result.setStatus(HttpStatus.BAD_REQUEST.value());
-            result.setMessage(msg);
-        } else if (ex instanceof BindException) {
-            BindException bindException = (BindException) ex;
-            String msg = bindException.getBindingResult()
-                    .getAllErrors()
-                    .stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .distinct()
-                    .collect(Collectors.joining(","));
-            result.setStatus(HttpStatus.BAD_REQUEST.value());
-            result.setMessage(msg);
-        }
-        // 未知错误
-        else {
-            result.setStatus(ResultCode.FAILED.getCode());
-            result.setMessage(ex.getMessage());
-            log.error("", ex);
-        }
-
-        return result;
+        log.error("", ex);
+        return Result.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
     }
 
 }

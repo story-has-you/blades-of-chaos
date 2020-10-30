@@ -1,19 +1,23 @@
 package com.storyhasyou.kratos.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.util.Assert;
-
 import java.lang.invoke.SerializedLambda;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.util.Assert;
 
 /**
  * The type Bean utils.
@@ -93,12 +97,12 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         return Optional.ofNullable(FUNC_CACHE.get(clazz))
                 .map(WeakReference::get)
                 .map(SerializedLambda::getImplMethodName)
-                .map(BeanUtils::remvoeFrefix)
+                .map(BeanUtils::removeFreFix)
                 .orElseGet(() -> {
                     SerializedLambda lambda = resolve(function);
                     String methodName = lambda.getImplMethodName();
                     FUNC_CACHE.put(clazz, new WeakReference<>(lambda));
-                    return remvoeFrefix(methodName);
+                    return removeFreFix(methodName);
                 });
 
     }
@@ -111,6 +115,9 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
      * @return t t
      */
     public static <T> T deepCopy(T object) {
+        if (object == null) {
+            return null;
+        }
         String serialize = JsonUtils.serialize(object);
         return JsonUtils.parse(serialize, new TypeReference<T>() {});
     }
@@ -160,7 +167,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
     }
 
 
-    private static String remvoeFrefix(String methodName) {
+    private static String removeFreFix(String methodName) {
         String prefix = null;
         if (methodName.startsWith("get")) {
             prefix = "get";

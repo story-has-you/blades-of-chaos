@@ -22,7 +22,7 @@ public class NotFountException extends BusinessException {
      * @param message the message
      */
     public NotFountException(String message) {
-        super(404, message);
+        super(ResultCode.NOT_FOUNT.getCode(), message);
     }
 
 }

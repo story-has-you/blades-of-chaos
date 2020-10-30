@@ -1,6 +1,7 @@
 package com.storyhasyou.kratos.result;
 
 import com.storyhasyou.kratos.enums.IntBaseEnum;
+import org.springframework.http.HttpStatus;
 
 /**
  * 枚举了一些常用API操作码
@@ -11,27 +12,27 @@ public enum ResultCode implements IntBaseEnum {
     /**
      * Success result code.
      */
-    SUCCESS(200, "操作成功"),
+    SUCCESS(HttpStatus.OK.value(), "操作成功"),
     /**
      * Failed result code.
      */
-    FAILED(500, "操作失败"),
+    FAILED(HttpStatus.INTERNAL_SERVER_ERROR.value(), "操作失败"),
     /**
      * Not fount result code.
      */
-    NOT_FOUNT(404, "找不到数据"),
+    NOT_FOUNT(HttpStatus.NOT_FOUND.value(), "找不到数据"),
     /**
      * Validate failed result code.
      */
-    VALIDATE_FAILED(400, "参数检验失败"),
+    VALIDATE_FAILED(HttpStatus.BAD_REQUEST.value(), "参数检验失败"),
     /**
      * Unauthorized result code.
      */
-    UNAUTHORIZED(401, "暂未登录或token已经过期"),
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED.value(), "暂未登录或token已经过期"),
     /**
      * Forbidden result code.
      */
-    FORBIDDEN(403, "没有相关权限");
+    FORBIDDEN(HttpStatus.FORBIDDEN.value(), "没有相关权限");
 
     private final int code;
     private final String message;
@@ -44,12 +45,12 @@ public enum ResultCode implements IntBaseEnum {
 
     @Override
     public Integer getCode() {
-        return code;
+        return this.code;
     }
 
     @Override
     public String getMessage() {
-        return message;
+        return this.message;
     }
 
 }

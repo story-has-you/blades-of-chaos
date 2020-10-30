@@ -2,6 +2,8 @@ package com.storyhasyou.kratos.mq;
 
 import com.google.common.collect.Maps;
 import com.storyhasyou.kratos.utils.IdUtils;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -13,9 +15,6 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.Assert;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -133,7 +132,8 @@ public class RabbitSender {
 
     }
 
-    private RabbitTemplate getRabbitTemplate(String topic, String routingKey, RabbitTemplate.ConfirmCallback confirmCallback) {
+    private RabbitTemplate getRabbitTemplate(String topic, String routingKey,
+                                             RabbitTemplate.ConfirmCallback confirmCallback) {
         Assert.notNull(topic, "topic must not be null");
         RabbitTemplate rabbitTemplate = rabbitTemplateMap.get(topic);
         if (rabbitTemplate != null) {
