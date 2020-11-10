@@ -1,9 +1,9 @@
 package com.storyhasyou.kratos.repository;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import org.apache.ibatis.reflection.MetaObject;
-
+import com.storyhasyou.kratos.enums.YesNoEnum;
 import java.time.LocalDateTime;
+import org.apache.ibatis.reflection.MetaObject;
 
 /**
  * The type Default value meta object handler.
@@ -42,7 +42,7 @@ public class DefaultValueMetaObjectHandler implements MetaObjectHandler {
             strictInsertFill(metaObject, UPDATE_TIME, LocalDateTime.class, now);
         }
         if (hasDeleted) {
-            strictInsertFill(metaObject, DELETED, Integer.class, 0);
+            strictInsertFill(metaObject, DELETED, Integer.class, YesNoEnum.NO.getCode());
         }
     }
 

@@ -77,12 +77,12 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * @param ids the ids
      * @return map map
      */
-    default Map<Long, T> mapByIds(List<Long> ids) {
+    default Map<Long, Optional<T>> mapByIds(List<Long> ids) {
         Assert.notEmpty(ids, "ids must not null or empty");
         List<T> entities = listByIds(ids);
         if (CollectionUtils.isEmpty(entities)) {
             return Collections.emptyMap();
         }
-        return entities.stream().collect(Collectors.toMap(T::getId, Function.identity()));
+        return entities.stream().collect(Collectors.toMap(T::getId, Optional::of));
     }
 }

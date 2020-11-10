@@ -15,8 +15,8 @@ import java.io.Serializable;
 @Data
 public class PageRequest implements Serializable {
 
-    private static final int DEFAULT_CURRENT = 1;
-    private static final int DEFAULT_LIMIT = 10;
+    protected static final int DEFAULT_CURRENT = 1;
+    protected static final int DEFAULT_LIMIT = 10;
 
     @NotNull(message = "请传入当前页数")
     @Min(value = 1L, message = "current必须大于1")

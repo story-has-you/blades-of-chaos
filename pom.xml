@@ -5,7 +5,7 @@
 
     <groupId>com.storyhasyou.kratos</groupId>
     <artifactId>blades-of-chaos</artifactId>
-    <version>1.8.9.RELEASE</version>
+    <version>1.9.0.RELEASE</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -19,7 +19,7 @@
         <guava.version>29.0-jre</guava.version>
         <mybatis-plus.version>3.4.0</mybatis-plus.version>
         <jjwt.version>0.9.1</jjwt.version>
-        <hutool.version>5.4.4</hutool.version>
+        <hutool.version>5.4.7</hutool.version>
         <cglib.version>3.3.0</cglib.version>
     </properties>
 
