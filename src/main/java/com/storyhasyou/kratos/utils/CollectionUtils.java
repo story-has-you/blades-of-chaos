@@ -1,26 +1,14 @@
 package com.storyhasyou.kratos.utils;
 
 import com.beust.jcommander.internal.Lists;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Properties;
-import java.util.Set;
-import java.util.SortedSet;
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 
 /**
  * The type Collection utils.
@@ -515,11 +503,11 @@ public class CollectionUtils {
      * @param predicate the predicate
      * @return the t
      */
-    public static <T> T find(Collection<T> source, Predicate<T> predicate) {
+    public static <T> Optional<T> find(Collection<T> source, Predicate<T> predicate) {
         if (isEmpty(source)) {
-            return null;
+            return Optional.empty();
         }
-        return source.stream().filter(predicate).findFirst().orElse(null);
+        return source.stream().filter(predicate).findFirst();
 
     }
 

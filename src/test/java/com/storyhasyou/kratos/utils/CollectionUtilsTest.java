@@ -2,12 +2,12 @@ package com.storyhasyou.kratos.utils;
 
 import cn.hutool.core.lang.Console;
 import com.google.common.collect.Lists;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author fangxi created by 2020/8/31
@@ -33,8 +33,7 @@ public class CollectionUtilsTest {
     @Test
     public void find() {
         List<Person> people = Lists.newArrayList(new Person(11, "a"), new Person(12, "b"), new Person(13, "c1"));
-        Person one = CollectionUtils.find(people, person -> person.getAge() == 111);
-        Console.log(one);
+        CollectionUtils.find(people, person -> person.getAge() == 111).ifPresent(System.out::println);
     }
 
     @Test
