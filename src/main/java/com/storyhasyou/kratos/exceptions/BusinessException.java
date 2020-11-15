@@ -2,6 +2,7 @@ package com.storyhasyou.kratos.exceptions;
 
 
 import com.storyhasyou.kratos.enums.IntBaseEnum;
+import com.storyhasyou.kratos.result.ResultCode;
 
 /**
  * The type Business exception.
@@ -27,7 +28,7 @@ public class BusinessException extends RuntimeException {
      */
     public BusinessException(String message) {
         super(message);
-        this.code = 500;
+        this.code = ResultCode.FAILED.getCode();
     }
 
     /**

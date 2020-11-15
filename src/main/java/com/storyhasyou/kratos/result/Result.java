@@ -3,8 +3,9 @@ package com.storyhasyou.kratos.result;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.storyhasyou.kratos.enums.IntBaseEnum;
 import com.storyhasyou.kratos.exceptions.BusinessException;
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * The type Result.
@@ -165,7 +166,7 @@ public class Result<T> implements Serializable {
      *
      * @return the t
      */
-    public T serviceData() {
+    public T data() {
         if (isError()) {
             throw new BusinessException(message);
         }
