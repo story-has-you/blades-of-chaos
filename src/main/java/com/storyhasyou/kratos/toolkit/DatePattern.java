@@ -36,6 +36,15 @@ public class DatePattern {
     public static final DateTimeFormatter NORM_DATE_FORMAT = DateTimeFormatter.ofPattern(NORM_DATE_PATTERN);
 
     /**
+     * 标准日期格式：yyyy/MM/dd
+     */
+    public static final String NORM_SLASH_DATE_PATTERN = "yyyy/MM/dd";
+    /**
+     * 标准日期格式 {@link DateTimeFormatter}：yyyy/MM/dd
+     */
+    public static final DateTimeFormatter NORM_SLASH_DATE_FORMAT = DateTimeFormatter.ofPattern(NORM_SLASH_DATE_PATTERN);
+
+    /**
      * 标准时间格式：HH:mm:ss
      */
     public static final String NORM_TIME_PATTERN = "HH:mm:ss";
