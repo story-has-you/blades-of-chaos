@@ -2,8 +2,8 @@ package com.storyhasyou.kratos.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import okhttp3.FormBody.Builder;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.Assert;
@@ -33,6 +33,8 @@ public class OkHttpUtils {
     private static final String HTTP_FORM = "application/x-www-form-urlencoded; charset=utf-8";
 
     private static final int TIMEOUT = 120;
+
+    private static final int OK = 200;
 
     private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
             .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
@@ -79,7 +81,7 @@ public class OkHttpUtils {
         Request request = builder.get().url(url).build();
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
-            if (response.code() == HttpStatus.OK.value()) {
+            if (response.code() == OK) {
                 return Objects.requireNonNull(response.body()).string();
             }
         } catch (IOException e) {
@@ -128,7 +130,7 @@ public class OkHttpUtils {
         Request request = builder.get().url(url).build();
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
-            if (response.code() == HttpStatus.OK.value()) {
+            if (response.code() == OK) {
                 return Objects.requireNonNull(response.body()).string();
             } else {
                 log.error("Http GET 请求失败; [errorxxCode = {} , url={}]", response.code(), url);
@@ -165,7 +167,7 @@ public class OkHttpUtils {
         Request request = builder.get().url(url).build();
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
-            if (response.code() == HttpStatus.OK.value()) {
+            if (response.code() == OK) {
                 return Objects.requireNonNull(response.body()).bytes();
             } else {
                 log.error("Http GET 请求失败; [errorxxCode = {} , url={}]", response.code(), url);
@@ -197,7 +199,7 @@ public class OkHttpUtils {
      */
     public static String post(String url, String content, Map<String, String> headers) {
         Assert.hasLength(url, "url must not be null");
-        RequestBody requestBody = RequestBody.create(MediaType.parse(HTTP_FORM), content);
+        RequestBody requestBody = RequestBody.create(MediaType.parse(HTTP_JSON), content);
         Request.Builder requestBuilder = new Request.Builder().url(url);
         if (CollectionUtils.isNotEmpty(headers)) {
             headers.forEach(requestBuilder::addHeader);
@@ -205,7 +207,7 @@ public class OkHttpUtils {
         Request request = requestBuilder.post(requestBody).build();
         try {
             Response response = OK_HTTP_CLIENT.newCall(request).execute();
-            if (response.code() == HttpStatus.OK.value()) {
+            if (response.code() == OK) {
                 log.info("http Post 请求成功; [url={}, requestContent={}]", url, content);
             } else {
                 log.error("Http POST 请求失败; [ errorCode = {}, url={}, param={}]", response.code(), url, content);
@@ -217,6 +219,40 @@ public class OkHttpUtils {
     }
 
     /**
+     * Form string.
+     *
+     * @param url     the url
+     * @param content the content
+     * @return the string
+     */
+    public static String form(String url, Object content) {
+        return form(url, BeanUtils.describe(content), null);
+    }
+
+    /**
+     * Form string.
+     *
+     * @param url     the url
+     * @param content the content
+     * @param headers the headers
+     * @return the string
+     */
+    public static String form(String url, Object content, Map<String, String> headers) {
+        return form(url, BeanUtils.describe(content), headers);
+    }
+
+    /**
+     * Form string.
+     *
+     * @param url     the url
+     * @param content the content
+     * @return the string
+     */
+    public static String form(String url, Map<String, Object> content) {
+        return form(url, content, null);
+    }
+
+    /**
      * 提交表单
      *
      * @param url     the url
@@ -224,10 +260,11 @@ public class OkHttpUtils {
      * @param headers the headers
      * @return string string
      */
-    public static String form(String url, String content, Map<String, String> headers) {
+    public static String form(String url, Map<String, Object> content, Map<String, String> headers) {
         Assert.hasLength(url, "url must not be null");
-        RequestBody body = RequestBody.create(MediaType.parse(HTTP_FORM), content);
-
+        Builder fromBodyBuilder = new Builder();
+        content.forEach((key, value) -> fromBodyBuilder.add(key, value.toString()));
+        FormBody body = fromBodyBuilder.build();
         Request.Builder requestBuilder = new Request.Builder().url(url);
         if (CollectionUtils.isNotEmpty(headers)) {
             headers.forEach(requestBuilder::addHeader);
@@ -239,7 +276,7 @@ public class OkHttpUtils {
         Response response;
         try {
             response = OK_HTTP_CLIENT.newCall(request).execute();
-            if (response.code() == HttpStatus.OK.value()) {
+            if (response.code() == OK) {
                 log.info("postDataByForm; [postUrl={}, requestContent={}, responseCode={}]", url, content, response.code());
             } else {
                 log.error("Http Post Form请求失败,[url={}, param={}]", url, content);
@@ -309,7 +346,7 @@ public class OkHttpUtils {
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
-                if (response.code() == 200) {
+                if (response.code() == OK) {
                     respConsumer.accept(response);
                 } else {
                     log.error("异步http {} 请求失败,错误码为{},请求参数为[url={}, param={}]", httpMethod.name(), response.code(), url, content);
