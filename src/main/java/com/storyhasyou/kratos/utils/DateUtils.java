@@ -1,11 +1,12 @@
 package com.storyhasyou.kratos.utils;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
 import com.storyhasyou.kratos.toolkit.DatePattern;
-
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -14,8 +15,7 @@ import java.util.GregorianCalendar;
  *
  * @author fangxi
  */
-public class DateUtils {
-
+public class DateUtils extends LocalDateTimeUtil {
 
 
     private DateUtils() {
@@ -27,7 +27,7 @@ public class DateUtils {
      *
      * @return the string
      */
-    public static String now() {
+    public static String nowStr() {
         return dateTimeToString(LocalDateTime.now(), DatePattern.NORM_DATETIME_PATTERN);
     }
 
@@ -184,6 +184,7 @@ public class DateUtils {
 
     /**
      * 获取当前月份
+     *
      * @return int
      */
     public static int thisMonth() {
@@ -198,6 +199,26 @@ public class DateUtils {
      */
     public static boolean isLeapYear(int year) {
         return new GregorianCalendar().isLeapYear(year);
+    }
+
+    /**
+     * 获取当前时间距离第二天凌晨的秒数
+     *
+     * @return 返回值单位为[s :秒]
+     */
+    public static long getSecondsNextEarlyMorning() {
+        return getSecondsNextEarlyMorning(ChronoUnit.SECONDS);
+    }
+
+    /**
+     * 获取当前时间距离第二天凌晨时间
+     *
+     * @return 返回值单位为[ {@link ChronoUnit} ]
+     */
+    public static long getSecondsNextEarlyMorning(ChronoUnit chronoUnit) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime midnight = now.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        return chronoUnit.between(now, midnight);
     }
 
 }
