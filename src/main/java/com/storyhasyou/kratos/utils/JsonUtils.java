@@ -75,6 +75,21 @@ public class JsonUtils {
     }
 
     /**
+     * To bytes byte [ ].
+     *
+     * @param obj the obj
+     * @return the byte [ ]
+     */
+    public static byte[] toBytes(@NonNull Object obj) {
+        try {
+            return OBJECT_MAPPER.writeValueAsBytes(obj);
+        } catch (JsonProcessingException e) {
+            log.error("json序列化出错: {}", obj, e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Serialize string.
      *
      * @param obj the obj
