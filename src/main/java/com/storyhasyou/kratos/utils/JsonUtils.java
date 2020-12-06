@@ -111,6 +111,24 @@ public class JsonUtils {
      * Parse t.
      *
      * @param <T>    the type parameter
+     * @param bytes   the bytes
+     * @param tClass the t class
+     * @return the t
+     */
+    public static <T> T parse(@NonNull byte[] bytes, @NonNull Class<T> tClass) {
+        try {
+            return OBJECT_MAPPER.readValue(bytes, tClass);
+        } catch (IOException e) {
+            log.error("json解析出错: {}", bytes, e);
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    /**
+     * Parse t.
+     *
+     * @param <T>    the type parameter
      * @param json   the json
      * @param tClass the t class
      * @return the t
