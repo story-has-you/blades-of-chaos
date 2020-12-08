@@ -1,16 +1,5 @@
 package com.storyhasyou.kratos.utils;
 
-import lombok.extern.slf4j.Slf4j;
-import okhttp3.*;
-import okhttp3.FormBody.Builder;
-import org.springframework.http.HttpMethod;
-import org.springframework.lang.NonNull;
-import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.util.Assert;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -20,6 +9,24 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
+import lombok.extern.slf4j.Slf4j;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.FormBody.Builder;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import org.springframework.http.HttpMethod;
+import org.springframework.lang.NonNull;
+import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.util.Assert;
 
 /**
  * The type Ok http utils.
@@ -276,12 +283,13 @@ public class OkHttpUtils {
         Response response;
         try {
             response = OK_HTTP_CLIENT.newCall(request).execute();
-            if (response.code() == OK) {
-                log.info("postDataByForm; [postUrl={}, requestContent={}, responseCode={}]", url, content, response.code());
-            } else {
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
                 log.error("Http Post Form请求失败,[url={}, param={}]", url, content);
+                throw new RuntimeException("Http Post Form请求失败,url:" + url);
             }
-            return Objects.requireNonNull(response.body()).string();
+            log.info("postDataByForm, [postUrl={}, requestBody: {}, response: {}]", url, content, response);
+            return responseBody.string();
         } catch (IOException e) {
             log.error("Http Post Form请求失败,[url={}, param={}]", url, content, e);
             throw new RuntimeException("Http Post Form请求失败,url:" + url);
@@ -349,7 +357,8 @@ public class OkHttpUtils {
                 if (response.code() == OK) {
                     respConsumer.accept(response);
                 } else {
-                    log.error("异步http {} 请求失败,错误码为{},请求参数为[url={}, param={}]", httpMethod.name(), response.code(), url, content);
+                    log.error("异步http {} 请求失败,错误码为{},请求参数为[url={}, param={}]", httpMethod.name(), response.code(),
+                            url, content);
                 }
             }
         });

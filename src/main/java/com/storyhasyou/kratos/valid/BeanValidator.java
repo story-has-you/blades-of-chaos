@@ -1,13 +1,12 @@
 package com.storyhasyou.kratos.valid;
 
-import org.springframework.util.CollectionUtils;
-
+import com.storyhasyou.kratos.utils.CollectionUtils;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 /**
@@ -25,13 +24,13 @@ public class BeanValidator {
      * @param object 被校验的参数
      * @throws ValidationException 如果参数校验不成功则抛出此异常
      */
-    public static void validate(Object object) {
+    public static <T> void validate(T object) {
         //获得验证器
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         //执行验证
-        Set<ConstraintViolation<Object>> constraintViolations = validator.validate(object);
+        Set<ConstraintViolation<T>> constraintViolations = validator.validate(object);
         //如果有验证信息，则取出来包装成异常返回
-        if (!CollectionUtils.isEmpty(constraintViolations)) {
+        if (CollectionUtils.isNotEmpty(constraintViolations)) {
             throw new ValidationException(convertErrorMsg(constraintViolations));
         }
     }
