@@ -1,8 +1,5 @@
 package com.storyhasyou.kratos.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Base64;
@@ -13,7 +10,6 @@ import java.util.Base64;
  * @author fangxi
  */
 public class Md5Utils {
-    private static final Logger log = LoggerFactory.getLogger(Md5Utils.class);
 
     /**
      * Md 5 string.

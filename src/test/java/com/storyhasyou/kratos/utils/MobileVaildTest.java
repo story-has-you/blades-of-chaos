@@ -21,7 +21,7 @@ public class MobileVaildTest {
         student.setUsername("fangxi");
         student.setMobile("15605192570");
         BeanValidator.validate(student);
-        System.out.println(JsonUtils.serialize(student));
+        System.out.println(JacksonUtils.serialize(student));
     }
 
     @Data

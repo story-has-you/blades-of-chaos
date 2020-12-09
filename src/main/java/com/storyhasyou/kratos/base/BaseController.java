@@ -3,13 +3,18 @@ package com.storyhasyou.kratos.base;
 import com.storyhasyou.kratos.dto.PageRequest;
 import com.storyhasyou.kratos.dto.PageResponse;
 import com.storyhasyou.kratos.result.Result;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import static com.storyhasyou.kratos.result.Result.error;
 import static com.storyhasyou.kratos.result.Result.ok;
@@ -107,9 +112,20 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @return {@link Result}
      */
     @GetMapping("/page")
-    public Result<PageResponse<?>> page(@ModelAttribute @Validated PageRequest pageRequest,
+    public Result<PageResponse<T>> page(@ModelAttribute @Validated PageRequest pageRequest,
                                         @ModelAttribute T entity) {
-        PageResponse<?> pageResponse = baseService.page(pageRequest.getCurrent(), pageRequest.getLimit(), entity);
+        PageResponse<T> pageResponse = baseService.page(pageRequest.getCurrent(), pageRequest.getLimit(), entity);
         return ok(pageResponse);
+    }
+
+    /**
+     * All result.
+     *
+     * @return the result
+     */
+    @GetMapping("/all")
+    public Result<List<T>> all() {
+        List<T> list = baseService.list();
+        return ok(list);
     }
 }

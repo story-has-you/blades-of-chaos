@@ -118,8 +118,8 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         if (object == null) {
             return null;
         }
-        String serialize = JsonUtils.serialize(object);
-        return JsonUtils.parse(serialize, new TypeReference<T>() {});
+        String serialize = JacksonUtils.serialize(object);
+        return JacksonUtils.parse(serialize, new TypeReference<T>() {});
     }
 
 

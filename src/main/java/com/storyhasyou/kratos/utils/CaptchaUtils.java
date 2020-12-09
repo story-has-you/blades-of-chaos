@@ -13,6 +13,9 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class CaptchaUtils {
 
+    /**
+     * The constant DIST.
+     */
     private static final char[] DIST = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
             'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
@@ -21,6 +24,9 @@ public class CaptchaUtils {
     };
 
 
+    /**
+     * Instantiates a new Captcha utils.
+     */
     private CaptchaUtils() {
 
     }
@@ -106,9 +112,9 @@ public class CaptchaUtils {
     /**
      * 随机返回颜色
      *
-     * @param min
-     * @param max
-     * @return
+     * @param min the min
+     * @param max the max
+     * @return color
      */
     private static Color randomColor(int min, int max) {
         min = Math.min(min, 255);

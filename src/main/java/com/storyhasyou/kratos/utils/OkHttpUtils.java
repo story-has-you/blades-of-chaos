@@ -219,7 +219,11 @@ public class OkHttpUtils {
             } else {
                 log.error("Http POST 请求失败; [ errorCode = {}, url={}, param={}]", response.code(), url, content);
             }
-            return response.body().string();
+            ResponseBody body = response.body();
+            if (body == null) {
+                return null;
+            }
+            return body.string();
         } catch (IOException e) {
             throw new RuntimeException("同步http请求失败,url:" + url, e);
         }
@@ -286,14 +290,14 @@ public class OkHttpUtils {
             ResponseBody responseBody = response.body();
             if (responseBody == null) {
                 log.error("Http Post Form请求失败,[url={}, param={}]", url, content);
-                throw new RuntimeException("Http Post Form请求失败,url:" + url);
+                return null;
             }
             log.info("postDataByForm, [postUrl={}, requestBody: {}, response: {}]", url, content, response);
             return responseBody.string();
         } catch (IOException e) {
             log.error("Http Post Form请求失败,[url={}, param={}]", url, content, e);
-            throw new RuntimeException("Http Post Form请求失败,url:" + url);
         }
+        return null;
     }
 
     /**

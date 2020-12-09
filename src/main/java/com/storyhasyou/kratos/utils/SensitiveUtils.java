@@ -5,6 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * The type Sensitive utils.
+ *
+ * @author fangxi
  */
 public class SensitiveUtils {
 

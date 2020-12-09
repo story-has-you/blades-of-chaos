@@ -1,10 +1,9 @@
 package com.storyhasyou.kratos.utils;
 
-import com.storyhasyou.kratos.idworker.DefaultIdentifierGenerator;
-import com.storyhasyou.kratos.idworker.IdentifierGenerator;
-import com.storyhasyou.kratos.toolkit.StringPool;
-
-import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
+import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import com.storyhasyou.kratos.toolkit.DatePattern;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -20,7 +19,7 @@ public class IdUtils {
     /**
      * 毫秒格式化时间
      */
-    public static final DateTimeFormatter MILLISECOND = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+    public static final DateTimeFormatter MILLISECOND = DatePattern.PURE_DATETIME_MS_FORMAT;
     /**
      * 主机和进程的机器码
      */
@@ -70,7 +69,7 @@ public class IdUtils {
      * @return the millisecond
      */
     public static String getMillisecond() {
-        return LocalDateTime.now().format(MILLISECOND);
+        return DateUtils.now().format(MILLISECOND);
     }
 
     /**

@@ -20,7 +20,7 @@ public enum ResultCode implements IntBaseEnum {
     /**
      * Not fount result code.
      */
-    NOT_FOUNT(HttpStatus.NOT_FOUND.value(), "找不到数据"),
+    NOT_FOUNT(HttpStatus.NOT_FOUND.value(), "找不到资源"),
     /**
      * Validate failed result code.
      */

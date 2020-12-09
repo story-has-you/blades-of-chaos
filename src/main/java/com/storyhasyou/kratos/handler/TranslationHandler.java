@@ -3,7 +3,7 @@ package com.storyhasyou.kratos.handler;
 import com.storyhasyou.kratos.dto.TranslationResponseDTO;
 import com.storyhasyou.kratos.enums.LanguageEnum;
 import com.storyhasyou.kratos.utils.CollectionUtils;
-import com.storyhasyou.kratos.utils.JsonUtils;
+import com.storyhasyou.kratos.utils.JacksonUtils;
 import com.storyhasyou.kratos.utils.OkHttpUtils;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -97,7 +97,7 @@ public class TranslationHandler {
         params.put("sign", sign);
         String response = OkHttpUtils.form(YOUDAO_URL, params);
         if (StringUtils.isNotBlank(response)) {
-            return JsonUtils.parse(response, TranslationResponseDTO.class);
+            return JacksonUtils.parse(response, TranslationResponseDTO.class);
         }
         return null;
     }

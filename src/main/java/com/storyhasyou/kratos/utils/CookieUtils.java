@@ -1,14 +1,13 @@
 package com.storyhasyou.kratos.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -26,7 +25,6 @@ public final class CookieUtils {
      * @param request    the request
      * @param cookieName the cookie name
      * @return cookie value
-     * @Description: 得到Cookie的值, 不编码
      */
     public static String getCookieValue(HttpServletRequest request, String cookieName) {
         return getCookieValue(request, cookieName, false);
@@ -39,7 +37,6 @@ public final class CookieUtils {
      * @param cookieName the cookie name
      * @param isDecoder  the is decoder
      * @return cookie value
-     * @Description: 得到Cookie的值
      */
     public static String getCookieValue(HttpServletRequest request, String cookieName, boolean isDecoder) {
         Cookie[] cookieList = request.getCookies();
@@ -48,12 +45,12 @@ public final class CookieUtils {
         }
         String retValue = null;
         try {
-            for (int i = 0; i < cookieList.length; i++) {
-                if (cookieList[i].getName().equals(cookieName)) {
+            for (Cookie cookie : cookieList) {
+                if (cookie.getName().equals(cookieName)) {
                     if (isDecoder) {
-                        retValue = URLDecoder.decode(cookieList[i].getValue(), "UTF-8");
+                        retValue = URLDecoder.decode(cookie.getValue(), "UTF-8");
                     } else {
-                        retValue = cookieList[i].getValue();
+                        retValue = cookie.getValue();
                     }
                     break;
                 }
@@ -129,7 +126,8 @@ public final class CookieUtils {
      * @param cookieName  the cookie name
      * @param cookieValue the cookie value
      * @param isEncode    the is encode
-     * @Description: 设置Cookie的值 不设置生效时间,但编码 在服务器被创建，返回给客户端，并且保存客户端 如果设置了SETMAXAGE(int seconds)，会把cookie保存在客户端的硬盘中 如果没有设置，会默认把cookie保存在浏览器的内存中 一旦设置setPath()：只能通过设置的路径才能获取到当前的cookie信息
+     * @Description: 设置Cookie的值 不设置生效时间,但编码 在服务器被创建，返回给客户端，并且保存客户端 如果设置了SETMAXAGE(int seconds)，会把cookie保存在客户端的硬盘中
+     * 如果没有设置，会默认把cookie保存在浏览器的内存中 一旦设置setPath()：只能通过设置的路径才能获取到当前的cookie信息
      */
     public static void setCookie(HttpServletRequest request, HttpServletResponse response, String cookieName,
                                  String cookieValue, boolean isEncode) {

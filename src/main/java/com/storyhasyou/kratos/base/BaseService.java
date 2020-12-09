@@ -53,9 +53,9 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * @param entity  领域模型
      * @return 管理员分页数据 page response
      */
-    default PageResponse<?> page(int current, int limit, T entity) {
+    default PageResponse<T> page(int current, int limit, T entity) {
         QueryWrapper<T> queryWrapper = entity == null ? Wrappers.emptyWrapper() : Wrappers.query(entity);
-        Page<?> page = page(new Page<>(current, limit), queryWrapper);
+        Page<T> page = this.page(new Page<>(current, limit), queryWrapper);
         return PageResponse.of(page.getRecords(), page.getTotal(), page.getPages(), page.getSize(), page.hasNext(), current);
     }
 
@@ -66,7 +66,7 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * @param limit   {@code int} 笔数
      * @return the page response
      */
-    default PageResponse<?> page(int current, int limit) {
+    default PageResponse<T> page(int current, int limit) {
         return page(current, limit, null);
     }
 

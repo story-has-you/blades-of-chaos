@@ -2,12 +2,10 @@ package com.storyhasyou.kratos.utils;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
 import com.storyhasyou.kratos.toolkit.DatePattern;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
@@ -28,128 +26,9 @@ public class DateUtils extends LocalDateTimeUtil {
      * @return the string
      */
     public static String nowStr() {
-        return dateTimeToString(LocalDateTime.now(), DatePattern.NORM_DATETIME_PATTERN);
+        return format(now(), DatePattern.CHINESE_DATE_FORMAT);
     }
 
-    /**
-     * Date time to string string.
-     *
-     * @param date    the date
-     * @param pattern the pattern
-     * @return the string
-     */
-    public static String dateTimeToString(LocalDateTime date, String pattern) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-        return date.format(formatter);
-    }
-
-    /**
-     * Date time to string string.
-     *
-     * @param date the date
-     * @return the string
-     */
-    public static String dateTimeToString(LocalDateTime date) {
-        return dateTimeToString(date, DatePattern.NORM_DATETIME_PATTERN);
-    }
-
-    /**
-     * String to date time local date time.
-     *
-     * @param date the date
-     * @return the local date time
-     */
-    public static LocalDateTime stringToDateTime(String date) {
-        return stringToDateTime(date, DatePattern.NORM_DATETIME_PATTERN);
-    }
-
-    /**
-     * String to date time local date time.
-     *
-     * @param date    the date
-     * @param pattern the pattern
-     * @return the local date time
-     */
-    public static LocalDateTime stringToDateTime(String date, String pattern) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-        return LocalDateTime.parse(date, formatter);
-    }
-
-
-    /**
-     * Date to string string.
-     *
-     * @param date    the date
-     * @param pattern the pattern
-     * @return the string
-     */
-    public static String dateToString(LocalDate date, String pattern) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-        return date.format(formatter);
-    }
-
-    /**
-     * Date to string string.
-     *
-     * @param date the date
-     * @return the string
-     */
-    public static String dateToString(LocalDate date) {
-        return dateToString(date, DatePattern.NORM_DATE_PATTERN);
-    }
-
-    /**
-     * String to date local date.
-     *
-     * @param date the date
-     * @return the local date
-     */
-    public static LocalDate stringToDate(String date) {
-        return stringToDate(date, DatePattern.NORM_DATE_PATTERN);
-    }
-
-    /**
-     * String to date local date.
-     *
-     * @param date    the date
-     * @param pattern the pattern
-     * @return the local date
-     */
-    public static LocalDate stringToDate(String date, String pattern) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-        return LocalDate.parse(date, formatter);
-    }
-
-
-    /**
-     * Date to string string.
-     *
-     * @param date    the date
-     * @param pattern the pattern
-     * @return the string
-     */
-    public static String dateToString(Date date, String pattern) {
-        if (date == null) {
-            return null;
-        }
-        try {
-            SimpleDateFormat sfDate = new SimpleDateFormat(pattern);
-            sfDate.setLenient(false);
-            return sfDate.format(date);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    /**
-     * Date to string string.
-     *
-     * @param date the date
-     * @return the string
-     */
-    public static String dateToString(Date date) {
-        return dateToString(date, DatePattern.NORM_DATETIME_PATTERN);
-    }
 
     /**
      * Current date time string.
@@ -157,9 +36,7 @@ public class DateUtils extends LocalDateTimeUtil {
      * @return the string
      */
     public static String currentDateTime() {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN);
-        return now.format(formatter);
+        return now().format(DatePattern.CHINESE_DATE_FORMAT);
     }
 
     /**
@@ -216,7 +93,7 @@ public class DateUtils extends LocalDateTimeUtil {
      * @return 返回值单位为[ {@link ChronoUnit} ]
      */
     public static long getSecondsNextEarlyMorning(ChronoUnit chronoUnit) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = now();
         LocalDateTime midnight = now.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
         return chronoUnit.between(now, midnight);
     }

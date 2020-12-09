@@ -1,13 +1,12 @@
 package com.storyhasyou.kratos.dto;
 
+import java.io.Serializable;
+import java.util.Collection;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * The type Page response.

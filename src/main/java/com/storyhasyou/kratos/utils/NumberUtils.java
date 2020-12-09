@@ -1,7 +1,6 @@
 package com.storyhasyou.kratos.utils;
 
 import cn.hutool.core.util.NumberUtil;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
  *
  * @author fangxi
  */
-public class NumberUtils  extends NumberUtil {
+public class NumberUtils extends NumberUtil {
 
     /**
      * Is int boolean.

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.storyhasyou.kratos.exceptions.BusinessExceptionHandler;
 import com.storyhasyou.kratos.repository.DefaultValueMetaObjectHandler;
-import com.storyhasyou.kratos.utils.JsonUtils;
+import com.storyhasyou.kratos.utils.JacksonUtils;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -49,7 +49,7 @@ public class BladesOfChaosConfig {
     @Bean
     @ConditionalOnMissingBean(MappingJackson2HttpMessageConverter.class)
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
-        return JsonUtils.mappingJackson2HttpMessageConverter(PropertyNamingStrategy.SNAKE_CASE);
+        return JacksonUtils.mappingJackson2HttpMessageConverter(PropertyNamingStrategy.SNAKE_CASE);
     }
 
     /**

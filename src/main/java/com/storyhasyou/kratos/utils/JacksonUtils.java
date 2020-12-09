@@ -2,6 +2,7 @@ package com.storyhasyou.kratos.utils;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.storyhasyou.kratos.base.BaseEntity;
 import com.storyhasyou.kratos.toolkit.DatePattern;
+import java.text.SimpleDateFormat;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.lang.NonNull;
@@ -39,7 +41,7 @@ import java.util.Map;
  * @author fangxi
  */
 @Slf4j
-public class JsonUtils {
+public class JacksonUtils {
 
     private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -53,8 +55,17 @@ public class JsonUtils {
         javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DatePattern.NORM_DATE_PATTERN)));
         javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DatePattern.NORM_DATE_PATTERN)));
         OBJECT_MAPPER.registerModule(javaTimeModule).registerModule(new ParameterNamesModule());
+        OBJECT_MAPPER.setDateFormat(new SimpleDateFormat(DatePattern.NORM_DATETIME_PATTERN));
         // 忽略多余字段
-        OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        //在JSON中允许未引用的字段名
+        OBJECT_MAPPER.enable(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES);
+        //识别单引号
+        OBJECT_MAPPER.enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES);
+        //允许单个数值当做数组处理
+        OBJECT_MAPPER.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        //禁止重复键, 抛出异常
+        OBJECT_MAPPER.enable(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY);
     }
 
 
@@ -64,7 +75,7 @@ public class JsonUtils {
      * @return the object mapper
      */
     public static ObjectMapper getObjectMapper() {
-        return JsonUtils.OBJECT_MAPPER;
+        return JacksonUtils.OBJECT_MAPPER;
     }
 
     /**
@@ -73,7 +84,7 @@ public class JsonUtils {
      * @param objectMapper the object mapper
      */
     public static void setObjectMapper(ObjectMapper objectMapper) {
-        JsonUtils.OBJECT_MAPPER = objectMapper;
+        JacksonUtils.OBJECT_MAPPER = objectMapper;
     }
 
     /**
@@ -87,8 +98,8 @@ public class JsonUtils {
             return OBJECT_MAPPER.writeValueAsBytes(obj);
         } catch (JsonProcessingException e) {
             log.error("json序列化出错: {}", obj, e);
-            throw new RuntimeException(e);
         }
+        return null;
     }
 
     /**
@@ -105,8 +116,8 @@ public class JsonUtils {
             return OBJECT_MAPPER.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             log.error("json序列化出错: {}", obj, e);
-            throw new RuntimeException(e);
         }
+        return null;
     }
 
     /**
@@ -122,8 +133,8 @@ public class JsonUtils {
             return OBJECT_MAPPER.readValue(bytes, tClass);
         } catch (IOException e) {
             log.error("json解析出错: {}", bytes, e);
-            throw new RuntimeException(e);
         }
+        return null;
     }
 
 
@@ -140,8 +151,8 @@ public class JsonUtils {
             return OBJECT_MAPPER.readValue(json, tClass);
         } catch (IOException e) {
             log.error("json解析出错: {}", json, e);
-            throw new RuntimeException(e);
         }
+        return null;
     }
 
     /**
@@ -157,8 +168,8 @@ public class JsonUtils {
             return OBJECT_MAPPER.readValue(json, OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, eClass));
         } catch (IOException e) {
             log.error("json解析出错: {}", json, e);
-            throw new RuntimeException(e);
         }
+        return null;
     }
 
     /**
@@ -176,8 +187,8 @@ public class JsonUtils {
             return OBJECT_MAPPER.readValue(json, OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, kClass, vClass));
         } catch (IOException e) {
             log.error("json解析出错: {}", json, e);
-            throw new RuntimeException(e);
         }
+        return null;
     }
 
     /**
@@ -193,8 +204,8 @@ public class JsonUtils {
             return OBJECT_MAPPER.readValue(json, type);
         } catch (IOException e) {
             log.error("json解析出错: {}", json, e);
-            throw new RuntimeException(e);
         }
+        return null;
     }
 
     /**
@@ -210,8 +221,8 @@ public class JsonUtils {
             return OBJECT_MAPPER.readValue(in, tClass);
         } catch (IOException e) {
             log.error("json解析出错:", e);
-            throw new RuntimeException(e);
         }
+        return null;
     }
 
     /**
@@ -229,8 +240,8 @@ public class JsonUtils {
             return OBJECT_MAPPER.readValue(in, OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, kClass, vClass));
         } catch (IOException e) {
             log.error("json解析出错:", e);
-            throw new RuntimeException(e);
         }
+        return null;
     }
 
 
@@ -250,7 +261,7 @@ public class JsonUtils {
      * @return the mapping jackson 2 http message converter
      */
     public static MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(PropertyNamingStrategy propertyNamingStrategy) {
-        // 设置Jackson序列化和反序列化的时候，使用下划线分割
+        // 设置Jackson序列化和反序列化的时候，分隔符
         if (propertyNamingStrategy != null) {
             OBJECT_MAPPER.setPropertyNamingStrategy(propertyNamingStrategy);
         }
