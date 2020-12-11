@@ -3,21 +3,34 @@ package com.storyhasyou.kratos.result;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.storyhasyou.kratos.enums.IntBaseEnum;
 import com.storyhasyou.kratos.exceptions.BusinessException;
-import lombok.Data;
-
 import java.io.Serializable;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import lombok.Data;
 
 /**
  * The type Result.
  *
  * @param <T> the type parameter
- * @author fangxi  通用返回对象
+ * @author fangxi 通用返回对象
  */
 @Data
 public class Result<T> implements Serializable {
+    /**
+     * The Status.
+     */
     private Integer status;
+    /**
+     * The Message.
+     */
     private String message;
+    /**
+     * The Data.
+     */
     private T data;
+    /**
+     * The Ok.
+     */
     private Boolean ok;
 
     /**
@@ -173,4 +186,47 @@ public class Result<T> implements Serializable {
         return data;
     }
 
+    /**
+     * Service data t.
+     *
+     * @param <E>               the type parameter
+     * @param exceptionSupplier the exception supplier
+     * @return the t
+     */
+    public <E extends RuntimeException> T data(Supplier<? extends E> exceptionSupplier) {
+        if (isError()) {
+            throw exceptionSupplier.get();
+        }
+        return data;
+    }
+
+    /**
+     * Service data t.
+     *
+     * @param <E>               the type parameter
+     * @param <R>               the type parameter
+     * @param function          the function
+     * @param exceptionSupplier the exception supplier
+     * @return the t
+     */
+    public <E extends RuntimeException, R> R data(Function<T, R> function, Supplier<? extends E> exceptionSupplier) {
+        if (isError()) {
+            throw exceptionSupplier.get();
+        }
+        return function.apply(data);
+    }
+
+    /**
+     * Service data t.
+     *
+     * @param <R>      the type parameter
+     * @param function the function
+     * @return the t
+     */
+    public <R> R data(Function<T, R> function) {
+        if (isError()) {
+            throw new BusinessException(message);
+        }
+        return function.apply(data);
+    }
 }
