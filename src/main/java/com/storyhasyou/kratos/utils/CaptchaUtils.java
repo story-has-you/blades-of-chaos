@@ -1,5 +1,6 @@
 package com.storyhasyou.kratos.utils;
 
+import cn.hutool.captcha.CaptchaUtil;
 import com.storyhasyou.kratos.toolkit.Captcha;
 
 import java.awt.*;
@@ -11,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * @author fangxi created by 2020/8/5
  */
-public class CaptchaUtils {
+public class CaptchaUtils extends CaptchaUtil {
 
     /**
      * The constant DIST.
@@ -98,7 +99,7 @@ public class CaptchaUtils {
      * @param length the length
      * @return string string
      */
-    public static String randomCode(int length) {
+    private static String randomCode(int length) {
         StringBuilder builder = new StringBuilder();
         ThreadLocalRandom current = ThreadLocalRandom.current();
         int len = DIST.length - 1;

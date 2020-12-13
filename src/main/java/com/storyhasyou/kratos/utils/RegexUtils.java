@@ -1,6 +1,7 @@
 package com.storyhasyou.kratos.utils;
 
 import cn.hutool.core.lang.PatternPool;
+import cn.hutool.core.lang.Validator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,7 +10,7 @@ import java.util.regex.Pattern;
  *
  * @author fangxi
  */
-public class RegexUtils {
+public class RegexUtils extends Validator {
 
     private static final Pattern PATTERN = Pattern.compile("(?<=http://|\\.)[^.]*?\\.(com|cn|net|org|biz|info|cc|tv)",
             Pattern.CASE_INSENSITIVE);

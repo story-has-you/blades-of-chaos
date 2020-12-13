@@ -13,6 +13,6 @@ public class CaptchaUtilsTest {
 
         Captcha capatcha = CaptchaUtils.generateCapatcha(120, 35, 4, 10);
         System.out.println(capatcha);
-
     }
+
 }

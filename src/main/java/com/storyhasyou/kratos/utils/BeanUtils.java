@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.util.Assert;
 
@@ -49,7 +50,6 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
             final T targetInstance = constructor.newInstance();
             BeanCopier beanCopier = BeanCopier.create(source.getClass(), target, false);
             beanCopier.copy(source, targetInstance, null);
-            //org.springframework.beans.BeanUtils.copyProperties(source, targetInstance);
             return targetInstance;
         } catch (Exception e) {
             log.error("属性拷贝失败", e);
@@ -119,7 +119,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
             return null;
         }
         String serialize = JacksonUtils.serialize(object);
-        return JacksonUtils.parse(serialize, new TypeReference<T>() {});
+        return StringUtils.isBlank(serialize) ? null : JacksonUtils.parse(serialize, new TypeReference<T>() {});
     }
 
 

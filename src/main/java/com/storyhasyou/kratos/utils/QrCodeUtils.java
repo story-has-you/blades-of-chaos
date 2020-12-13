@@ -1,5 +1,6 @@
 package com.storyhasyou.kratos.utils;
 
+import cn.hutool.extra.qrcode.QrCodeUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -21,7 +22,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 @Slf4j
-public class QrCodeUtils {
+public class QrCodeUtils extends QrCodeUtil {
 
     /**
      * Generate qr code byte [ ].
