@@ -279,7 +279,6 @@ public class JacksonUtils {
         //将对象模型添加至对象映射器
         OBJECT_MAPPER.registerModule(simpleModule);
         OBJECT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        OBJECT_MAPPER.setDefaultPropertyInclusion(JsonInclude.Include.NON_DEFAULT);
         //定义Json转换器
         MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
         //将对象映射器添加至Json转换器
