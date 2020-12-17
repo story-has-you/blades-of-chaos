@@ -5,7 +5,7 @@
 
     <groupId>com.storyhasyou.kratos</groupId>
     <artifactId>blades-of-chaos</artifactId>
-    <version>2.0.4.RELEASE</version>
+    <version>2.0.5.RELEASE</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -133,11 +133,13 @@
             <groupId>com.spring4all</groupId>
             <artifactId>swagger-spring-boot-starter</artifactId>
             <version>${swagger.version}</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>swagger-bootstrap-ui</artifactId>
             <version>${swagger-bootstrap.version}</version>
+            <optional>true</optional>
         </dependency>
 
     </dependencies>

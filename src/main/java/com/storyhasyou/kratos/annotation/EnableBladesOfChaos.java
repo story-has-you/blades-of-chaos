@@ -17,7 +17,5 @@ import org.springframework.context.annotation.Import;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Import(BladesOfChaosConfig.class)
-@EnableSwaggerBootstrapUI
-@EnableSwagger2Doc
 public @interface EnableBladesOfChaos {
 }
