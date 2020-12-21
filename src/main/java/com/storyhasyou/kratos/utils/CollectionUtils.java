@@ -405,40 +405,6 @@ public class CollectionUtils {
 
 
     /**
-     * Non null list.
-     *
-     * @param <E>  the type parameter
-     * @param list the list
-     * @return the list
-     */
-    public static <E> List<E> nonNull(List<E> list) {
-        return isEmpty(list) ? Collections.emptyList() : list;
-    }
-
-    /**
-     * Non null set.
-     *
-     * @param <E> the type parameter
-     * @param set the set
-     * @return the set
-     */
-    public static <E> Set<E> nonNull(Set<E> set) {
-        return isEmpty(set) ? Collections.emptySet() : set;
-    }
-
-    /**
-     * Non null map.
-     *
-     * @param <K> the type parameter
-     * @param <V> the type parameter
-     * @param map the map
-     * @return the map
-     */
-    public static <K, V> Map<K, V> nonNull(Map<K, V> map) {
-        return isEmpty(map) ? Collections.emptyMap() : map;
-    }
-
-    /**
      * Is not empty boolean.
      *
      * @param collection the collection
@@ -554,22 +520,5 @@ public class CollectionUtils {
         return map;
     }
 
-    /**
-     * 映射键值（参考Python的zip()函数）<br>
-     * 例如：<br>
-     * keys =    [a,b,c,d]<br>
-     * values = [1,2,3,4]<br>
-     * 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
-     * 如果两个数组长度不同，则只对应最短部分
-     *
-     * @param <T>    the type parameter
-     * @param <K>    the type parameter
-     * @param keys   键列表
-     * @param values 值列表
-     * @return Map map
-     */
-    public static <T, K> Map<T, K> zip(T[] keys, K[] values) {
-        return zip(Lists.newArrayList(keys), Lists.newArrayList(values));
-    }
 
 }

@@ -2,6 +2,10 @@ package com.storyhasyou.kratos.utils;
 
 import cn.hutool.core.util.EnumUtil;
 import com.storyhasyou.kratos.enums.BaseEnum;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.ObjectUtils;
 
 /**
@@ -11,6 +15,9 @@ import org.apache.commons.lang3.ObjectUtils;
  */
 public class EnumUtils extends EnumUtil {
 
+    /**
+     * Instantiates a new Enum utils.
+     */
     private EnumUtils() {
 
     }
@@ -18,9 +25,10 @@ public class EnumUtils extends EnumUtil {
     /**
      * 根据int 获取 value
      *
+     * @param <T>       the type parameter
      * @param enumClass the enum class
      * @param code      the code
-     * @return message
+     * @return message message
      */
     public static <T> String getMessage(Class<? extends BaseEnum<T>> enumClass, T code) {
         if (ObjectUtils.isEmpty(enumClass) || ObjectUtils.isEmpty(code)) {
@@ -36,6 +44,18 @@ public class EnumUtils extends EnumUtil {
             }
         }
         return null;
+    }
+
+    /**
+     * To map map.
+     *
+     * @param <T>       the type parameter
+     * @param enumClass the enum class
+     * @return the map
+     */
+    public static <T> Map<T, String> toMap(Class<? extends BaseEnum<T>> enumClass) {
+        BaseEnum<T>[] enumConstants = enumClass.getEnumConstants();
+        return Arrays.stream(enumConstants).collect(Collectors.toMap(BaseEnum::getCode, BaseEnum::getMessage));
     }
 
 }

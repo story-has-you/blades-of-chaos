@@ -15,7 +15,6 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.util.Assert;
@@ -25,7 +24,6 @@ import org.springframework.util.Assert;
  *
  * @author fangxi
  */
-@Slf4j
 public class BeanUtils extends org.springframework.beans.BeanUtils {
 
     /**
@@ -52,9 +50,9 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
             beanCopier.copy(source, targetInstance, null);
             return targetInstance;
         } catch (Exception e) {
-            log.error("属性拷贝失败", e);
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+        return null;
     }
 
     /**
@@ -196,8 +194,8 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
             method.setAccessible(Boolean.TRUE);
             return (SerializedLambda) method.invoke(lambda);
         } catch (Exception e) {
-            log.error("解析 lambda 失败", e);
-            throw new RuntimeException("解析 lambda 失败");
+            e.printStackTrace();
         }
+        return null;
     }
 }

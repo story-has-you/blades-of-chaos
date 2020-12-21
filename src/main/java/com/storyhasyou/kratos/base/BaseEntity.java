@@ -41,6 +41,5 @@ public abstract class BaseEntity implements Serializable {
      */
     @TableField(value = "deleted", fill = FieldFill.INSERT)
     @TableLogic
-    @ApiModelProperty(hidden = true)
     private Integer deleted;
 }
