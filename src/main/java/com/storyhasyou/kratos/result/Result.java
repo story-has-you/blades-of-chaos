@@ -3,10 +3,11 @@ package com.storyhasyou.kratos.result;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.storyhasyou.kratos.enums.IntBaseEnum;
 import com.storyhasyou.kratos.exceptions.BusinessException;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import lombok.Data;
 
 /**
  * The type Result.
@@ -152,16 +153,6 @@ public class Result<T> implements Serializable {
      */
     public static <T> Result<T> validateFailed() {
         return error(ResultCode.VALIDATE_FAILED);
-    }
-
-    /**
-     * Is ok boolean.
-     *
-     * @return the boolean
-     */
-    @JsonIgnore
-    public boolean isOk() {
-        return ok;
     }
 
     /**

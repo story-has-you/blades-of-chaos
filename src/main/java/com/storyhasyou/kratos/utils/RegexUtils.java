@@ -17,17 +17,6 @@ public class RegexUtils extends Validator {
 
 
     /**
-     * 验证Email
-     *
-     * @param email email地址，格式：zhangsan@zuidaima.com，zhangsan@xxx.com.cn，              xxx代表邮件服务商
-     * @return 验证成功返回true ，验证失败返回false
-     */
-    public static boolean checkEmail(String email) {
-        String regex = "^[A-Za-z0-9]+([_.][A-Za-z0-9]+)*@([A-Za-z0-9\\\\-]+\\\\.)+[A-Za-z]{2,6}$";
-        return Pattern.matches(regex, email);
-    }
-
-    /**
      * 验证身份证号码
      *
      * @param idCard 居民身份证号码15位或18位，最后一位可能是数字或字母
