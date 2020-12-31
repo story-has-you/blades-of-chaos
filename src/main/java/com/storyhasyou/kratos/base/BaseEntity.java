@@ -1,12 +1,13 @@
 package com.storyhasyou.kratos.base;
 
-import com.baomidou.mybatisplus.annotation.*;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import springfox.documentation.annotations.ApiIgnore;
+import lombok.Data;
 
 /**
  * The type Base entity.
@@ -14,7 +15,7 @@ import springfox.documentation.annotations.ApiIgnore;
  * @author fangxi
  */
 @Data
-public abstract class BaseEntity implements Serializable {
+public abstract class BaseEntity implements Serializable, Cloneable {
 
     /**
      * 主键id
@@ -26,14 +27,12 @@ public abstract class BaseEntity implements Serializable {
      * 创建时间 默认当前时间
      */
     @TableField(value = "create_time", fill = FieldFill.INSERT)
-    @ApiModelProperty(hidden = true)
     private LocalDateTime createTime;
 
     /**
      * 更新时间 默认当前时间
      */
     @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
-    @ApiModelProperty(hidden = true)
     private LocalDateTime updateTime;
 
     /**
