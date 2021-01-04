@@ -1,7 +1,5 @@
 package com.storyhasyou.kratos.annotation;
 
-import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
-import com.spring4all.swagger.EnableSwagger2Doc;
 import com.storyhasyou.kratos.config.BladesOfChaosConfig;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

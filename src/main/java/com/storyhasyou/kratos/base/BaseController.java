@@ -3,7 +3,6 @@ package com.storyhasyou.kratos.base;
 import com.storyhasyou.kratos.dto.PageRequest;
 import com.storyhasyou.kratos.dto.PageResponse;
 import com.storyhasyou.kratos.result.Result;
-import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +45,6 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @param entity 领域模型
      * @return {@link Result}
      */
-    @ApiOperation("创建资源")
     @PostMapping("/create")
     public Result<Long> create(@RequestBody T entity) {
         // 业务逻辑
@@ -60,7 +58,6 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @param id {@code Long}
      * @return {@link Result}
      */
-    @ApiOperation("删除资源")
     @DeleteMapping("/remove/{id}")
     public Result<Boolean> remove(@PathVariable Long id) {
         // 业务逻辑
@@ -74,7 +71,6 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @param ids {@code Long}
      * @return {@link Result}
      */
-    @ApiOperation("批量删除资源")
     @DeleteMapping("/batch/remove")
     public Result<Boolean> removeBatch(@RequestBody List<Long> ids) {
         // 业务逻辑
@@ -88,7 +84,6 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @param entity 领域模型
      * @return {@link Result}
      */
-    @ApiOperation("更新资源")
     @PutMapping("/update")
     public Result<Boolean> update(@RequestBody T entity) {
         // 业务逻辑
@@ -103,7 +98,6 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @param id {@code Long}
      * @return {@link Result}
      */
-    @ApiOperation("根据id查询资源")
     @GetMapping("/get/{id}")
     public Result<T> get(@PathVariable Long id) {
         T entity = baseService.get(id);
@@ -117,7 +111,6 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @param entity      the entity
      * @return {@link Result}
      */
-    @ApiOperation("分页查询资源")
     @GetMapping("/page")
     public Result<PageResponse<T>> page(@ModelAttribute @Validated PageRequest pageRequest,
                                         @ModelAttribute T entity) {
@@ -130,7 +123,6 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      *
      * @return the result
      */
-    @ApiOperation("查询全部资源")
     @GetMapping("/all")
     public Result<List<T>> all() {
         List<T> list = baseService.list();
