@@ -47,7 +47,7 @@ public class HttpRequestFilter extends OncePerRequestFilter {
                 if (!StringUtils.equals(IGNORE_CONTENT_TYPE, request.getContentType())) {
                     String requestBody = new String(requestWrapper.getContentAsByteArray());
                     String responseBody = new String(responseWrapper.getContentAsByteArray());
-                    log.debug("traceId:{}, requestBody:{}, responseBody:{} totalTimeMillis:{}", traceId,
+                    log.debug("traceId:{}, requestBody:{}, responseBody:{}, totalTimeMillis:{}", traceId,
                             requestBody, responseBody, stopWatch.getTotalTimeMillis());
                 }
             }
