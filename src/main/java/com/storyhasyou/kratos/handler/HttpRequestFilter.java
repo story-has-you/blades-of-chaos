@@ -83,6 +83,7 @@ public class HttpRequestFilter extends OncePerRequestFilter {
     private String getResponseBody(HttpServletResponse response) {
         ContentCachingResponseWrapper wrapper = new ContentCachingResponseWrapper(response);
         try {
+            wrapper.copyBodyToResponse();
             return IOUtils.toString(wrapper.getContentAsByteArray(), wrapper.getCharacterEncoding());
         } catch (IOException e) {
             log.error("getResponseBody Exception >>> ", e);
