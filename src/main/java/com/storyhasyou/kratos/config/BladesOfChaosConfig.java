@@ -3,8 +3,8 @@ package com.storyhasyou.kratos.config;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.storyhasyou.kratos.exceptions.BusinessExceptionHandler;
+import com.storyhasyou.kratos.handler.HttpRequestFilter;
 import com.storyhasyou.kratos.repository.DefaultValueMetaObjectHandler;
 import com.storyhasyou.kratos.utils.JacksonUtils;
 import org.springframework.boot.SpringBootConfiguration;
@@ -66,6 +66,11 @@ public class BladesOfChaosConfig {
         paginationInnerInterceptor.setMaxLimit(500L);
         mybatisPlusInterceptor.addInnerInterceptor(paginationInnerInterceptor);
         return mybatisPlusInterceptor;
+    }
+
+    @Bean
+    public HttpRequestFilter traceIdHandler() {
+        return new HttpRequestFilter();
     }
 
 

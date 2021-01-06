@@ -45,6 +45,9 @@ public class JacksonUtils {
 
     private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+    private static final String[] IGNORE_FIELD = {"deleted"};
+
+
 
     static {
         OBJECT_MAPPER.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
@@ -266,7 +269,7 @@ public class JacksonUtils {
             OBJECT_MAPPER.setPropertyNamingStrategy(propertyNamingStrategy);
         }
         // 设置过滤字段
-        SimpleBeanPropertyFilter fieldFilter = SimpleBeanPropertyFilter.serializeAllExcept("create_time", "update_time", "deleted");
+        SimpleBeanPropertyFilter fieldFilter = SimpleBeanPropertyFilter.serializeAllExcept(IGNORE_FIELD);
         SimpleFilterProvider filterProvider = new SimpleFilterProvider().addFilter("defaultValue", fieldFilter);
         OBJECT_MAPPER.setFilterProvider(filterProvider).addMixIn(BaseEntity.class, PropertyFilterMixIn.class);
 
