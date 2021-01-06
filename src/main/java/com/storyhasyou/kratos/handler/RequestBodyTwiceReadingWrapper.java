@@ -14,7 +14,7 @@ import org.apache.commons.io.IOUtils;
  *
  * @author fangxi created by 2020/10/24
  */
-public class RequestBodyWrapper extends HttpServletRequestWrapper {
+public class RequestBodyTwiceReadingWrapper extends HttpServletRequestWrapper {
 
     /**
      * The Body.
@@ -27,7 +27,7 @@ public class RequestBodyWrapper extends HttpServletRequestWrapper {
      * @param request the request
      * @throws IOException the io exception
      */
-    public RequestBodyWrapper(HttpServletRequest request) throws IOException {
+    public RequestBodyTwiceReadingWrapper(HttpServletRequest request) throws IOException {
         super(request);
         this.body = IOUtils.toByteArray(super.getInputStream());
     }

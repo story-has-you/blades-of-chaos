@@ -4,18 +4,19 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.storyhasyou.kratos.utils.IdUtils;
 import com.storyhasyou.kratos.utils.TraceIdUtils;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletResponseWrapper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.StopWatch;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
-import org.springframework.web.util.WebUtils;
 
 /**
  * @author 方曦 created by 2021/1/6
@@ -31,8 +32,8 @@ public class HttpRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        if (!(request instanceof RequestBodyWrapper)) {
-            request = new RequestBodyWrapper(request);
+        if (!(request instanceof RequestBodyTwiceReadingWrapper)) {
+            request = new RequestBodyTwiceReadingWrapper(request);
         }
 
         String traceId = request.getHeader(TraceIdUtils.TRACE_ID);
@@ -65,13 +66,10 @@ public class HttpRequestFilter extends OncePerRequestFilter {
      * @return the request body
      */
     private String getRequestBody(HttpServletRequest request) {
-        ContentCachingRequestWrapper wrapper = WebUtils.getNativeRequest(request, ContentCachingRequestWrapper.class);
-        if (wrapper != null) {
-            try {
-                return IOUtils.toString(wrapper.getContentAsByteArray(), wrapper.getCharacterEncoding());
-            } catch (IOException e) {
-                log.error("getRequestBody Exception >>> ", e);
-            }
+        try {
+            return IOUtils.toString(request.getInputStream(), Charset.defaultCharset());
+        } catch (IOException e) {
+            log.error("getRequestBody Exception >>> ", e);
         }
         return StringPool.EMPTY;
     }
@@ -83,14 +81,11 @@ public class HttpRequestFilter extends OncePerRequestFilter {
      * @return the response body
      */
     private String getResponseBody(HttpServletResponse response) {
-        ContentCachingResponseWrapper wrapper = WebUtils.getNativeResponse(response,
-                ContentCachingResponseWrapper.class);
-        if (null != wrapper) {
-            try {
-                return IOUtils.toString(wrapper.getContentAsByteArray(), wrapper.getCharacterEncoding());
-            } catch (IOException e) {
-                log.error("getResponseBody Exception >>> ", e);
-            }
+        ContentCachingResponseWrapper wrapper = new ContentCachingResponseWrapper(response);
+        try {
+            return IOUtils.toString(wrapper.getContentAsByteArray(), wrapper.getCharacterEncoding());
+        } catch (IOException e) {
+            log.error("getResponseBody Exception >>> ", e);
         }
         return StringPool.EMPTY;
     }
