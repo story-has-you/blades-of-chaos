@@ -1,6 +1,8 @@
 package com.storyhasyou.kratos.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
+import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.storyhasyou.kratos.exceptions.BusinessExceptionHandler;
@@ -68,9 +70,26 @@ public class BladesOfChaosConfig {
         return mybatisPlusInterceptor;
     }
 
+    /**
+     * Trace id handler http request filter.
+     *
+     * @return the http request filter
+     */
     @Bean
     public HttpRequestFilter traceIdHandler() {
         return new HttpRequestFilter();
+    }
+
+
+    /**
+     * Identifier generator identifier generator.
+     *
+     * @return the identifier generator
+     */
+    @Bean
+    @ConditionalOnMissingBean(IdentifierGenerator.class)
+    public IdentifierGenerator identifierGenerator() {
+        return new DefaultIdentifierGenerator();
     }
 
 

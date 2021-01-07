@@ -1,13 +1,11 @@
 package com.storyhasyou.kratos.base;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * The type Base entity.
@@ -15,13 +13,8 @@ import lombok.Data;
  * @author fangxi
  */
 @Data
-public abstract class BaseEntity implements Serializable, Cloneable {
-
-    /**
-     * 主键id
-     */
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public abstract class BaseEntity extends Identity<Long> {
 
     /**
      * 创建时间 默认当前时间

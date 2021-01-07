@@ -9,7 +9,7 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * The type Id utils.
+ * The type Identity utils.
  *
  * @author fangxi
  * @date 2020 /3/5

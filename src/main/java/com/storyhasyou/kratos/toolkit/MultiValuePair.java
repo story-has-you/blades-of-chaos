@@ -1,6 +1,6 @@
 package com.storyhasyou.kratos.toolkit;
 
-import java.io.Serializable;
+import com.storyhasyou.kratos.base.Identity;
 import java.util.Collection;
 
 /**
@@ -10,7 +10,7 @@ import java.util.Collection;
  * @param <V> the type parameter
  * @author 方曦 created by 2020/12/30
  */
-public class MultiValuePair<K, V> implements Cloneable, Serializable {
+public class MultiValuePair<K, V> extends Identity<Integer> {
 
     /**
      * The Key.
