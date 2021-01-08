@@ -156,6 +156,16 @@ public class Result<T> implements Serializable {
     }
 
     /**
+     * Unauthorized result.
+     *
+     * @param <T> the type parameter
+     * @return the result
+     */
+    public static <T> Result<T> unauthorized() {
+        return error(ResultCode.UNAUTHORIZED);
+    }
+
+    /**
      * Is error boolean.
      *
      * @return the boolean

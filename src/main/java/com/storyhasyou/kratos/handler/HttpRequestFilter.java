@@ -1,6 +1,7 @@
 package com.storyhasyou.kratos.handler;
 
 import com.storyhasyou.kratos.utils.IdUtils;
+import com.storyhasyou.kratos.utils.JacksonUtils;
 import com.storyhasyou.kratos.utils.TraceIdUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +15,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author 方曦 created by 2021/1/6
@@ -49,13 +53,23 @@ public class HttpRequestFilter extends OncePerRequestFilter {
                         && request.getRequestURI().startsWith("/api")) {
                     String requestBody = new String(requestWrapper.getContentAsByteArray());
                     String responseBody = new String(responseWrapper.getContentAsByteArray());
-                    log.debug("traceId:{}, requestBody:{}, responseBody:{}, totalTimeMillis:{}", traceId,
-                            requestBody, responseBody, stopWatch.getTotalTimeMillis());
+                    log.debug("traceId:{}, requestBody:{}, responseBody:{}, totalTimeMillis:{},headers:{}", traceId,
+                            requestBody, responseBody, stopWatch.getTotalTimeMillis(), JacksonUtils.serialize(this.getHeaders(request)));
                 }
             }
             TraceIdUtils.removeCurrentTraceId();
             responseWrapper.copyBodyToResponse();
         }
 
+    }
+
+    private Map<String, Object> getHeaders(HttpServletRequest request) {
+        Enumeration<String> headerNames = request.getHeaderNames();
+        Map<String, Object> headers = new HashMap<>();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            headers.put(headerName, request.getHeader(headerName));
+        }
+        return headers;
     }
 }
