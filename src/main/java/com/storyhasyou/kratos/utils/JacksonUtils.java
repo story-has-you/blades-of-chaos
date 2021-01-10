@@ -21,7 +21,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.storyhasyou.kratos.base.BaseEntity;
 import com.storyhasyou.kratos.toolkit.DatePattern;
-import java.text.SimpleDateFormat;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.lang.NonNull;
@@ -29,6 +28,7 @@ import org.springframework.lang.NonNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -247,6 +247,24 @@ public class JacksonUtils {
         return null;
     }
 
+    /**
+     * Parse map map.
+     *
+     * @param <K>    the type parameter
+     * @param <V>    the type parameter
+     * @param in     the in
+     * @param kClass the k class
+     * @param vClass the v class
+     * @return the map
+     */
+    public static <K, V> Map<K, V> parseMap(@NonNull byte[] in, @NonNull Class<K> kClass, @NonNull Class<V> vClass) {
+        try {
+            return OBJECT_MAPPER.readValue(in, OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, kClass, vClass));
+        } catch (IOException e) {
+            log.error("json解析出错:", e);
+        }
+        return null;
+    }
 
     /**
      * Mapping jackson 2 http message converter mapping jackson 2 http message converter.

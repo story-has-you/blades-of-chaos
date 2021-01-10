@@ -53,8 +53,9 @@ public class HttpRequestFilter extends OncePerRequestFilter {
                         && request.getRequestURI().startsWith("/api")) {
                     String requestBody = new String(requestWrapper.getContentAsByteArray());
                     String responseBody = new String(responseWrapper.getContentAsByteArray());
-                    log.debug("traceId:{}, requestBody:{}, responseBody:{}, totalTimeMillis:{},headers:{}", traceId,
-                            requestBody, responseBody, stopWatch.getTotalTimeMillis(), JacksonUtils.serialize(this.getHeaders(request)));
+                    log.debug("traceId:{}, uri: {}, requestBody:{}, responseBody:{}, totalTimeMillis:{}, headers:{}", traceId,
+                            request.getRequestURI(), requestBody, responseBody,
+                            stopWatch.getTotalTimeMillis(), JacksonUtils.serialize(this.getHeaders(request)));
                 }
             }
             TraceIdUtils.removeCurrentTraceId();
