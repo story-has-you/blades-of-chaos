@@ -8,14 +8,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.storyhasyou.kratos.dto.PageResponse;
 import com.storyhasyou.kratos.exceptions.NotFountException;
-import org.springframework.util.Assert;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.springframework.util.Assert;
 
 /**
  * The interface Base service.
@@ -56,7 +55,7 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
     default PageResponse<T> page(int current, int limit, T entity) {
         QueryWrapper<T> queryWrapper = entity == null ? Wrappers.emptyWrapper() : Wrappers.query(entity);
         Page<T> page = this.page(new Page<>(current, limit), queryWrapper);
-        return PageResponse.of(page.getRecords(), page.getTotal(), page.getPages(), page.getSize(), page.hasNext(), current);
+        return PageResponse.of(page);
     }
 
     /**
