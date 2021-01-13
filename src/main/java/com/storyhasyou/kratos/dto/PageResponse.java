@@ -3,13 +3,14 @@ package com.storyhasyou.kratos.dto;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.storyhasyou.kratos.utils.BeanUtils;
 import com.storyhasyou.kratos.utils.CollectionUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * The type Page response.
@@ -68,6 +69,16 @@ public class PageResponse<T> implements Serializable {
         return of(Function.identity(), page);
     }
 
+    public static <T, R> PageResponse<R> of(Collection<R> rows, Page<T> page) {
+        PageResponse<R> response = new PageResponse<>();
+        response.setCurrent(page.getCurrent());
+        response.setSize(page.getSize());
+        response.setRecords(page.getTotal());
+        response.setPages(page.getPages());
+        response.setHasNext(page.hasNext());
+        response.setRows(rows);
+        return response;
+    }
 
 }
 
