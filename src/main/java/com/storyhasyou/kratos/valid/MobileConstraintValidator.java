@@ -2,9 +2,10 @@ package com.storyhasyou.kratos.valid;
 
 import com.storyhasyou.kratos.annotation.Mobile;
 import com.storyhasyou.kratos.utils.RegexUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * The type Mobile constraint validator.
@@ -18,6 +19,6 @@ public class MobileConstraintValidator implements ConstraintValidator<Mobile, St
         if (StringUtils.isBlank(value)) {
             return false;
         }
-        return RegexUtils.checkMobile(value);
+        return RegexUtils.isMobile(value);
     }
 }

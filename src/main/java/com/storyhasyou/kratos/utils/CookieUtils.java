@@ -1,13 +1,13 @@
 package com.storyhasyou.kratos.utils;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
+import lombok.extern.slf4j.Slf4j;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 
 /**
@@ -15,9 +15,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author fangxi
  */
+@Slf4j
 public final class CookieUtils {
-
-    private final static Logger logger = LoggerFactory.getLogger(CookieUtils.class);
 
     /**
      * Gets cookie value.
@@ -202,9 +201,9 @@ public final class CookieUtils {
             if (cookieMaxage > 0) {
                 cookie.setMaxAge(cookieMaxage);
             }
-            if (null != request) {// 设置域名的cookie
+            if (null != request) {
                 String domainName = getDomainName(request);
-                logger.info("========== domainName: {} ==========", domainName);
+                log.info("========== domainName: {} ==========", domainName);
                 if (!"localhost".equals(domainName)) {
                     cookie.setDomain(domainName);
                 }
@@ -237,9 +236,9 @@ public final class CookieUtils {
             if (cookieMaxage > 0) {
                 cookie.setMaxAge(cookieMaxage);
             }
-            if (null != request) {// 设置域名的cookie
+            if (null != request) {
                 String domainName = getDomainName(request);
-                logger.info("========== domainName: {} ==========", domainName);
+                log.info("========== domainName: {} ==========", domainName);
                 if (!"localhost".equals(domainName)) {
                     cookie.setDomain(domainName);
                 }

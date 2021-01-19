@@ -2,8 +2,10 @@ package com.storyhasyou.kratos.repository;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.storyhasyou.kratos.enums.YesNoEnum;
-import java.time.LocalDateTime;
+import com.storyhasyou.kratos.utils.DateUtils;
 import org.apache.ibatis.reflection.MetaObject;
+
+import java.time.LocalDateTime;
 
 /**
  * The type Default value meta object handler.
@@ -33,7 +35,7 @@ public class DefaultValueMetaObjectHandler implements MetaObjectHandler {
         boolean hasCreateTime = metaObject.hasSetter(CREATE_TIME);
         boolean hasUpdateTime = metaObject.hasSetter(UPDATE_TIME);
         boolean hasDeleted = metaObject.hasSetter(DELETED);
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = DateUtils.now();
         // 有字段则自动填充
         if (hasCreateTime) {
             strictInsertFill(metaObject, CREATE_TIME, LocalDateTime.class, now);
@@ -51,7 +53,7 @@ public class DefaultValueMetaObjectHandler implements MetaObjectHandler {
         Object val = getFieldValByName(UPDATE_TIME, metaObject);
         // 没有自定义值时才更新字段
         if (val == null) {
-            strictUpdateFill(metaObject, UPDATE_TIME, LocalDateTime.class, LocalDateTime.now());
+            strictUpdateFill(metaObject, UPDATE_TIME, LocalDateTime.class, DateUtils.now());
         }
     }
 }

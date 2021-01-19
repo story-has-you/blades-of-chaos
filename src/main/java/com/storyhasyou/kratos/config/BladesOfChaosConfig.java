@@ -38,6 +38,7 @@ public class BladesOfChaosConfig {
      * @return the business exception handler
      */
     @Bean
+    @ConditionalOnMissingBean(BusinessExceptionHandler.class)
     public BusinessExceptionHandler exceptionHandler() {
         return new BusinessExceptionHandler();
     }
@@ -55,17 +56,18 @@ public class BladesOfChaosConfig {
     }
 
     /**
-     * 新的分页插件,一缓和二缓遵循mybatis的规则,需要设置 MybatisConfiguration#useDeprecatedExecutor = false 避免缓存出现问题(该属性会在旧插件移除后一同移除)
+     * 新的分页插件,一缓和二缓遵循mybatis的规则,需要设置
+     * MybatisConfiguration#useDeprecatedExecutor = false 避免缓存出现问题(该属性会在旧插件移除后一同移除)
      *
      * @return the mybatis plus interceptor
      */
     @Bean
     @ConditionalOnMissingBean(MybatisPlusInterceptor.class)
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
-        MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
         PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor();
         paginationInnerInterceptor.setDbType(DbType.MYSQL);
         paginationInnerInterceptor.setMaxLimit(500L);
+        MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
         mybatisPlusInterceptor.addInnerInterceptor(paginationInnerInterceptor);
         return mybatisPlusInterceptor;
     }

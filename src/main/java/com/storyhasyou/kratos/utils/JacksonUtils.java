@@ -87,6 +87,9 @@ public class JacksonUtils {
      * @param objectMapper the object mapper
      */
     public static void setObjectMapper(ObjectMapper objectMapper) {
+        if (objectMapper == null) {
+            return;
+        }
         JacksonUtils.OBJECT_MAPPER = objectMapper;
     }
 
@@ -185,7 +188,7 @@ public class JacksonUtils {
      * @param vClass the v class
      * @return the map
      */
-    public static <K, V> Map<K, V> parseMap(@NonNull String json, @NonNull Class<K> kClass, @NonNull Class<V> vClass) {
+    public static <K, V> Map<K, V> parse(@NonNull String json, @NonNull Class<K> kClass, @NonNull Class<V> vClass) {
         try {
             return OBJECT_MAPPER.readValue(json, OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, kClass, vClass));
         } catch (IOException e) {
@@ -238,7 +241,7 @@ public class JacksonUtils {
      * @param vClass the v class
      * @return the map
      */
-    public static <K, V> Map<K, V> parseMap(@NonNull InputStream in, @NonNull Class<K> kClass, @NonNull Class<V> vClass) {
+    public static <K, V> Map<K, V> parse(@NonNull InputStream in, @NonNull Class<K> kClass, @NonNull Class<V> vClass) {
         try {
             return OBJECT_MAPPER.readValue(in, OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, kClass, vClass));
         } catch (IOException e) {
@@ -257,7 +260,7 @@ public class JacksonUtils {
      * @param vClass the v class
      * @return the map
      */
-    public static <K, V> Map<K, V> parseMap(@NonNull byte[] in, @NonNull Class<K> kClass, @NonNull Class<V> vClass) {
+    public static <K, V> Map<K, V> parse(@NonNull byte[] in, @NonNull Class<K> kClass, @NonNull Class<V> vClass) {
         try {
             return OBJECT_MAPPER.readValue(in, OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, kClass, vClass));
         } catch (IOException e) {
@@ -292,17 +295,17 @@ public class JacksonUtils {
         OBJECT_MAPPER.setFilterProvider(filterProvider).addMixIn(BaseEntity.class, PropertyFilterMixIn.class);
 
         SimpleModule simpleModule = new SimpleModule();
-        //添加对长整型的转换关系
+        // 添加对长整型的转换关系
         ToStringSerializer stringSerializer = ToStringSerializer.instance;
         simpleModule.addSerializer(BigInteger.class, stringSerializer);
         simpleModule.addSerializer(Long.class, stringSerializer);
         simpleModule.addSerializer(Long.TYPE, stringSerializer);
-        //将对象模型添加至对象映射器
+        // 将对象模型添加至对象映射器
         OBJECT_MAPPER.registerModule(simpleModule);
         OBJECT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        //定义Json转换器
+        // 定义Json转换器
         MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
-        //将对象映射器添加至Json转换器
+        // 将对象映射器添加至Json转换器
         jackson2HttpMessageConverter.setObjectMapper(OBJECT_MAPPER);
         return jackson2HttpMessageConverter;
     }
