@@ -107,6 +107,7 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
+            <optional>true</optional>
         </dependency>
         <!--JWT(Json Web Token)登录支持-->
         <dependency>
