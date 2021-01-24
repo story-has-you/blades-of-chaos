@@ -1,6 +1,11 @@
 package com.storyhasyou.kratos.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.storyhasyou.kratos.toolkit.StringPool;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.util.Assert;
+
 import java.lang.invoke.SerializedLambda;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
@@ -15,9 +20,6 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.util.Assert;
 
 /**
  * The type Bean utils.
@@ -175,7 +177,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         if (prefix == null) {
             throw new RuntimeException("无效的getter方法: " + methodName);
         }
-        String replace = methodName.replace(prefix, "");
+        String replace = methodName.replace(prefix, StringPool.EMPTY);
         if (Character.isLowerCase(replace.charAt(0))) {
             return replace;
         } else {

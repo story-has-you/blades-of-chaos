@@ -1,6 +1,8 @@
 package com.storyhasyou.kratos.utils;
 
 import cn.hutool.core.util.NumberUtil;
+import com.storyhasyou.kratos.toolkit.StringPool;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public class NumberUtils extends NumberUtil {
      * @return boolean
      */
     public static boolean isDigit(String str) {
-        if (str == null || "".equals(str.trim())) {
+        if (str == null || StringPool.EMPTY.equals(str.trim())) {
             return false;
         }
         return str.matches("^\\d+$");

@@ -51,12 +51,7 @@ public class PageResponse<T> implements Serializable {
 
     public static <R, T> PageResponse<R> of(Function<T, R> function, Page<T> page) {
         List<T> records = page.getRecords();
-        PageResponse<R> response = new PageResponse<>();
-        response.setCurrent(page.getCurrent());
-        response.setSize(page.getSize());
-        response.setRecords(page.getTotal());
-        response.setPages(page.getPages());
-        response.setHasNext(page.hasNext());
+        PageResponse<R> response = getResponse(page.getCurrent(), page.getSize(), page.getTotal(), page.getPages(), page.hasNext());
         response.setRows(CollectionUtils.map(records, function));
         return response;
     }
@@ -70,13 +65,18 @@ public class PageResponse<T> implements Serializable {
     }
 
     public static <T, R> PageResponse<R> of(Collection<R> rows, Page<T> page) {
-        PageResponse<R> response = new PageResponse<>();
-        response.setCurrent(page.getCurrent());
-        response.setSize(page.getSize());
-        response.setRecords(page.getTotal());
-        response.setPages(page.getPages());
-        response.setHasNext(page.hasNext());
+        PageResponse<R> response = getResponse(page.getCurrent(), page.getSize(), page.getTotal(), page.getPages(), page.hasNext());
         response.setRows(rows);
+        return response;
+    }
+
+    private static <R> PageResponse<R> getResponse(long current, long size, long total, long pages, boolean b) {
+        PageResponse<R> response = new PageResponse<>();
+        response.setCurrent(current);
+        response.setSize(size);
+        response.setRecords(total);
+        response.setPages(pages);
+        response.setHasNext(b);
         return response;
     }
 

@@ -2,7 +2,7 @@ package com.storyhasyou.kratos.utils;
 
 import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import com.storyhasyou.kratos.toolkit.StringPool;
 import com.storyhasyou.kratos.toolkit.DatePattern;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;

@@ -1,5 +1,6 @@
 package com.storyhasyou.kratos.utils;
 
+import com.storyhasyou.kratos.toolkit.StringPool;
 import com.storyhasyou.kratos.enums.SensitiveTypeEnum;
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,7 +19,7 @@ public class SensitiveUtils {
      */
     public static String realName(final String realName) {
         if (StringUtils.isBlank(realName)) {
-            return "";
+            return StringPool.EMPTY;
         }
         return dealString(realName, 1, 0);
     }
@@ -31,7 +32,7 @@ public class SensitiveUtils {
      */
     public static String idCard(final String idCard) {
         if (StringUtils.isBlank(idCard)) {
-            return "";
+            return StringPool.EMPTY;
         }
         return dealString(idCard, 3, 4);
     }
@@ -44,7 +45,7 @@ public class SensitiveUtils {
      */
     public static String mobilePhone(final String idCard) {
         if (StringUtils.isBlank(idCard)) {
-            return "";
+            return StringPool.EMPTY;
         }
         return dealString(idCard, 3, 4);
     }
@@ -57,7 +58,7 @@ public class SensitiveUtils {
      */
     public static String email(final String email) {
         if (StringUtils.isBlank(email)) {
-            return "";
+            return StringPool.EMPTY;
         }
         int index = email.indexOf("@");
         return dealString(email, 3, email.length() - index);
@@ -71,10 +72,10 @@ public class SensitiveUtils {
      */
     public static String acctNo(final String idCard) {
         if (StringUtils.isBlank(idCard)) {
-            return "";
+            return StringPool.EMPTY;
         }
         final String name = StringUtils.left(idCard, 1);
-        return StringUtils.rightPad(name, StringUtils.length(idCard), "*");
+        return StringUtils.rightPad(name, StringUtils.length(idCard), StringPool.EMPTY);
     }
 
     /**
@@ -85,9 +86,9 @@ public class SensitiveUtils {
      */
     public static String password(final String password) {
         if (StringUtils.isBlank(password)) {
-            return "";
+            return StringPool.EMPTY;
         }
-        return "*";
+        return StringPool.ASTERISK;
     }
 
 
@@ -100,7 +101,7 @@ public class SensitiveUtils {
         int size = length - (headOff + tailOff);
         if (size > 0) {
             while (size > 0) {
-                sb.append("*");
+                sb.append(StringPool.EMPTY);
                 size--;
             }
         }

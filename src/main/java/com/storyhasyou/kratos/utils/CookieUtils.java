@@ -1,5 +1,6 @@
 package com.storyhasyou.kratos.utils;
 
+import com.storyhasyou.kratos.toolkit.StringPool;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.Cookie;
@@ -176,7 +177,7 @@ public final class CookieUtils {
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response,
                                     String cookieName) {
         doSetCookie(request, response, cookieName, null, -1, false);
-//        doSetCookie(request, response, cookieName, "", -1, false);
+//        doSetCookie(request, response, cookieName, StringPool.EMPTY, -1, false);
     }
 
 
@@ -193,7 +194,7 @@ public final class CookieUtils {
                                     String cookieName, String cookieValue, int cookieMaxage, boolean isEncode) {
         try {
             if (cookieValue == null) {
-                cookieValue = "";
+                cookieValue = StringPool.EMPTY;
             } else if (isEncode) {
                 cookieValue = URLEncoder.encode(cookieValue, "utf-8");
             }
@@ -228,7 +229,7 @@ public final class CookieUtils {
                                     String cookieName, String cookieValue, int cookieMaxage, String encodeString) {
         try {
             if (cookieValue == null) {
-                cookieValue = "";
+                cookieValue = StringPool.EMPTY;
             } else {
                 cookieValue = URLEncoder.encode(cookieValue, encodeString);
             }
@@ -258,8 +259,8 @@ public final class CookieUtils {
         String domainName = null;
 
         String serverName = request.getRequestURL().toString();
-        if (serverName == null || "".equals(serverName)) {
-            domainName = "";
+        if (serverName == null || StringPool.EMPTY.equals(serverName)) {
+            domainName = StringPool.EMPTY;
         } else {
             serverName = serverName.toLowerCase();
             serverName = serverName.substring(7);

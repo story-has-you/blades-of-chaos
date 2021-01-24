@@ -1,12 +1,14 @@
 package com.storyhasyou.kratos.valid;
 
+import com.storyhasyou.kratos.toolkit.StringPool;
 import com.storyhasyou.kratos.utils.CollectionUtils;
-import java.util.Set;
-import java.util.stream.Collectors;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -40,6 +42,6 @@ public class BeanValidator {
      * 转换异常信息
      */
     private static <T> String convertErrorMsg(Set<ConstraintViolation<T>> set) {
-        return set.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(","));
+        return set.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(StringPool.COMMA));
     }
 }

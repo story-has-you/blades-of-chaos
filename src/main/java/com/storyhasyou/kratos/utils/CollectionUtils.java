@@ -1,6 +1,9 @@
 package com.storyhasyou.kratos.utils;
 
-import com.beust.jcommander.internal.Lists;
+import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,8 +23,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 
 /**
  * The type Collection utils.
@@ -458,7 +459,7 @@ public class CollectionUtils {
                                           Function<E, ?> operator1, Function<T, ?> operator2,
                                           BiFunction<E, T, R> function) {
 
-        if (isEmpty(source1) || isEmpty(source2) || operator1 == null || operator2 == null || function == null) {
+        if (isEmpty(source1) || isEmpty(source2) || ObjectUtils.allNotNull(operator1, operator2, function)) {
             return Collections.emptyList();
         }
 

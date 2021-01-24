@@ -178,44 +178,40 @@ public class Result<T> implements Serializable {
     /**
      * Service data t.
      *
-     * @return the t
-     */
-    public T data() {
-        if (isError()) {
-            throw new BusinessException(message);
-        }
-        return data;
-    }
-
-    /**
-     * Service data t.
-     *
-     * @param <E>               the type parameter
-     * @param exceptionSupplier the exception supplier
-     * @return the t
-     */
-    public <E extends RuntimeException> T data(Supplier<? extends E> exceptionSupplier) {
-        if (isError()) {
-            throw exceptionSupplier.get();
-        }
-        return data;
-    }
-
-    /**
-     * Service data t.
-     *
      * @param <E>               the type parameter
      * @param <R>               the type parameter
      * @param function          the function
      * @param exceptionSupplier the exception supplier
      * @return the t
      */
-    public <E extends RuntimeException, R> R data(Function<T, R> function, Supplier<? extends E> exceptionSupplier) {
+    public <E extends BusinessException, R> R data(Function<T, R> function, Supplier<? extends E> exceptionSupplier) {
         if (isError()) {
             throw exceptionSupplier.get();
         }
         return function.apply(data);
     }
+
+    /**
+     * Service data t.
+     *
+     * @return the t
+     */
+    public T data() {
+        return data(Function.identity(), () -> new BusinessException(message));
+    }
+
+    /**
+     * Service data t.
+     *
+     * @param <E>               the type parameter
+     * @param exceptionSupplier the exception supplier
+     * @return the t
+     */
+    public <E extends BusinessException> T data(Supplier<? extends E> exceptionSupplier) {
+        return data(Function.identity(), exceptionSupplier);
+    }
+
+
 
     /**
      * Service data t.
@@ -225,9 +221,6 @@ public class Result<T> implements Serializable {
      * @return the t
      */
     public <R> R data(Function<T, R> function) {
-        if (isError()) {
-            throw new BusinessException(message);
-        }
-        return function.apply(data);
+        return data(function, () -> new BusinessException(message));
     }
 }

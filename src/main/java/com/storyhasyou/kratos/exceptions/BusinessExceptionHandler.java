@@ -1,7 +1,7 @@
 package com.storyhasyou.kratos.exceptions;
 
 import com.storyhasyou.kratos.result.Result;
-import java.util.stream.Collectors;
+import com.storyhasyou.kratos.toolkit.StringPool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -11,6 +11,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.stream.Collectors;
 
 /**
  * The type Business exception handler.
@@ -47,7 +49,7 @@ public class BusinessExceptionHandler {
                 .stream()
                 .map(FieldError::getDefaultMessage)
                 .distinct()
-                .collect(Collectors.joining(","));
+                .collect(Collectors.joining(StringPool.COMMA));
         return Result.error(HttpStatus.BAD_REQUEST.value(), msg);
     }
 
@@ -64,7 +66,7 @@ public class BusinessExceptionHandler {
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .distinct()
-                .collect(Collectors.joining(","));
+                .collect(Collectors.joining(StringPool.COMMA));
         return Result.error(HttpStatus.BAD_REQUEST.value(), msg);
     }
 
@@ -77,7 +79,7 @@ public class BusinessExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public Result<?> handlerException(Exception ex) {
-        log.error("", ex);
+        log.error(StringPool.EMPTY, ex);
         return Result.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage());
     }
 
