@@ -1,9 +1,5 @@
 package com.storyhasyou.kratos.utils;
 
-import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,6 +19,9 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
 /**
  * The type Collection utils.
@@ -459,18 +458,19 @@ public class CollectionUtils {
                                           Function<E, ?> operator1, Function<T, ?> operator2,
                                           BiFunction<E, T, R> function) {
 
-        if (isEmpty(source1) || isEmpty(source2) || ObjectUtils.allNotNull(operator1, operator2, function)) {
+        if (isEmpty(source1) || isEmpty(source2) || ObjectUtils.allNull(operator1, operator2, function)) {
             return Collections.emptyList();
         }
 
         List<R> result = new ArrayList<>(Math.max(source1.size(), source2.size()));
-        for (E e : source1) {
-            for (T t : source2) {
-                if (Objects.equals(operator1.apply(e), operator2.apply(t))) {
-                    result.add(function.apply(e, t));
-                }
+        Map<?, E> eMap = source1.stream().collect(Collectors.toMap(operator1, Function.identity(), (e, e2) -> e2));
+        source2.forEach(t -> {
+            Object apply = operator2.apply(t);
+            if (Objects.nonNull(apply) && eMap.containsKey(apply)) {
+                E e = eMap.get(apply);
+                result.add(function.apply(e, t));
             }
-        }
+        });
         return result;
     }
 
