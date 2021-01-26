@@ -77,5 +77,5 @@ public interface StringPool {
 
     String[] EMPTY_ARRAY = new String[0];
 
-    byte[] BYTES_NEW_LINE = com.baomidou.mybatisplus.core.toolkit.StringPool.NEWLINE.getBytes();
+    byte[] BYTES_NEW_LINE = StringPool.NEWLINE.getBytes();
 }

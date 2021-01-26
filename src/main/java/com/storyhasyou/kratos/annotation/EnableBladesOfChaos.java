@@ -1,6 +1,7 @@
 package com.storyhasyou.kratos.annotation;
 
 import com.storyhasyou.kratos.config.BladesOfChaosConfig;
+import com.storyhasyou.kratos.config.ThreadPoolConfiguration;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,6 +15,6 @@ import org.springframework.context.annotation.Import;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(BladesOfChaosConfig.class)
+@Import({BladesOfChaosConfig.class, ThreadPoolConfiguration.class})
 public @interface EnableBladesOfChaos {
 }
