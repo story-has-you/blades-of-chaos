@@ -67,9 +67,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
      * @return the list
      */
     public static <T, E> List<T> copyProperties(Collection<E> source, Class<T> target) {
-        if (CollectionUtils.isEmpty(source)) {
-            return Collections.emptyList();
-        }
+        Assert.notEmpty(source, "Source must not be null");
         return source.stream().map(x -> copyProperties(x, target)).collect(Collectors.toList());
     }
 

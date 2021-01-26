@@ -21,10 +21,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.storyhasyou.kratos.base.BaseEntity;
 import com.storyhasyou.kratos.toolkit.DatePattern;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.lang.NonNull;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -34,6 +30,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.lang.NonNull;
 
 /**
  * The type Json utils.
@@ -169,9 +169,43 @@ public class JacksonUtils {
      * @param eClass the e class
      * @return the list
      */
+    public static <E> E[] parseArray(@NonNull String json, @NonNull Class<E> eClass) {
+        try {
+            return OBJECT_MAPPER.readValue(json, OBJECT_MAPPER.getTypeFactory().constructArrayType(eClass));
+        } catch (IOException e) {
+            log.error("json解析出错: {}", json, e);
+        }
+        return null;
+    }
+
+    /**
+     * Parse list list.
+     *
+     * @param <E>    the type parameter
+     * @param json   the json
+     * @param eClass the e class
+     * @return the list
+     */
     public static <E> List<E> parseList(@NonNull String json, @NonNull Class<E> eClass) {
         try {
             return OBJECT_MAPPER.readValue(json, OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, eClass));
+        } catch (IOException e) {
+            log.error("json解析出错: {}", json, e);
+        }
+        return null;
+    }
+
+    /**
+     * Parse list list.
+     *
+     * @param <E>    the type parameter
+     * @param json   the json
+     * @param eClass the e class
+     * @return the list
+     */
+    public static <E> Set<E> parseSet(@NonNull String json, @NonNull Class<E> eClass) {
+        try {
+            return OBJECT_MAPPER.readValue(json, OBJECT_MAPPER.getTypeFactory().constructCollectionType(Set.class, eClass));
         } catch (IOException e) {
             log.error("json解析出错: {}", json, e);
         }

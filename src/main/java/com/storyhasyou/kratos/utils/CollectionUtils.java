@@ -3,7 +3,6 @@ package com.storyhasyou.kratos.utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,7 +18,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
@@ -435,6 +433,7 @@ public class CollectionUtils {
      * @return list list
      */
     public static <E, R> List<R> map(Collection<E> source, Function<E, R> function) {
+        Assert.notEmpty(source, "Source must not be null");
         Assert.notNull(function, "function must not be null");
         return source.stream().map(function).collect(Collectors.toList());
     }
@@ -458,10 +457,11 @@ public class CollectionUtils {
                                           Function<E, ?> operator1, Function<T, ?> operator2,
                                           BiFunction<E, T, R> function) {
 
-        if (isEmpty(source1) || isEmpty(source2) || ObjectUtils.allNull(operator1, operator2, function)) {
-            return Collections.emptyList();
-        }
-
+        Assert.notNull(function, "function must not be null");
+        Assert.notNull(operator1, "operator1 must not be null");
+        Assert.notNull(operator2, "operator2 must not be null");
+        Assert.notEmpty(source1, "source1 must not be null");
+        Assert.notEmpty(source2, "source2 must not be null");
         List<R> result = new ArrayList<>(Math.max(source1.size(), source2.size()));
         Map<?, E> eMap = source1.stream().collect(Collectors.toMap(operator1, Function.identity(), (e, e2) -> e2));
         source2.forEach(t -> {
@@ -484,7 +484,7 @@ public class CollectionUtils {
      * @return the t
      */
     public static <T> Optional<T> find(Collection<T> source, Predicate<T> predicate) {
-        if (isEmpty(source)) {
+        if (isEmpty(source) || predicate == null) {
             return Optional.empty();
         }
         return source.stream().filter(predicate).findFirst();
