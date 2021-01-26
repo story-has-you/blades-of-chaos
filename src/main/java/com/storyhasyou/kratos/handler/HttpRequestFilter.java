@@ -1,8 +1,15 @@
 package com.storyhasyou.kratos.handler;
 
 import com.storyhasyou.kratos.utils.IdUtils;
-import com.storyhasyou.kratos.utils.JacksonUtils;
 import com.storyhasyou.kratos.utils.TraceIdUtils;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.StopWatch;
@@ -10,16 +17,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
+ * The type Http request filter.
+ *
  * @author 方曦 created by 2021/1/6
  */
 @Slf4j
@@ -30,6 +30,20 @@ public class HttpRequestFilter extends OncePerRequestFilter {
      */
     private static final String IGNORE_CONTENT_TYPE = "multipart/form-data";
 
+    /**
+     * The constant URL_PREFIX.
+     */
+    private static final String URL_PREFIX = "/api";
+
+    /**
+     * Do filter internal.
+     *
+     * @param request     the request
+     * @param response    the response
+     * @param filterChain the filter chain
+     * @throws ServletException the servlet exception
+     * @throws IOException      the io exception
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
@@ -41,29 +55,26 @@ public class HttpRequestFilter extends OncePerRequestFilter {
         }
         TraceIdUtils.putCurrentTraceId(traceId);
         StopWatch stopWatch = new StopWatch(traceId);
-        stopWatch.start();
         try {
+            stopWatch.start();
             filterChain.doFilter(requestWrapper, responseWrapper);
         } catch (Exception e) {
             log.error("HttpRequestFilter.doFilterInternal Exception >>> ", e);
         } finally {
             stopWatch.stop();
-            if (log.isDebugEnabled()) {
-                if (!StringUtils.equals(IGNORE_CONTENT_TYPE, request.getContentType())
-                        && request.getRequestURI().startsWith("/api")) {
-                    String requestBody = new String(requestWrapper.getContentAsByteArray());
-                    String responseBody = new String(responseWrapper.getContentAsByteArray());
-                    log.debug("traceId:{}, uri: {}, requestBody:{}, responseBody:{}, totalTimeMillis:{}, headers:{}", traceId,
-                            request.getRequestURI(), requestBody, responseBody,
-                            stopWatch.getTotalTimeMillis(), JacksonUtils.serialize(this.getHeaders(request)));
-                }
-            }
+            log.debug("traceId:{},uri:{},totalTimeMillis:{}", traceId, request.getRequestURI(), stopWatch.getTotalTimeMillis());
             TraceIdUtils.removeCurrentTraceId();
             responseWrapper.copyBodyToResponse();
         }
 
     }
 
+    /**
+     * Gets headers.
+     *
+     * @param request the request
+     * @return the headers
+     */
     private Map<String, Object> getHeaders(HttpServletRequest request) {
         Enumeration<String> headerNames = request.getHeaderNames();
         Map<String, Object> headers = new HashMap<>();
