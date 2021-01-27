@@ -19,10 +19,10 @@ import org.springframework.util.Assert;
 /**
  * The interface Base service.
  *
- * @param <T> the type parameter
+ * @param <Entity> the type parameter
  * @author fangxi created by 2020/6/18
  */
-public interface BaseService<T extends BaseEntity> extends IService<T> {
+public interface BaseService<Entity extends BaseEntity> extends IService<Entity> {
 
     /**
      * 获取
@@ -30,7 +30,7 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * @param id {@code Long} ID
      * @return 领域模型 t
      */
-    default T get(Long id) {
+    default Entity get(Long id) {
         return getOpt(id).orElseThrow(() -> new NotFountException(StrUtil.format("找不到id={}的对象", id)));
     }
 
@@ -40,7 +40,7 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * @param id {@code Long} ID
      * @return 领域模型 opt
      */
-    default Optional<T> getOpt(Long id) {
+    default Optional<Entity> getOpt(Long id) {
         return Optional.ofNullable(getById(id));
     }
 
@@ -52,9 +52,9 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * @param entity  领域模型
      * @return 管理员分页数据 page response
      */
-    default PageResponse<T> page(int current, int limit, T entity) {
-        QueryWrapper<T> queryWrapper = entity == null ? Wrappers.emptyWrapper() : Wrappers.query(entity);
-        Page<T> page = this.page(new Page<>(current, limit), queryWrapper);
+    default PageResponse<Entity> page(int current, int limit, Entity entity) {
+        QueryWrapper<Entity> queryWrapper = entity == null ? Wrappers.emptyWrapper() : Wrappers.query(entity);
+        Page<Entity> page = this.page(new Page<>(current, limit), queryWrapper);
         return PageResponse.of(page);
     }
 
@@ -65,7 +65,7 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * @param limit   {@code int} 笔数
      * @return the page response
      */
-    default PageResponse<T> page(int current, int limit) {
+    default PageResponse<Entity> page(int current, int limit) {
         return page(current, limit, null);
     }
 
@@ -76,12 +76,12 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * @param ids the ids
      * @return map map
      */
-    default Map<Long, T> mapByIds(List<Long> ids) {
+    default Map<Long, Entity> mapByIds(List<Long> ids) {
         Assert.notEmpty(ids, "ids must not null or empty");
-        List<T> entities = listByIds(ids);
+        List<Entity> entities = listByIds(ids);
         if (CollectionUtils.isEmpty(entities)) {
             return Collections.emptyMap();
         }
-        return entities.stream().collect(Collectors.toMap(T::getId, Function.identity()));
+        return entities.stream().collect(Collectors.toMap(Entity::getId, Function.identity()));
     }
 }

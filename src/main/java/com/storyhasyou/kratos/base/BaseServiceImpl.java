@@ -9,11 +9,11 @@ import org.slf4j.LoggerFactory;
 /**
  * The type Base service.
  *
- * @param <M> the type parameter
- * @param <T> the type parameter
+ * @param <Mapper> the type parameter
+ * @param <Entity> the type parameter
  * @author fangxi
  */
-public abstract class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> extends ServiceImpl<M, T> implements BaseService<T> {
+public abstract class BaseServiceImpl<Mapper extends BaseMapper<Entity>, Entity extends BaseEntity> extends ServiceImpl<Mapper, Entity> implements BaseService<Entity> {
 
     /**
      * The Log.
@@ -27,7 +27,7 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEnt
      * @param value  the value
      * @return the boolean
      */
-    protected boolean exists(SFunction<T, ?> column, Object value) {
+    protected boolean exists(SFunction<Entity, ?> column, Object value) {
         return lambdaQuery().eq(column, value).count() > 0;
     }
 }

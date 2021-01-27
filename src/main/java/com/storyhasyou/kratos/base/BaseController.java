@@ -23,10 +23,10 @@ import static com.storyhasyou.kratos.result.Result.ok;
  * 通用请求处理
  *
  * @param <T> the type parameter
- * @param <S> the type parameter
+ * @param <Service> the type parameter
  * @author fangxi
  */
-public abstract class BaseController<T extends BaseEntity, S extends BaseService<T>> {
+public abstract class BaseController<Entity extends BaseEntity, Service extends BaseService<Entity>> {
 
     /**
      * The Log.
@@ -37,7 +37,7 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * The Base service.
      */
     @Autowired
-    protected S baseService;
+    protected Service baseService;
 
     /**
      * 新增
@@ -46,7 +46,7 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @return {@link Result}
      */
     @PostMapping("/create")
-    public Result<Long> create(@RequestBody T entity) {
+    public Result<Long> create(@RequestBody Entity entity) {
         // 业务逻辑
         boolean created = baseService.save(entity);
         return created ? ok(entity.getId()) : error();
@@ -85,7 +85,7 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @return {@link Result}
      */
     @PutMapping("/update")
-    public Result<Boolean> update(@RequestBody T entity) {
+    public Result<Boolean> update(@RequestBody Entity entity) {
         // 业务逻辑
         boolean updated = baseService.updateById(entity);
         return ok(updated);
@@ -99,8 +99,8 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @return {@link Result}
      */
     @GetMapping("/get/{id}")
-    public Result<T> get(@PathVariable Long id) {
-        T entity = baseService.get(id);
+    public Result<Entity> get(@PathVariable Long id) {
+        Entity entity = baseService.get(id);
         return ok(entity);
     }
 
@@ -112,9 +112,9 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @return {@link Result}
      */
     @GetMapping("/page")
-    public Result<PageResponse<T>> page(@ModelAttribute @Validated PageRequest pageRequest,
-                                        @ModelAttribute T entity) {
-        PageResponse<T> pageResponse = baseService.page(pageRequest.getCurrent(), pageRequest.getLimit(), entity);
+    public Result<PageResponse<Entity>> page(@ModelAttribute @Validated PageRequest pageRequest,
+                                        @ModelAttribute Entity entity) {
+        PageResponse<Entity> pageResponse = baseService.page(pageRequest.getCurrent(), pageRequest.getLimit(), entity);
         return ok(pageResponse);
     }
 
@@ -124,8 +124,8 @@ public abstract class BaseController<T extends BaseEntity, S extends BaseService
      * @return the result
      */
     @GetMapping("/all")
-    public Result<List<T>> all() {
-        List<T> list = baseService.list();
+    public Result<List<Entity>> all() {
+        List<Entity> list = baseService.list();
         return ok(list);
     }
 }
