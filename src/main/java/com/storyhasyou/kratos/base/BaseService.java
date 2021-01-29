@@ -1,9 +1,7 @@
 package com.storyhasyou.kratos.base;
 
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.storyhasyou.kratos.dto.PageResponse;
@@ -53,8 +51,10 @@ public interface BaseService<Entity extends BaseEntity> extends IService<Entity>
      * @return 管理员分页数据 page response
      */
     default PageResponse<Entity> page(int current, int limit, Entity entity) {
-        QueryWrapper<Entity> queryWrapper = entity == null ? Wrappers.emptyWrapper() : Wrappers.query(entity);
-        Page<Entity> page = this.page(new Page<>(current, limit), queryWrapper);
+        Page<Entity> page = lambdaQuery()
+                .setEntity(entity)
+                .orderByDesc(BaseEntity::getCreateTime)
+                .page(new Page<>(current, limit));
         return PageResponse.of(page);
     }
 
