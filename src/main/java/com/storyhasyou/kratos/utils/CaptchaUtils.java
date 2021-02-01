@@ -35,10 +35,10 @@ public class CaptchaUtils extends CaptchaUtil {
     /**
      * 生成4位验证码，默认120x35
      *
-     * @return capatcha capatcha
+     * @return Captcha Captcha
      */
-    public static Captcha generateCapatcha() {
-        return generateCapatcha(120, 35, 4, 10);
+    public static Captcha generate() {
+        return generate(120, 35, 4, 10);
     }
 
 
@@ -49,9 +49,9 @@ public class CaptchaUtils extends CaptchaUtil {
      * @param height 高度
      * @param length 验证码字符的长度
      * @param line   干扰线行数
-     * @return the capatcha
+     * @return the Captcha
      */
-    public static Captcha generateCapatcha(int width, int height, int length, int line) {
+    public static Captcha generate(int width, int height, int length, int line) {
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = bufferedImage.getGraphics();
         // 背景色
@@ -115,7 +115,7 @@ public class CaptchaUtils extends CaptchaUtil {
      *
      * @param min the min
      * @param max the max
-     * @return color
+     * @return color color
      */
     private static Color randomColor(int min, int max) {
         min = Math.min(min, 255);

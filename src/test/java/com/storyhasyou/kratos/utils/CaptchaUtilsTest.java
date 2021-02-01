@@ -11,7 +11,7 @@ public class CaptchaUtilsTest {
     @Test
     public void generateCapatcha() throws Exception {
 
-        Captcha capatcha = CaptchaUtils.generateCapatcha(120, 35, 4, 10);
+        Captcha capatcha = CaptchaUtils.generate(120, 35, 4, 10);
         System.out.println(capatcha);
     }
 

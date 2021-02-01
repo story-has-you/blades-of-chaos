@@ -34,12 +34,15 @@ public class RabbitSender {
      * ack: true | false 消息是否落盘成功
      * cause: 失败的一些信息
      */
-    public final RabbitTemplate.ConfirmCallback defaultConfirmCallback = (correlationData, ack, cause) ->
+    public static final RabbitTemplate.ConfirmCallback DEFAULT_CONFIRM_CALLBACK = (correlationData, ack, cause) ->
             log.info("消息ack结果: {}, correlationData: {}", ack, correlationData);
     /**
      * key: topic
      */
     private final Map<String, RabbitTemplate> rabbitTemplateMap = new ConcurrentHashMap<>(1 << 7);
+    /**
+     * The Connection factory.
+     */
     @Autowired
     private ConnectionFactory connectionFactory;
 
@@ -53,7 +56,6 @@ public class RabbitSender {
      */
     public <T> void send(T body, String exchange, String routingKey) {
         this.send(body, exchange, routingKey, null);
-
     }
 
 
@@ -116,7 +118,7 @@ public class RabbitSender {
     public <T> void send(T body, Map<String, Object> properties, String exchange, String routingKey,
                          RabbitTemplate.ConfirmCallback confirmCallback, MessagePostProcessor messagePostProcessor) {
         if (log.isDebugEnabled()) {
-            log.debug("发送mq消息, 内容: {}, 附加属性: {}, wxchange: {}, routingKey: {}", body, properties, exchange, routingKey);
+            log.debug("发送mq消息, 内容: {}, 附加属性: {}, change: {}, routingKey: {}", body, properties, exchange, routingKey);
         }
         // 构造消息
         MessageHeaders messageHeaders = new MessageHeaders(properties);
@@ -132,6 +134,14 @@ public class RabbitSender {
 
     }
 
+    /**
+     * Gets rabbit template.
+     *
+     * @param topic           the topic
+     * @param routingKey      the routing key
+     * @param confirmCallback the confirm callback
+     * @return the rabbit template
+     */
     private RabbitTemplate getRabbitTemplate(String topic, String routingKey,
                                              RabbitTemplate.ConfirmCallback confirmCallback) {
         Assert.notNull(topic, "topic must not be null");

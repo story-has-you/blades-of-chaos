@@ -16,13 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import static com.storyhasyou.kratos.result.Result.error;
-import static com.storyhasyou.kratos.result.Result.ok;
-
 /**
  * 通用请求处理
  *
- * @param <T> the type parameter
+ * @param <Entity>  the type parameter
  * @param <Service> the type parameter
  * @author fangxi
  */
@@ -47,9 +44,8 @@ public abstract class BaseController<Entity extends BaseEntity, Service extends 
      */
     @PostMapping("/create")
     public Result<Long> create(@RequestBody Entity entity) {
-        // 业务逻辑
         boolean created = baseService.save(entity);
-        return created ? ok(entity.getId()) : error();
+        return created ? Result.ok(entity.getId()) : Result.error();
     }
 
     /**
@@ -60,9 +56,8 @@ public abstract class BaseController<Entity extends BaseEntity, Service extends 
      */
     @DeleteMapping("/remove/{id}")
     public Result<Boolean> remove(@PathVariable Long id) {
-        // 业务逻辑
         boolean deleted = baseService.removeById(id);
-        return ok(deleted);
+        return Result.ok(deleted);
     }
 
     /**
@@ -73,9 +68,8 @@ public abstract class BaseController<Entity extends BaseEntity, Service extends 
      */
     @DeleteMapping("/batch/remove")
     public Result<Boolean> removeBatch(@RequestBody List<Long> ids) {
-        // 业务逻辑
         boolean deleted = baseService.removeByIds(ids);
-        return ok(deleted);
+        return Result.ok(deleted);
     }
 
     /**
@@ -86,9 +80,8 @@ public abstract class BaseController<Entity extends BaseEntity, Service extends 
      */
     @PutMapping("/update")
     public Result<Boolean> update(@RequestBody Entity entity) {
-        // 业务逻辑
         boolean updated = baseService.updateById(entity);
-        return ok(updated);
+        return Result.ok(updated);
 
     }
 
@@ -101,7 +94,7 @@ public abstract class BaseController<Entity extends BaseEntity, Service extends 
     @GetMapping("/get/{id}")
     public Result<Entity> get(@PathVariable Long id) {
         Entity entity = baseService.get(id);
-        return ok(entity);
+        return Result.ok(entity);
     }
 
     /**
@@ -115,7 +108,7 @@ public abstract class BaseController<Entity extends BaseEntity, Service extends 
     public Result<PageResponse<Entity>> page(@ModelAttribute @Validated PageRequest pageRequest,
                                         @ModelAttribute Entity entity) {
         PageResponse<Entity> pageResponse = baseService.page(pageRequest.getCurrent(), pageRequest.getLimit(), entity);
-        return ok(pageResponse);
+        return Result.ok(pageResponse);
     }
 
     /**
@@ -126,6 +119,6 @@ public abstract class BaseController<Entity extends BaseEntity, Service extends 
     @GetMapping("/all")
     public Result<List<Entity>> all() {
         List<Entity> list = baseService.list();
-        return ok(list);
+        return Result.ok(list);
     }
 }

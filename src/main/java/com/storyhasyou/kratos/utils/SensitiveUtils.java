@@ -117,7 +117,7 @@ public class SensitiveUtils {
      * @param value the value
      * @return string
      */
-    public static String sensitveValue(SensitiveTypeEnum type, String value) {
+    public static String sensitiveValue(SensitiveTypeEnum type, String value) {
         switch (type) {
             case NAME: {
                 return realName(String.valueOf(value));

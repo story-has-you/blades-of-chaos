@@ -4,7 +4,6 @@ import cn.hutool.core.date.LocalDateTimeUtil;
 import com.storyhasyou.kratos.toolkit.DatePattern;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.GregorianCalendar;
 
@@ -45,9 +44,7 @@ public class DateUtils extends LocalDateTimeUtil {
      * @return the string
      */
     public static String today() {
-        LocalDate today = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DatePattern.NORM_DATE_PATTERN);
-        return today.format(formatter);
+        return format(LocalDate.now(), DatePattern.NORM_DATETIME_FORMAT);
     }
 
     /**

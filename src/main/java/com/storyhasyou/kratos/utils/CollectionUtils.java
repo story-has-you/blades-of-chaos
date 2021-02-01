@@ -60,8 +60,9 @@ public class CollectionUtils {
      *
      * @param source the (potentially primitive) array
      * @return the converted List result
-     * @see org.springframework.util.ObjectUtils#toObjectArray(Object)
-     * @see Arrays#asList(Object[])
+     * @see org.springframework.util.ObjectUtils#toObjectArray(Object) org.springframework.util
+     * .ObjectUtils#toObjectArray(Object)
+     * @see Arrays#asList(Object[]) Arrays#asList(Object[])
      */
     @SuppressWarnings("rawtypes")
     public static List arrayToList(@Nullable Object source) {
@@ -71,6 +72,7 @@ public class CollectionUtils {
     /**
      * Merge the given array into the given Collection.
      *
+     * @param <E>        the type parameter
      * @param array      the array to merge (may be {@code null})
      * @param collection the target Collection to merge the array into
      */
@@ -88,6 +90,8 @@ public class CollectionUtils {
      * <p>Uses {@code Properties.propertyNames()} to even catch
      * default properties linked into the original Properties instance.
      *
+     * @param <K>   the type parameter
+     * @param <V>   the type parameter
      * @param props the Properties instance to merge (may be {@code null})
      * @param map   the target Map to merge the properties into
      */
@@ -183,6 +187,7 @@ public class CollectionUtils {
      * '{@code source}' returns {@code null}. Iteration order is
      * {@link Collection} implementation specific.
      *
+     * @param <E>        the type parameter
      * @param source     the source Collection
      * @param candidates the candidates to search for
      * @return the first present object, or {@code null} if not found
@@ -204,10 +209,11 @@ public class CollectionUtils {
     /**
      * Find a single value of the given type in the given Collection.
      *
+     * @param <T>        the type parameter
      * @param collection the Collection to search
      * @param type       the type to look for
-     * @return a value of the given type found if there is a clear match,
-     * or {@code null} if none or more than one such value found
+     * @return a value of the given type found if there is a clear match, or {@code null} if none or more than one
+     * such value found
      */
     @SuppressWarnings("unchecked")
     @Nullable
@@ -235,8 +241,8 @@ public class CollectionUtils {
      *
      * @param collection the collection to search
      * @param types      the types to look for, in prioritized order
-     * @return a value of one of the given types found if there is a clear match,
-     * or {@code null} if none or more than one such value found
+     * @return a value of one of the given types found if there is a clear match, or {@code null} if none or more
+     * than one such value found
      */
     @Nullable
     public static Object findValueOfType(Collection<?> collection, Class<?>[] types) {
@@ -256,8 +262,8 @@ public class CollectionUtils {
      * Determine whether the given Collection only contains a single unique object.
      *
      * @param collection the Collection to check
-     * @return {@code true} if the collection contains a single reference or
-     * multiple references to the same instance, {@code false} otherwise
+     * @return {@code true} if the collection contains a single reference or multiple references to the same
+     * instance, {@code false} otherwise
      */
     public static boolean hasUniqueObject(Collection<?> collection) {
         if (isEmpty(collection)) {
@@ -280,8 +286,8 @@ public class CollectionUtils {
      * Find the common element type of the given Collection, if any.
      *
      * @param collection the Collection to check
-     * @return the common element type, or {@code null} if no clear
-     * common type has been found (or the collection was empty)
+     * @return the common element type, or {@code null} if no clear common type has been found (or the collection was
+     * empty)
      */
     @Nullable
     public static Class<?> findCommonElementType(Collection<?> collection) {
@@ -305,10 +311,11 @@ public class CollectionUtils {
      * Retrieve the first element of the given Set, using {@link SortedSet#first()}
      * or otherwise using the iterator.
      *
+     * @param <T> the type parameter
      * @param set the Set to check (may be {@code null} or empty)
      * @return the first element, or {@code null} if none
      * @see SortedSet
-     * @see LinkedHashMap#keySet()
+     * @see LinkedHashMap#keySet() LinkedHashMap#keySet()
      * @see java.util.LinkedHashSet
      * @since 5.2.3
      */
@@ -332,6 +339,7 @@ public class CollectionUtils {
     /**
      * Retrieve the first element of the given List, accessing the zero index.
      *
+     * @param <T>  the type parameter
      * @param list the List to check (may be {@code null} or empty)
      * @return the first element, or {@code null} if none
      * @since 5.2.3
@@ -348,10 +356,11 @@ public class CollectionUtils {
      * Retrieve the last element of the given Set, using {@link SortedSet#last()}
      * or otherwise iterating over all elements (assuming a linked set).
      *
+     * @param <T> the type parameter
      * @param set the Set to check (may be {@code null} or empty)
      * @return the last element, or {@code null} if none
      * @see SortedSet
-     * @see LinkedHashMap#keySet()
+     * @see LinkedHashMap#keySet() LinkedHashMap#keySet()
      * @see java.util.LinkedHashSet
      * @since 5.0.3
      */
@@ -376,6 +385,7 @@ public class CollectionUtils {
     /**
      * Retrieve the last element of the given List, accessing the highest index.
      *
+     * @param <T>  the type parameter
      * @param list the List to check (may be {@code null} or empty)
      * @return the last element, or {@code null} if none
      * @since 5.0.3
@@ -392,6 +402,12 @@ public class CollectionUtils {
      * Marshal the elements from the given enumeration into an array of the given type.
      * Enumeration elements must be assignable to the type of the given array. The array
      * returned will be a different instance than the array given.
+     *
+     * @param <A>         the type parameter
+     * @param <E>         the type parameter
+     * @param enumeration the enumeration
+     * @param array       the array
+     * @return the a [ ]
      */
     public static <A, E extends A> A[] toArray(Enumeration<E> enumeration, A[] array) {
         ArrayList<A> elements = new ArrayList<>();
@@ -488,6 +504,24 @@ public class CollectionUtils {
             return Optional.empty();
         }
         return source.stream().filter(predicate).findFirst();
+
+    }
+
+    /**
+     * 根据条件查找list的某一个元素
+     *
+     * @param <T>       the type parameter
+     * @param <R>       the type parameter
+     * @param source    the source
+     * @param predicate the predicate
+     * @param function  the function
+     * @return the t
+     */
+    public static <T, R> R find(Collection<T> source, Predicate<T> predicate, Function<T, R> function) {
+        if (isEmpty(source) || predicate == null || function == null) {
+            return null;
+        }
+        return source.stream().filter(predicate).findFirst().map(function).orElse(null);
 
     }
 

@@ -51,6 +51,8 @@ public interface BaseService<Entity extends BaseEntity> extends IService<Entity>
      * @return 管理员分页数据 page response
      */
     default PageResponse<Entity> page(int current, int limit, Entity entity) {
+        Assert.isTrue(current > 0, "current must be greater than or equal to 1");
+        Assert.isTrue(limit > 0, "limit must be greater than 0");
         Page<Entity> page = lambdaQuery()
                 .setEntity(entity)
                 .orderByDesc(BaseEntity::getCreateTime)
