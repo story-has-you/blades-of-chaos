@@ -3,6 +3,7 @@ package com.storyhasyou.kratos.base;
 import com.storyhasyou.kratos.dto.PageRequest;
 import com.storyhasyou.kratos.dto.PageResponse;
 import com.storyhasyou.kratos.result.Result;
+import java.io.Serializable;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,7 @@ public abstract class BaseController<Entity extends BaseEntity, Service extends 
      * @return {@link Result}
      */
     @PostMapping("/create")
-    public Result<Long> create(@RequestBody Entity entity) {
+    public Result<Serializable> create(@RequestBody Entity entity) {
         boolean created = baseService.save(entity);
         return created ? Result.ok(entity.getId()) : Result.error();
     }
