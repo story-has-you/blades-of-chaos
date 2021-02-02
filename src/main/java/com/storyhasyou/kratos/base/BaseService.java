@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.storyhasyou.kratos.dto.PageResponse;
 import com.storyhasyou.kratos.exceptions.NotFountException;
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,7 @@ public interface BaseService<Entity extends BaseEntity> extends IService<Entity>
      * @param id {@code Long} ID
      * @return 领域模型 t
      */
-    default Entity get(Serializable id) {
+    default Entity get(Long id) {
         return getOpt(id).orElseThrow(() -> new NotFountException(StrUtil.format("找不到id={}的对象", id)));
     }
 
@@ -39,7 +38,7 @@ public interface BaseService<Entity extends BaseEntity> extends IService<Entity>
      * @param id {@code Long} ID
      * @return 领域模型 opt
      */
-    default Optional<Entity> getOpt(Serializable id) {
+    default Optional<Entity> getOpt(Long id) {
         return Optional.ofNullable(getById(id));
     }
 
@@ -79,7 +78,7 @@ public interface BaseService<Entity extends BaseEntity> extends IService<Entity>
      * @param ids the ids
      * @return map map
      */
-    default Map<Serializable, Entity> mapByIds(List<Serializable> ids) {
+    default Map<Long, Entity> mapByIds(List<Long> ids) {
         Assert.notEmpty(ids, "ids must not null or empty");
         List<Entity> entities = listByIds(ids);
         if (CollectionUtils.isEmpty(entities)) {

@@ -3,7 +3,6 @@ package com.storyhasyou.kratos.base;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +14,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class BaseEntity extends Identity<Serializable> {
+public abstract class BaseEntity extends Identity<Long> {
 
     /**
      * 创建时间 默认当前时间
