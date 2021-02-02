@@ -1,4 +1,4 @@
-package com.storyhasyou.kratos.mq;
+package com.storyhasyou.kratos.middleware;
 
 import com.google.common.collect.Maps;
 import com.storyhasyou.kratos.utils.IdUtils;
