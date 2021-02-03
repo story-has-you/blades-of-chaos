@@ -9,10 +9,14 @@ import com.storyhasyou.kratos.exceptions.BusinessExceptionHandler;
 import com.storyhasyou.kratos.handler.HttpRequestFilter;
 import com.storyhasyou.kratos.repository.DefaultValueMetaObjectHandler;
 import com.storyhasyou.kratos.utils.JacksonUtils;
+import com.storyhasyou.kratos.utils.OkHttpUtils;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * The type Blades of chaos config.
@@ -92,6 +96,19 @@ public class BladesOfChaosConfig {
     @ConditionalOnMissingBean(IdentifierGenerator.class)
     public IdentifierGenerator identifierGenerator() {
         return new DefaultIdentifierGenerator();
+    }
+
+    /**
+     * Rest template rest template.
+     *
+     * @return the rest template
+     */
+    @Bean
+    @ConditionalOnMissingBean(RestTemplate.class)
+    public RestTemplate restTemplate() {
+        return new RestTemplateBuilder()
+                .requestFactory(() -> new OkHttp3ClientHttpRequestFactory(OkHttpUtils.getOkHttpClient()))
+                .build();
     }
 
 

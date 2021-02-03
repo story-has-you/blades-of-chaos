@@ -5,6 +5,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -15,6 +16,7 @@ import javax.net.ssl.X509TrustManager;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.ConnectionPool;
 import okhttp3.FormBody;
 import okhttp3.FormBody.Builder;
 import okhttp3.MediaType;
@@ -39,16 +41,15 @@ public class OkHttpUtils {
     private static final String HTTP_JSON = "application/json; charset=utf-8";
     private static final String HTTP_FORM = "application/x-www-form-urlencoded; charset=utf-8";
 
-    private static final int TIMEOUT = 120;
-
     private static final int OK = 200;
 
     private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
-            .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
-            .readTimeout(TIMEOUT, TimeUnit.SECONDS)
-            .writeTimeout(TIMEOUT, TimeUnit.SECONDS)
+            .connectTimeout(Duration.ofSeconds(6))
+            .readTimeout(Duration.ofMinutes(1))
+            .writeTimeout(Duration.ofMinutes(1))
             .sslSocketFactory(sslSocketFactory(), x509TrustManager())
             .retryOnConnectionFailure(true)
+            .connectionPool(new ConnectionPool(20,300, TimeUnit.SECONDS))
             .build();
 
 
