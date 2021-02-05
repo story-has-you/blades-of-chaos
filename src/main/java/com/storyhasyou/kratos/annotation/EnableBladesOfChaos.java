@@ -1,6 +1,7 @@
 package com.storyhasyou.kratos.annotation;
 
 import com.storyhasyou.kratos.config.BladesOfChaosConfig;
+import com.storyhasyou.kratos.config.CorsConfig;
 import com.storyhasyou.kratos.config.ThreadPoolConfiguration;
 import com.storyhasyou.kratos.utils.SpringUtils;
 import java.lang.annotation.Documented;
@@ -16,6 +17,6 @@ import org.springframework.context.annotation.Import;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({BladesOfChaosConfig.class, ThreadPoolConfiguration.class, SpringUtils.class})
+@Import({BladesOfChaosConfig.class, ThreadPoolConfiguration.class, SpringUtils.class, CorsConfig.class})
 public @interface EnableBladesOfChaos {
 }
