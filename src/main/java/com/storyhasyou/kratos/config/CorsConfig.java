@@ -6,6 +6,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.Collections;
+
 /**
  * @author fangxi
  */
@@ -14,13 +16,17 @@ public class CorsConfig {
 
     @Bean
     public CorsFilter corsFilter() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*");
-        config.setAllowCredentials(true);
-        config.addAllowedMethod("*");
-        config.addAllowedHeader("*");
-        UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
-        configSource.registerCorsConfiguration("/**", config);
-        return new CorsFilter(configSource);
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        //1,允许任何来源
+        corsConfiguration.setAllowedOriginPatterns(Collections.singletonList("*"));
+        //2,允许任何请求头
+        corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
+        //3,允许任何方法
+        corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
+        //4,允许凭证
+        corsConfiguration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return new CorsFilter(source);
     }
 }
