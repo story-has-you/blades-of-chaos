@@ -3,12 +3,13 @@ package com.storyhasyou.kratos.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.Serializable;
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * The type Jwt token utils.
@@ -86,6 +87,42 @@ public class JwtTokenUtils {
             username = null;
         }
         return username;
+    }
+
+    /**
+     * Gets value.
+     *
+     * @param <T>        the type parameter
+     * @param token      the token
+     * @param key        the key
+     * @param valueClass the value class
+     * @return the value
+     */
+    public static <T> T getValue(String token, String key, Class<T> valueClass) {
+        Claims claims = getClaimsFromToken(token);
+        return claims.get(key, valueClass);
+    }
+
+    /**
+     * Gets long value.
+     *
+     * @param token the token
+     * @param key   the key
+     * @return the long value
+     */
+    public static Long getLongValue(String token, String key) {
+        return getValue(token, key, Long.class);
+    }
+
+    /**
+     * Gets string value.
+     *
+     * @param token the token
+     * @param key   the key
+     * @return the string value
+     */
+    public static String getStringValue(String token, String key) {
+        return getValue(token, key, String.class);
     }
 
     /**
