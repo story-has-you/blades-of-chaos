@@ -42,10 +42,22 @@ public abstract class BaseController<Entity extends BaseEntity, Service extends 
      * @param entity 领域模型
      * @return {@link Result}
      */
-    @PostMapping("/create")
-    public Result<Long> create(@RequestBody Entity entity) {
+    @PostMapping("/save")
+    public Result<Long> save(@RequestBody Entity entity) {
         boolean created = baseService.save(entity);
         return created ? Result.ok(entity.getId()) : Result.error();
+    }
+
+    /**
+     * 批量新增
+     *
+     * @param entities the entities
+     * @return the result
+     */
+    @PostMapping("/batch/save")
+    public Result<Boolean> saveBatch(@RequestBody List<Entity> entities) {
+        boolean saveBatch = baseService.saveBatch(entities);
+        return Result.ok(saveBatch);
     }
 
     /**
