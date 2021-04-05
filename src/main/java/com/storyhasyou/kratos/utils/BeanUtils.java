@@ -2,15 +2,14 @@ package com.storyhasyou.kratos.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.storyhasyou.kratos.toolkit.StringPool;
-import java.util.Set;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.ValidationException;
-import javax.validation.Validator;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.util.Assert;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.ValidationException;
+import javax.validation.Validator;
 import java.lang.invoke.SerializedLambda;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
@@ -22,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -72,7 +72,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
      * @return the list
      */
     public static <T, E> List<T> copyProperties(Collection<E> source, Class<T> target) {
-        Assert.notEmpty(source, "Source must not be null");
+        Assert.notNull(source, "Source must not be null");
         return source.stream().map(x -> copyProperties(x, target)).collect(Collectors.toList());
     }
 
