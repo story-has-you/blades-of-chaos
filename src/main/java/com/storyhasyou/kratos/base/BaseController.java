@@ -3,7 +3,6 @@ package com.storyhasyou.kratos.base;
 import com.storyhasyou.kratos.dto.PageRequest;
 import com.storyhasyou.kratos.dto.PageResponse;
 import com.storyhasyou.kratos.result.Result;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 /**
  * 通用请求处理
@@ -66,7 +67,7 @@ public abstract class BaseController<Entity extends BaseEntity, Service extends 
      * @param id {@code Long}
      * @return {@link Result}
      */
-    @DeleteMapping("/remove/{id}")
+    @DeleteMapping("/{id}")
     public Result<Boolean> remove(@PathVariable Long id) {
         boolean deleted = baseService.removeById(id);
         return Result.ok(deleted);
@@ -103,7 +104,7 @@ public abstract class BaseController<Entity extends BaseEntity, Service extends 
      * @param id {@code Long}
      * @return {@link Result}
      */
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public Result<Entity> get(@PathVariable Long id) {
         Entity entity = baseService.get(id);
         return Result.ok(entity);

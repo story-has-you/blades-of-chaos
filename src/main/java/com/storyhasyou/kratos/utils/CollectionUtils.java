@@ -449,7 +449,7 @@ public class CollectionUtils {
      * @return list list
      */
     public static <E, R> List<R> map(Collection<E> source, Function<E, R> function) {
-        Assert.notEmpty(source, "Source must not be null");
+        Assert.notNull(source, "Source must not be null");
         Assert.notNull(function, "function must not be null");
         return source.stream().map(function).collect(Collectors.toList());
     }
