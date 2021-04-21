@@ -1,18 +1,5 @@
 package com.storyhasyou.kratos.utils;
 
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
-import java.time.Duration;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.X509TrustManager;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -29,6 +16,20 @@ import org.springframework.http.HttpMethod;
 import org.springframework.lang.NonNull;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.util.Assert;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+import java.time.Duration;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * The type Ok http utils.
@@ -141,7 +142,7 @@ public class OkHttpUtils {
             if (response.code() == OK) {
                 return Objects.requireNonNull(response.body()).string();
             } else {
-                log.error("Http GET 请求失败; [errorxxCode = {} , url={}]", response.code(), url);
+                log.error("Http GET 请求失败; [error Code = {} , url={}]", response.code(), url);
             }
         } catch (IOException e) {
             throw new RuntimeException("同步http GET 请求失败,url:" + url, e);
@@ -178,7 +179,7 @@ public class OkHttpUtils {
             if (response.code() == OK) {
                 return Objects.requireNonNull(response.body()).bytes();
             } else {
-                log.error("Http GET 请求失败; [errorxxCode = {} , url={}]", response.code(), url);
+                log.error("Http GET 请求失败; [error Code = {} , url={}]", response.code(), url);
             }
         } catch (IOException e) {
             throw new RuntimeException("同步http GET 请求失败,url:" + url, e);

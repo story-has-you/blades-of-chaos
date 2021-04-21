@@ -2,17 +2,19 @@ package com.storyhasyou.kratos.base;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.storyhasyou.kratos.dto.PageResponse;
 import com.storyhasyou.kratos.exceptions.NotFountException;
+import org.springframework.util.Assert;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.springframework.util.Assert;
 
 /**
  * The interface Base service.
@@ -85,5 +87,16 @@ public interface BaseService<Entity extends BaseEntity> extends IService<Entity>
             return Collections.emptyMap();
         }
         return entities.stream().collect(Collectors.toMap(Entity::getId, Function.identity()));
+    }
+
+    /**
+     * Uniqueness boolean.
+     *
+     * @param column the column
+     * @param value  the value
+     * @return the boolean
+     */
+    default boolean exists(SFunction<Entity, ?> column, Object value) {
+        return lambdaQuery().eq(column, value).count() > 0;
     }
 }

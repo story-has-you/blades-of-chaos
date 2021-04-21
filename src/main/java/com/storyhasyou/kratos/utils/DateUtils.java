@@ -2,8 +2,10 @@ package com.storyhasyou.kratos.utils;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
 import com.storyhasyou.kratos.toolkit.DatePattern;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.GregorianCalendar;
 
@@ -93,6 +95,16 @@ public class DateUtils extends LocalDateTimeUtil {
         LocalDateTime now = now();
         LocalDateTime midnight = now.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
         return chronoUnit.between(now, midnight);
+    }
+
+    /**
+     * 将LocalDateTime转成时间戳
+     *
+     * @param time the time
+     * @return the long
+     */
+    public static long toTimestamp(LocalDateTime time) {
+        return time.toInstant(ZoneOffset.of("+8")).toEpochMilli();
     }
 
 }

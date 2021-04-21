@@ -120,6 +120,7 @@ public class BladesOfChaosConfig {
     @ConditionalOnMissingBean(RestTemplate.class)
     public RestTemplate restTemplate() {
         return new RestTemplateBuilder()
+                .messageConverters(mappingJackson2HttpMessageConverter())
                 .requestFactory(() -> new OkHttp3ClientHttpRequestFactory(OkHttpUtils.getOkHttpClient()))
                 .build();
     }

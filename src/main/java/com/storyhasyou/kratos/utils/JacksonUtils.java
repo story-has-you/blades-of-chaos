@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -21,6 +22,10 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.storyhasyou.kratos.base.BaseEntity;
 import com.storyhasyou.kratos.toolkit.DatePattern;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.lang.NonNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -31,9 +36,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.lang.NonNull;
 
 /**
  * The type Json utils.
@@ -301,6 +303,42 @@ public class JacksonUtils {
             log.error("json解析出错:", e);
         }
         return null;
+    }
+
+    /**
+     * Convert value t.
+     *
+     * @param <T>         the type parameter
+     * @param fromValue   the from value
+     * @param toValueType the to value type
+     * @return the t
+     */
+    public static <T> T convertValue(Object fromValue, TypeReference<T> toValueType) {
+        return OBJECT_MAPPER.convertValue(fromValue, toValueType);
+    }
+
+    /**
+     * Convert value t.
+     *
+     * @param <T>         the type parameter
+     * @param fromValue   the from value
+     * @param toValueType the to value type
+     * @return the t
+     */
+    public static <T> T convertValue(Object fromValue, Class<T> toValueType) {
+        return OBJECT_MAPPER.convertValue(fromValue, toValueType);
+    }
+
+    /**
+     * Convert value t.
+     *
+     * @param <T>         the type parameter
+     * @param fromValue   the from value
+     * @param toValueType the to value type
+     * @return the t
+     */
+    public static <T> T convertValue(Object fromValue, JavaType toValueType) {
+        return OBJECT_MAPPER.convertValue(fromValue, toValueType);
     }
 
     /**
