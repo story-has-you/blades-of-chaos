@@ -1,8 +1,9 @@
 package com.storyhasyou.kratos.base;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.time.Clock;
-import lombok.Data;
 
 /**
  * @author 方曦 created by 2021/1/28
@@ -10,9 +11,9 @@ import lombok.Data;
 @Data
 public class BaseEvent<E> implements Serializable {
 
-    private final long timestamp = Clock.systemDefaultZone().millis();
+    private final Long timestamp = Clock.systemDefaultZone().millis();
     private E data;
-    private boolean success;
+    private Boolean success;
 
     public BaseEvent() {
         this(null, true);

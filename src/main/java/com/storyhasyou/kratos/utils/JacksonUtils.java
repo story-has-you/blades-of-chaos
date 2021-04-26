@@ -1,7 +1,8 @@
 package com.storyhasyou.kratos.utils;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.storyhasyou.kratos.base.BaseEntity;
+import com.storyhasyou.kratos.exceptions.BusinessException;
 import com.storyhasyou.kratos.toolkit.DatePattern;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -45,11 +47,8 @@ import java.util.Set;
 @Slf4j
 public class JacksonUtils {
 
-    private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
     private static final String[] IGNORE_FIELD = {"deleted"};
-
-
+    private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     static {
         OBJECT_MAPPER.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
@@ -71,6 +70,8 @@ public class JacksonUtils {
         OBJECT_MAPPER.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
         //禁止重复键, 抛出异常
         OBJECT_MAPPER.enable(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY);
+        // 自动检测全部属性
+        OBJECT_MAPPER.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
     }
 
 
@@ -106,8 +107,8 @@ public class JacksonUtils {
             return OBJECT_MAPPER.writeValueAsBytes(obj);
         } catch (JsonProcessingException e) {
             log.error("json序列化出错: {}", obj, e);
+            throw new BusinessException("json序列化出错", e);
         }
-        return null;
     }
 
     /**
@@ -124,15 +125,15 @@ public class JacksonUtils {
             return OBJECT_MAPPER.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             log.error("json序列化出错: {}", obj, e);
+            throw new BusinessException("json序列化出错", e);
         }
-        return null;
     }
 
     /**
      * Parse t.
      *
      * @param <T>    the type parameter
-     * @param bytes   the bytes
+     * @param bytes  the bytes
      * @param tClass the t class
      * @return the t
      */
@@ -141,8 +142,8 @@ public class JacksonUtils {
             return OBJECT_MAPPER.readValue(bytes, tClass);
         } catch (IOException e) {
             log.error("json解析出错: {}", bytes, e);
+            throw new BusinessException("json解析出错", e);
         }
-        return null;
     }
 
 
@@ -159,8 +160,8 @@ public class JacksonUtils {
             return OBJECT_MAPPER.readValue(json, tClass);
         } catch (IOException e) {
             log.error("json解析出错: {}", json, e);
+            throw new BusinessException("json解析出错", e);
         }
-        return null;
     }
 
     /**
@@ -176,8 +177,8 @@ public class JacksonUtils {
             return OBJECT_MAPPER.readValue(json, OBJECT_MAPPER.getTypeFactory().constructArrayType(eClass));
         } catch (IOException e) {
             log.error("json解析出错: {}", json, e);
+            throw new BusinessException("json解析出错", e);
         }
-        return null;
     }
 
     /**
@@ -193,8 +194,8 @@ public class JacksonUtils {
             return OBJECT_MAPPER.readValue(json, OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, eClass));
         } catch (IOException e) {
             log.error("json解析出错: {}", json, e);
+            throw new BusinessException("json解析出错", e);
         }
-        return null;
     }
 
     /**
@@ -210,27 +211,8 @@ public class JacksonUtils {
             return OBJECT_MAPPER.readValue(json, OBJECT_MAPPER.getTypeFactory().constructCollectionType(Set.class, eClass));
         } catch (IOException e) {
             log.error("json解析出错: {}", json, e);
+            throw new BusinessException("json解析出错", e);
         }
-        return null;
-    }
-
-    /**
-     * Parse map map.
-     *
-     * @param <K>    the type parameter
-     * @param <V>    the type parameter
-     * @param json   the json
-     * @param kClass the k class
-     * @param vClass the v class
-     * @return the map
-     */
-    public static <K, V> Map<K, V> parse(@NonNull String json, @NonNull Class<K> kClass, @NonNull Class<V> vClass) {
-        try {
-            return OBJECT_MAPPER.readValue(json, OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, kClass, vClass));
-        } catch (IOException e) {
-            log.error("json解析出错: {}", json, e);
-        }
-        return null;
     }
 
     /**
@@ -246,8 +228,8 @@ public class JacksonUtils {
             return OBJECT_MAPPER.readValue(json, type);
         } catch (IOException e) {
             log.error("json解析出错: {}", json, e);
+            throw new BusinessException("json解析出错", e);
         }
-        return null;
     }
 
     /**
@@ -263,8 +245,27 @@ public class JacksonUtils {
             return OBJECT_MAPPER.readValue(in, tClass);
         } catch (IOException e) {
             log.error("json解析出错:", e);
+            throw new BusinessException("json解析出错", e);
         }
-        return null;
+    }
+
+    /**
+     * Parse map map.
+     *
+     * @param <K>    the type parameter
+     * @param <V>    the type parameter
+     * @param json   the json
+     * @param kClass the k class
+     * @param vClass the v class
+     * @return the map
+     */
+    public static <K, V> Map<K, V> parseMap(@NonNull String json, @NonNull Class<K> kClass, @NonNull Class<V> vClass) {
+        try {
+            return OBJECT_MAPPER.readValue(json, OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, kClass, vClass));
+        } catch (IOException e) {
+            log.error("json解析出错: {}", json, e);
+            throw new BusinessException("json解析出错", e);
+        }
     }
 
     /**
@@ -277,13 +278,13 @@ public class JacksonUtils {
      * @param vClass the v class
      * @return the map
      */
-    public static <K, V> Map<K, V> parse(@NonNull InputStream in, @NonNull Class<K> kClass, @NonNull Class<V> vClass) {
+    public static <K, V> Map<K, V> parseMap(@NonNull InputStream in, @NonNull Class<K> kClass, @NonNull Class<V> vClass) {
         try {
             return OBJECT_MAPPER.readValue(in, OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, kClass, vClass));
         } catch (IOException e) {
             log.error("json解析出错:", e);
+            throw new BusinessException("json解析出错", e);
         }
-        return null;
     }
 
     /**
@@ -296,13 +297,13 @@ public class JacksonUtils {
      * @param vClass the v class
      * @return the map
      */
-    public static <K, V> Map<K, V> parse(@NonNull byte[] in, @NonNull Class<K> kClass, @NonNull Class<V> vClass) {
+    public static <K, V> Map<K, V> parseMap(@NonNull byte[] in, @NonNull Class<K> kClass, @NonNull Class<V> vClass) {
         try {
             return OBJECT_MAPPER.readValue(in, OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, kClass, vClass));
         } catch (IOException e) {
             log.error("json解析出错:", e);
+            throw new BusinessException("json解析出错", e);
         }
-        return null;
     }
 
     /**
@@ -375,7 +376,7 @@ public class JacksonUtils {
         // 将对象模型添加至对象映射器
         OBJECT_MAPPER.registerModule(simpleModule);
         // 忽略null
-        OBJECT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        // OBJECT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         // 定义Json转换器
         MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
         // 将对象映射器添加至Json转换器

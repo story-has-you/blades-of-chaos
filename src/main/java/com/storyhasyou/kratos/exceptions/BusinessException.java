@@ -23,6 +23,14 @@ public class BusinessException extends RuntimeException {
 
     /**
      * Instantiates a new Business exception.
+     */
+    public BusinessException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+    
+    
+    /**
+     * Instantiates a new Business exception.
      *
      * @param message the message
      */

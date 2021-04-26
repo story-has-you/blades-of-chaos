@@ -2,8 +2,6 @@ package com.storyhasyou.kratos.middleware;
 
 import com.google.common.collect.Maps;
 import com.storyhasyou.kratos.utils.IdUtils;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -16,6 +14,9 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.Assert;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 
 /**
  * The type Rabbit sender.
@@ -25,17 +26,7 @@ import org.springframework.util.Assert;
 @Slf4j
 public class RabbitSender {
 
-    /**
-     * 确认消息的回掉监听，用于确认消息是否已经投递
-     * <p>
-     * CorrelationData correlationData, boolean ack, String cause
-     * <p>
-     * correlationData: 作为一个唯一标示
-     * ack: true | false 消息是否落盘成功
-     * cause: 失败的一些信息
-     */
-    public static final RabbitTemplate.ConfirmCallback DEFAULT_CONFIRM_CALLBACK = (correlationData, ack, cause) ->
-            log.info("消息ack结果: {}, correlationData: {}", ack, correlationData);
+
     /**
      * key: topic
      */
