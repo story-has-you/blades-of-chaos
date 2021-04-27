@@ -38,6 +38,8 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
      */
     private static final Map<Class<?>, WeakReference<SerializedLambda>> FUNC_CACHE = new ConcurrentHashMap<>(1 << 8);
 
+    private static final int PARALLEL_STREAM_COUNT = 10000;
+
 
     /**
      * Copy properties t.
@@ -73,6 +75,10 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
      */
     public static <T, E> List<T> copyProperties(Collection<E> source, Class<T> target) {
         Assert.notNull(source, "Source must not be null");
+        int size = source.size();
+        if (size > PARALLEL_STREAM_COUNT) {
+            return source.parallelStream().map(x -> copyProperties(x, target)).collect(Collectors.toList());
+        }
         return source.stream().map(x -> copyProperties(x, target)).collect(Collectors.toList());
     }
 

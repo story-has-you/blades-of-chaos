@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.storyhasyou.kratos.exceptions.BusinessExceptionHandler;
 import com.storyhasyou.kratos.handler.HttpRequestFilter;
+import com.storyhasyou.kratos.middleware.RedisService;
 import com.storyhasyou.kratos.repository.DefaultValueMetaObjectHandler;
 import com.storyhasyou.kratos.utils.JacksonUtils;
 import com.storyhasyou.kratos.utils.OkHttpUtils;
@@ -134,6 +135,12 @@ public class BladesOfChaosConfig {
                 .build();
     }
 
+    /**
+     * Redis template redis template.
+     *
+     * @param factory the factory
+     * @return the redis template
+     */
     @Bean
     @ConditionalOnProperty(prefix = "spring.redis")
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
@@ -153,5 +160,17 @@ public class BladesOfChaosConfig {
         return redisTemplate;
     }
 
+    /**
+     * Redis service redis service.
+     *
+     * @param redisTemplate the redis template
+     * @return the redis service
+     */
+    @Bean
+    @ConditionalOnProperty(prefix = "spring.redis")
+    public RedisService redisService(RedisTemplate<String, Object> redisTemplate) {
+        return new RedisService(redisTemplate);
+    }
+    
 
 }

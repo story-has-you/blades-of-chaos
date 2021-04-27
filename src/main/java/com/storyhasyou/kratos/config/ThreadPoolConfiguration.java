@@ -1,15 +1,16 @@
 package com.storyhasyou.kratos.config;
 
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
  * @author fangxi
@@ -17,7 +18,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @SpringBootConfiguration
 public class ThreadPoolConfiguration {
 
-    private static final String NAME_PREFIX = "kratos-pool-thread-";
+    private static final String NAME_PREFIX = "storyhasyou-pool-thread-";
     private static final int CPU = Runtime.getRuntime().availableProcessors();
     private static final int CORE_POOL_SIZE = CPU + 1;
     private static final int MAXIMUM_POOL_SIZE = CPU * 2 + 1;

@@ -185,6 +185,40 @@ public class JacksonUtils {
      * Parse list list.
      *
      * @param <E>    the type parameter
+     * @param in   the in
+     * @param eClass the e class
+     * @return the list
+     */
+    public static <E> E[] parseArray(@NonNull InputStream in, @NonNull Class<E> eClass) {
+        try {
+            return OBJECT_MAPPER.readValue(in, OBJECT_MAPPER.getTypeFactory().constructArrayType(eClass));
+        } catch (IOException e) {
+            log.error("json解析出错: {}", in, e);
+            throw new BusinessException("json解析出错", e);
+        }
+    }
+
+    /**
+     * Parse list list.
+     *
+     * @param <E>    the type parameter
+     * @param bytes   the bytes
+     * @param eClass the e class
+     * @return the list
+     */
+    public static <E> E[] parseArray(@NonNull byte[] bytes, @NonNull Class<E> eClass) {
+        try {
+            return OBJECT_MAPPER.readValue(bytes, OBJECT_MAPPER.getTypeFactory().constructArrayType(eClass));
+        } catch (IOException e) {
+            log.error("json解析出错: {}", bytes, e);
+            throw new BusinessException("json解析出错", e);
+        }
+    }
+
+    /**
+     * Parse list list.
+     *
+     * @param <E>    the type parameter
      * @param json   the json
      * @param eClass the e class
      * @return the list
@@ -202,6 +236,41 @@ public class JacksonUtils {
      * Parse list list.
      *
      * @param <E>    the type parameter
+     * @param bytes   the bytes
+     * @param eClass the e class
+     * @return the list
+     */
+    public static <E> List<E> parseList(@NonNull byte[] bytes, @NonNull Class<E> eClass) {
+        try {
+            return OBJECT_MAPPER.readValue(bytes, OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, eClass));
+        } catch (IOException e) {
+            log.error("json解析出错: {}", bytes, e);
+            throw new BusinessException("json解析出错", e);
+        }
+    }
+
+    /**
+     * Parse list list.
+     *
+     * @param <E>    the type parameter
+     * @param in   the in
+     * @param eClass the e class
+     * @return the list
+     */
+    public static <E> List<E> parseList(@NonNull InputStream in, @NonNull Class<E> eClass) {
+        try {
+            return OBJECT_MAPPER.readValue(in, OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, eClass));
+        } catch (IOException e) {
+            log.error("json解析出错: {}", in, e);
+            throw new BusinessException("json解析出错", e);
+        }
+    }
+
+
+    /**
+     * Parse list list.
+     *
+     * @param <E>    the type parameter
      * @param json   the json
      * @param eClass the e class
      * @return the list
@@ -211,6 +280,40 @@ public class JacksonUtils {
             return OBJECT_MAPPER.readValue(json, OBJECT_MAPPER.getTypeFactory().constructCollectionType(Set.class, eClass));
         } catch (IOException e) {
             log.error("json解析出错: {}", json, e);
+            throw new BusinessException("json解析出错", e);
+        }
+    }
+
+    /**
+     * Parse list list.
+     *
+     * @param <E>    the type parameter
+     * @param bytes   the bytes
+     * @param eClass the e class
+     * @return the list
+     */
+    public static <E> Set<E> parseSet(@NonNull byte[] bytes, @NonNull Class<E> eClass) {
+        try {
+            return OBJECT_MAPPER.readValue(bytes, OBJECT_MAPPER.getTypeFactory().constructCollectionType(Set.class, eClass));
+        } catch (IOException e) {
+            log.error("json解析出错: {}", bytes, e);
+            throw new BusinessException("json解析出错", e);
+        }
+    }
+
+    /**
+     * Parse list list.
+     *
+     * @param <E>    the type parameter
+     * @param in   the in
+     * @param eClass the e class
+     * @return the list
+     */
+    public static <E> Set<E> parseSet(@NonNull InputStream in, @NonNull Class<E> eClass) {
+        try {
+            return OBJECT_MAPPER.readValue(in, OBJECT_MAPPER.getTypeFactory().constructCollectionType(Set.class, eClass));
+        } catch (IOException e) {
+            log.error("json解析出错: {}", in, e);
             throw new BusinessException("json解析出错", e);
         }
     }

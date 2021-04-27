@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Sets;
 import com.storyhasyou.kratos.utils.BeanUtils;
 import com.storyhasyou.kratos.utils.CollectionUtils;
+import com.storyhasyou.kratos.utils.IdUtils;
 import com.storyhasyou.kratos.utils.JacksonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisServerCommands;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -33,8 +33,11 @@ public class RedisService {
     /**
      * The String redis template.
      */
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    public RedisService(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     /**
      * 开启Redis 事务
@@ -60,7 +63,74 @@ public class RedisService {
     public void discard() {
         redisTemplate.discard();
     }
-    
+
+
+    /**
+     * Try lock boolean.
+     *
+     * @param key      the key
+     * @param value    the value
+     * @param timeout  the timeout
+     * @param timeUnit the time unit
+     * @return the boolean
+     */
+    public boolean tryLock(String key, Object value, long timeout, TimeUnit timeUnit) {
+        Boolean tryLock = redisTemplate.opsForValue().setIfAbsent(key, value, timeout, timeUnit);
+        return Optional.ofNullable(tryLock).orElse(false);
+    }
+
+    /**
+     * Try lock boolean.
+     *
+     * @param key      the key
+     * @param timeout  the timeout
+     * @param timeUnit the time unit
+     * @return the boolean
+     */
+    public boolean tryLock(String key, long timeout, TimeUnit timeUnit) {
+        return this.tryLock(key, IdUtils.getId(), timeout, timeUnit);
+    }
+
+    /**
+     * Try lock boolean.
+     *
+     * @param key      the key
+     * @param value    the value
+     * @param duration the duration
+     * @return the boolean
+     */
+    public boolean tryLock(String key,Object value, Duration duration) {
+        Boolean tryLock = redisTemplate.opsForValue().setIfAbsent(key, value, duration);
+        return Optional.ofNullable(tryLock).orElse(false);
+    }
+
+    /**
+     * Try lock boolean.
+     *
+     * @param key      the key
+     * @param duration the duration
+     * @return the boolean
+     */
+    public boolean tryLock(String key, Duration duration) {
+        return tryLock(key, IdUtils.getId(), duration);
+    }
+
+    /**
+     * Un lock boolean.
+     *
+     * @param key the key
+     * @return the boolean
+     */
+    public boolean unLock(String key) {
+        try {
+            Long result = redisTemplate.delete(Collections.singletonList(key));
+            return Optional.ofNullable(result).map(r -> r.equals(1L)).orElse(false);
+        } catch (Exception e) {
+            log.error("unLock fail", e);
+            return false;
+        }
+    }
+
 
     /**
      * Multi get list.
@@ -78,7 +148,15 @@ public class RedisService {
         return BeanUtils.copyProperties(values, type);
     }
 
-    
+
+    /**
+     * Multi get list.
+     *
+     * @param <T>  the type parameter
+     * @param keys the keys
+     * @param type the type
+     * @return the list
+     */
     public <T> List<T> multiGet(Collection<String> keys, TypeReference<T> type) {
         List<Object> values = redisTemplate.opsForValue().multiGet(keys);
         if (org.springframework.util.CollectionUtils.isEmpty(values)) {
@@ -102,7 +180,6 @@ public class RedisService {
         }
         return JacksonUtils.convertValue(value, type);
     }
-    
 
 
     /**
@@ -343,7 +420,7 @@ public class RedisService {
         Long increment = redisTemplate.opsForValue().increment(key, -delta);
         return Optional.ofNullable(increment).orElseThrow(() -> new RuntimeException("decr fail"));
     }
-    
+
     /**
      * HashGet
      *
@@ -510,7 +587,9 @@ public class RedisService {
     /**
      * 根据key获取Set中的所有值
      *
-     * @param key 键
+     * @param <T>   the type parameter
+     * @param key   键
+     * @param clazz the clazz
      * @return the set
      */
     public <T> Set<T> sGet(String key, Class<T> clazz) {
@@ -636,9 +715,11 @@ public class RedisService {
     /**
      * 获取list缓存的内容
      *
+     * @param <T>   the type parameter
      * @param key   键
      * @param start 开始
      * @param end   结束  0 到 -1代表所有值
+     * @param clazz the clazz
      * @return the list
      */
     public <T> List<T> lGet(String key, long start, long end, Class<T> clazz) {
