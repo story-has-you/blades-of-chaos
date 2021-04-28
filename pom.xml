@@ -136,7 +136,7 @@
     <distributionManagement>
         <repository>
             <id>rdc-releases</id>
-            <url>https://repo.rdc.aliyun.com/repository/80472-release-g0GNmg/</url>
+            <url>https://packages.aliyun.com/maven/repository/2099844-release-pXeqHB/</url>
         </repository>
     </distributionManagement>
 
