@@ -1,11 +1,12 @@
 package com.storyhasyou.kratos.result;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import com.storyhasyou.kratos.utils.JacksonUtils;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Map;
 
 /**
  * @author 方曦 created by 2020/12/11
@@ -14,19 +15,12 @@ public class ResultTest {
 
     @Test
     public void data() {
-
-        UserDTO userDTO = new UserDTO();
-        userDTO.setAge(1);
-        userDTO.setAmount("111");
-        userDTO.setUsername("hehe");
-        Result<UserDTO> userDTOResult = Result.ok(userDTO);
-        User user1 = userDTOResult.data(dto -> {
-            User user = new User();
-            user.setAge(dto.getAge());
-            return user;
-        });
-        System.out.println(user1);
-
+        Result<Map<String, Object>> result = Result.body()
+                .put("name", "fangxi")
+                .put("age", 1)
+                .build();
+        System.out.println(JacksonUtils.serialize(result));
+        
     }
 
     @Data

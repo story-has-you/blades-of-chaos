@@ -1,11 +1,12 @@
 package com.storyhasyou.kratos.result;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Maps;
 import com.storyhasyou.kratos.enums.IntBaseEnum;
 import com.storyhasyou.kratos.exceptions.BusinessException;
-import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -15,7 +16,7 @@ import java.util.function.Supplier;
  * @param <T> the type parameter
  * @author fangxi 通用返回对象
  */
-@Data
+@SuppressWarnings("all")
 public class Result<T> implements Serializable {
     /**
      * The Status.
@@ -33,6 +34,9 @@ public class Result<T> implements Serializable {
      * The Ok.
      */
     private Boolean ok;
+
+    @JsonIgnore
+    private final Map<String, Object> responseBody = Maps.newHashMap();
 
     /**
      * Instantiates a new Result.
@@ -165,6 +169,20 @@ public class Result<T> implements Serializable {
         return error(ResultCode.UNAUTHORIZED);
     }
 
+    public static Result<Map<String, Object>> body() {
+        return Result.ok();
+    }
+
+    public Result<Map<String, Object>> put(String name, Object value) {
+        this.responseBody.put(name, value);
+        return (Result<Map<String, Object>>) this;
+    }
+
+    public Result<Map<String, Object>> build() {
+        return Result.ok(this.responseBody);
+    }
+    
+
     /**
      * Is error boolean.
      *
@@ -212,7 +230,6 @@ public class Result<T> implements Serializable {
     }
 
 
-
     /**
      * Service data t.
      *
@@ -223,4 +240,68 @@ public class Result<T> implements Serializable {
     public <R> R data(Function<T, R> function) {
         return data(function, () -> new BusinessException(message));
     }
+
+    /**
+     * Gets status.
+     *
+     * @return the status
+     */
+    public Integer getStatus() {
+        return status;
+    }
+
+    /**
+     * Sets status.
+     *
+     * @param status the status
+     */
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    /**
+     * Gets message.
+     *
+     * @return the message
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * Sets message.
+     *
+     * @param message the message
+     */
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    /**
+     * Gets data.
+     *
+     * @return the data
+     */
+    public T getData() {
+        return data;
+    }
+
+    /**
+     * Sets data.
+     *
+     * @param data the data
+     */
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    /**
+     * Sets ok.
+     *
+     * @param ok the ok
+     */
+    public void setOk(Boolean ok) {
+        this.ok = ok;
+    }
+    
 }
