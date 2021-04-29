@@ -6,24 +6,16 @@ import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.storyhasyou.kratos.exceptions.BusinessExceptionHandler;
 import com.storyhasyou.kratos.handler.HttpRequestFilter;
-import com.storyhasyou.kratos.middleware.RedisService;
 import com.storyhasyou.kratos.repository.DefaultValueMetaObjectHandler;
 import com.storyhasyou.kratos.utils.JacksonUtils;
 import com.storyhasyou.kratos.utils.OkHttpUtils;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -133,43 +125,6 @@ public class BladesOfChaosConfig {
                 .messageConverters(mappingJackson2HttpMessageConverter())
                 .requestFactory(() -> new OkHttp3ClientHttpRequestFactory(OkHttpUtils.getOkHttpClient()))
                 .build();
-    }
-
-    /**
-     * Redis template redis template.
-     *
-     * @param factory the factory
-     * @return the redis template
-     */
-    @Bean
-    @ConditionalOnProperty(prefix = "spring.redis")
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(factory);
-        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-        redisTemplate.setHashKeySerializer(stringRedisSerializer);
-        redisTemplate.setKeySerializer(stringRedisSerializer);
-        Jackson2JsonRedisSerializer<?> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
-        ObjectMapper objectMapper = JacksonUtils.getObjectMapper();
-        objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
-        jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
-        // value序列化方式采用jackson
-        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
-        // hash的value序列化方式采用jackson
-        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
-        return redisTemplate;
-    }
-
-    /**
-     * Redis service redis service.
-     *
-     * @param redisTemplate the redis template
-     * @return the redis service
-     */
-    @Bean
-    @ConditionalOnProperty(prefix = "spring.redis")
-    public RedisService redisService(RedisTemplate<String, Object> redisTemplate) {
-        return new RedisService(redisTemplate);
     }
     
 

@@ -123,7 +123,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
      * @param object the object
      * @return t t
      */
-    public static <T> T deepCopy(T object) {
+    public static <T> T deepCopy(Object object) {
         if (object == null) {
             return null;
         }

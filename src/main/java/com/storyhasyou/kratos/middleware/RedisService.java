@@ -267,8 +267,9 @@ public class RedisService {
      * @param key 键
      * @return 值 string
      */
-    public Object get(String key) {
-        return key == null ? null : redisTemplate.opsForValue().get(key);
+    public <T> T get(String key) {
+        return get(key, new TypeReference<T>() {
+        });
     }
 
 
