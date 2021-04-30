@@ -99,7 +99,7 @@ public class RedisService {
      * @param duration the duration
      * @return the boolean
      */
-    public boolean tryLock(String key,Object value, Duration duration) {
+    public boolean tryLock(String key, Object value, Duration duration) {
         Boolean tryLock = redisTemplate.opsForValue().setIfAbsent(key, value, duration);
         return Optional.ofNullable(tryLock).orElse(false);
     }
@@ -273,7 +273,6 @@ public class RedisService {
     }
 
 
-
     // ==============================common end =============================
 
     //============================String start =============================
@@ -308,19 +307,6 @@ public class RedisService {
         }
     }
 
-    /**
-     * 普通缓存放入
-     *
-     * @param key   键
-     * @param value 值
-     */
-    public void set(Object key, Object value) {
-        try {
-            redisTemplate.opsForValue().set(key.toString(), value.toString());
-        } catch (Exception e) {
-            log.error("", e);
-        }
-    }
 
     /**
      * 普通缓存放入并设置时间
@@ -332,7 +318,7 @@ public class RedisService {
     public void set(String key, Object value, long time) {
         try {
             if (time > 0) {
-                redisTemplate.opsForValue().set(key, value.toString(), time,
+                redisTemplate.opsForValue().set(key, value, time,
                         TimeUnit.SECONDS);
             } else {
                 set(key, value);
@@ -353,7 +339,7 @@ public class RedisService {
     public void set(String key, Object value, long time, TimeUnit timeUnit) {
         try {
             if (time > 0) {
-                redisTemplate.opsForValue().set(key, value.toString(), time, timeUnit);
+                redisTemplate.opsForValue().set(key, value, time, timeUnit);
             } else {
                 set(key, value);
             }
@@ -372,7 +358,7 @@ public class RedisService {
     public void set(String key, Object value, Duration timeout) {
         try {
             if (timeout != null) {
-                redisTemplate.opsForValue().set(key, value.toString(), timeout);
+                redisTemplate.opsForValue().set(key, value, timeout);
             } else {
                 set(key, value);
             }
@@ -852,5 +838,5 @@ public class RedisService {
         Long execute = redisTemplate.execute(RedisServerCommands::dbSize);
         return Optional.ofNullable(execute).orElse(-1L);
     }
-    
+
 }

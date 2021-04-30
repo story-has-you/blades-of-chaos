@@ -20,7 +20,6 @@ public class ResultTest {
                 .put("age", 1)
                 .build();
         System.out.println(JacksonUtils.serialize(result));
-        
     }
 
     @Data
