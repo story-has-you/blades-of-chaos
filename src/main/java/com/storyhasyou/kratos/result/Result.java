@@ -169,19 +169,36 @@ public class Result<T> implements Serializable {
         return error(ResultCode.UNAUTHORIZED);
     }
 
+    /**
+     * Body result.
+     *
+     * @return the result
+     */
     public static Result<Map<String, Object>> body() {
         return Result.ok();
     }
 
+    /**
+     * Put result.
+     *
+     * @param name  the name
+     * @param value the value
+     * @return the result
+     */
     public Result<Map<String, Object>> put(String name, Object value) {
         this.responseBody.put(name, value);
         return (Result<Map<String, Object>>) this;
     }
 
+    /**
+     * Build result.
+     *
+     * @return the result
+     */
     public Result<Map<String, Object>> build() {
         return Result.ok(this.responseBody);
     }
-    
+
 
     /**
      * Is error boolean.
@@ -303,5 +320,13 @@ public class Result<T> implements Serializable {
     public void setOk(Boolean ok) {
         this.ok = ok;
     }
-    
+
+    /**
+     * Gets ok.
+     *
+     * @return the ok
+     */
+    public Boolean getOk() {
+        return ok;
+    }
 }
