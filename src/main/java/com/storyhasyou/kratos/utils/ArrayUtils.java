@@ -1,7 +1,8 @@
 package com.storyhasyou.kratos.utils;
 
 import cn.hutool.core.util.ArrayUtil;
-import com.beust.jcommander.internal.Lists;
+import com.google.common.collect.Lists;
+
 import java.util.Map;
 
 /**
