@@ -78,18 +78,6 @@ public class BladesOfChaosConfig {
         return mybatisPlusInterceptor;
     }
 
-    /**
-     * Global config global config.
-     *
-     * @return the global config
-     */
-    @Bean
-    @ConditionalOnBean(GlobalConfig.class)
-    public GlobalConfig globalConfig() {
-        GlobalConfig globalConfig = new GlobalConfig();
-        globalConfig.setBanner(false);
-        return globalConfig;
-    }
 
     /**
      * Trace id handler http request filter.

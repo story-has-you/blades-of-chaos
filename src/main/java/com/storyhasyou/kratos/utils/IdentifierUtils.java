@@ -2,6 +2,7 @@ package com.storyhasyou.kratos.utils;
 
 import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
+import com.storyhasyou.kratos.toolkit.Sequence;
 import com.storyhasyou.kratos.toolkit.StringPool;
 import com.storyhasyou.kratos.toolkit.DatePattern;
 import java.time.format.DateTimeFormatter;
@@ -14,7 +15,11 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author fangxi
  * @date 2020 /3/5
  */
-public class IdUtils {
+public final class IdentifierUtils {
+
+    private IdentifierUtils(){
+
+    }
 
     /**
      * 毫秒格式化时间
@@ -23,7 +28,7 @@ public class IdUtils {
     /**
      * 主机和进程的机器码
      */
-    private static final IdentifierGenerator IDENTIFIER_GENERATOR = new DefaultIdentifierGenerator();
+    private static final Sequence SEQUENCE = new Sequence();
 
     /**
      * 获取唯一ID
@@ -31,18 +36,9 @@ public class IdUtils {
      * @return id id
      */
     public static long getId() {
-        return getId(new Object());
+        return SEQUENCE.nextId();
     }
 
-    /**
-     * 获取唯一ID
-     *
-     * @param entity the entity
-     * @return id id
-     */
-    public static long getId(Object entity) {
-        return IDENTIFIER_GENERATOR.nextId(entity).longValue();
-    }
 
     /**
      * 获取唯一ID
@@ -50,18 +46,9 @@ public class IdUtils {
      * @return id id str
      */
     public static String getIdStr() {
-        return getIdStr(new Object());
+        return String.valueOf(SEQUENCE.nextId());
     }
 
-    /**
-     * 获取唯一ID
-     *
-     * @param entity the entity
-     * @return id id str
-     */
-    public static String getIdStr(Object entity) {
-        return IDENTIFIER_GENERATOR.nextId(entity).toString();
-    }
 
     /**
      * 格式化的毫秒时间

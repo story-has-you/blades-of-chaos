@@ -22,7 +22,7 @@ public class TraceIdUtils {
      */
     public static String getCurrentTraceId() {
         String traceId = MDC.get(TRACE_ID);
-        return Optional.ofNullable(traceId).orElse(IdUtils.uuid());
+        return Optional.ofNullable(traceId).orElse(IdentifierUtils.uuid());
     }
 
     /**

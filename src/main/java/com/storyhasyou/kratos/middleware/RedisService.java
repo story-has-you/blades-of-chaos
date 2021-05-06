@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Sets;
 import com.storyhasyou.kratos.utils.BeanUtils;
 import com.storyhasyou.kratos.utils.CollectionUtils;
-import com.storyhasyou.kratos.utils.IdUtils;
+import com.storyhasyou.kratos.utils.IdentifierUtils;
 import com.storyhasyou.kratos.utils.JacksonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -88,7 +88,7 @@ public class RedisService {
      * @return the boolean
      */
     public boolean tryLock(String key, long timeout, TimeUnit timeUnit) {
-        return this.tryLock(key, IdUtils.getId(), timeout, timeUnit);
+        return this.tryLock(key, IdentifierUtils.getId(), timeout, timeUnit);
     }
 
     /**
@@ -112,7 +112,7 @@ public class RedisService {
      * @return the boolean
      */
     public boolean tryLock(String key, Duration duration) {
-        return tryLock(key, IdUtils.getId(), duration);
+        return tryLock(key, IdentifierUtils.getId(), duration);
     }
 
     /**

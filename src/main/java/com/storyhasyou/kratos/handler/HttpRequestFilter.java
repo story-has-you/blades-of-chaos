@@ -1,6 +1,6 @@
 package com.storyhasyou.kratos.handler;
 
-import com.storyhasyou.kratos.utils.IdUtils;
+import com.storyhasyou.kratos.utils.IdentifierUtils;
 import com.storyhasyou.kratos.utils.TraceIdUtils;
 import java.io.IOException;
 import java.util.Enumeration;
@@ -51,7 +51,7 @@ public class HttpRequestFilter extends OncePerRequestFilter {
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
         String traceId = request.getHeader(TraceIdUtils.TRACE_ID);
         if (StringUtils.isBlank(traceId)) {
-            traceId = IdUtils.uuid();
+            traceId = IdentifierUtils.uuid();
         }
         TraceIdUtils.putCurrentTraceId(traceId);
         StopWatch stopWatch = new StopWatch(traceId);
