@@ -90,16 +90,6 @@ public class BladesOfChaosConfig {
     }
 
 
-    /**
-     * Identifier generator identifier generator.
-     *
-     * @return the identifier generator
-     */
-    @Bean
-    @ConditionalOnMissingBean(IdentifierGenerator.class)
-    public IdentifierGenerator identifierGenerator() {
-        return new DefaultIdentifierGenerator();
-    }
 
     /**
      * Rest template rest template.
