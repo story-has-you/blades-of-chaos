@@ -185,7 +185,7 @@ public class JacksonUtils {
      * Parse list list.
      *
      * @param <E>    the type parameter
-     * @param in   the in
+     * @param in     the in
      * @param eClass the e class
      * @return the list
      */
@@ -202,7 +202,7 @@ public class JacksonUtils {
      * Parse list list.
      *
      * @param <E>    the type parameter
-     * @param bytes   the bytes
+     * @param bytes  the bytes
      * @param eClass the e class
      * @return the list
      */
@@ -236,7 +236,7 @@ public class JacksonUtils {
      * Parse list list.
      *
      * @param <E>    the type parameter
-     * @param bytes   the bytes
+     * @param bytes  the bytes
      * @param eClass the e class
      * @return the list
      */
@@ -253,7 +253,7 @@ public class JacksonUtils {
      * Parse list list.
      *
      * @param <E>    the type parameter
-     * @param in   the in
+     * @param in     the in
      * @param eClass the e class
      * @return the list
      */
@@ -288,7 +288,7 @@ public class JacksonUtils {
      * Parse list list.
      *
      * @param <E>    the type parameter
-     * @param bytes   the bytes
+     * @param bytes  the bytes
      * @param eClass the e class
      * @return the list
      */
@@ -305,7 +305,7 @@ public class JacksonUtils {
      * Parse list list.
      *
      * @param <E>    the type parameter
-     * @param in   the in
+     * @param in     the in
      * @param eClass the e class
      * @return the list
      */
@@ -451,7 +451,17 @@ public class JacksonUtils {
      * @return the mapping jackson 2 http message converter
      */
     public static MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
-        return mappingJackson2HttpMessageConverter(null);
+        return mappingJackson2HttpMessageConverter(false);
+    }
+
+    /**
+     * Mapping jackson 2 http message converter mapping jackson 2 http message converter.
+     *
+     * @param long2Str 是否将long类型转成string类型
+     * @return the mapping jackson 2 http message converter
+     */
+    public static MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(boolean long2Str) {
+        return mappingJackson2HttpMessageConverter(null, long2Str);
     }
 
     /**
@@ -460,7 +470,7 @@ public class JacksonUtils {
      * @param propertyNamingStrategy the property naming strategy
      * @return the mapping jackson 2 http message converter
      */
-    public static MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(PropertyNamingStrategy propertyNamingStrategy) {
+    public static MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(PropertyNamingStrategy propertyNamingStrategy, boolean long2Str) {
         // 设置Jackson序列化和反序列化的时候，分隔符
         if (propertyNamingStrategy != null) {
             OBJECT_MAPPER.setPropertyNamingStrategy(propertyNamingStrategy);
@@ -474,8 +484,10 @@ public class JacksonUtils {
         // 添加对长整型的转换关系
         ToStringSerializer stringSerializer = ToStringSerializer.instance;
         simpleModule.addSerializer(BigInteger.class, stringSerializer);
-        simpleModule.addSerializer(Long.class, stringSerializer);
-        simpleModule.addSerializer(Long.TYPE, stringSerializer);
+        if (long2Str) {
+            simpleModule.addSerializer(Long.class, stringSerializer);
+            simpleModule.addSerializer(Long.TYPE, stringSerializer);
+        }
         // 将对象模型添加至对象映射器
         OBJECT_MAPPER.registerModule(simpleModule);
         // 忽略null
