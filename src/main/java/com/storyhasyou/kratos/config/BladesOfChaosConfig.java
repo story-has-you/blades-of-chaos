@@ -29,16 +29,6 @@ import org.springframework.web.client.RestTemplate;
 public class BladesOfChaosConfig {
 
     /**
-     * Default value meta object handler default value meta object handler.
-     *
-     * @return the default value meta object handler
-     */
-    @Bean
-    public DefaultValueMetaObjectHandler defaultValueMetaObjectHandler() {
-        return new DefaultValueMetaObjectHandler();
-    }
-
-    /**
      * Exception handler business exception handler.
      *
      * @return the business exception handler

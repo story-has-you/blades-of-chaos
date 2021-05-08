@@ -19,19 +19,16 @@ public abstract class BaseEntity extends Identity<Long> {
     /**
      * 创建时间 默认当前时间
      */
-    @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     /**
      * 更新时间 默认当前时间
      */
-    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
     /**
      * 删除标识位 默认不删除
      */
-    @TableField(value = "deleted", fill = FieldFill.INSERT)
     @TableLogic
     private Integer deleted;
 }
