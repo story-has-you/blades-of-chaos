@@ -1,6 +1,7 @@
 package com.storyhasyou.kratos.dto;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.common.collect.Lists;
 import com.storyhasyou.kratos.utils.BeanUtils;
 import com.storyhasyou.kratos.utils.CollectionUtils;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ public class PageResponse<T> implements Serializable {
     /**
      * 数据
      */
-    private Collection<T> rows;
+    private Collection<T> rows = Lists.newArrayList();
     /**
      * 当前页
      */
