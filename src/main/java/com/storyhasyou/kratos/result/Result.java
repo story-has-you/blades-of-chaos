@@ -198,7 +198,9 @@ public class Result<T> implements Serializable {
      * @return the result
      */
     public Result<Map<String, Object>> put(boolean condition, String name, Object value) {
-        this.responseBody.put(name, value);
+        if (condition) {
+            this.responseBody.put(name, value);
+        }
         return (Result<Map<String, Object>>) this;
     }
 
