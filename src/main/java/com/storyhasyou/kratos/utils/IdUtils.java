@@ -1,10 +1,9 @@
 package com.storyhasyou.kratos.utils;
 
-import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
-import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
+import com.storyhasyou.kratos.toolkit.DatePattern;
 import com.storyhasyou.kratos.toolkit.Sequence;
 import com.storyhasyou.kratos.toolkit.StringPool;
-import com.storyhasyou.kratos.toolkit.DatePattern;
+
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -15,9 +14,9 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author fangxi
  * @date 2020 /3/5
  */
-public final class IdentifierUtils {
+public final class IdUtils {
 
-    private IdentifierUtils(){
+    private IdUtils() {
 
     }
 

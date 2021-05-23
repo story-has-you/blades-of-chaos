@@ -22,10 +22,14 @@ import java.util.Map;
 @Slf4j
 public class RestTemplateUtils {
 
-    private static final RestTemplate REST_TEMPLATE = new RestTemplateBuilder()
-            .setConnectTimeout(Duration.ofSeconds(10L))
-            .setReadTimeout(Duration.ofSeconds(10L))
-            .build();
+    private static final RestTemplate REST_TEMPLATE = SpringUtils.getBean(RestTemplate.class) == null
+            ?
+            new RestTemplateBuilder()
+                    .setConnectTimeout(Duration.ofSeconds(10L))
+                    .setReadTimeout(Duration.ofSeconds(10L))
+                    .build()
+            :
+            SpringUtils.getBean(RestTemplate.class);
 
 
     /**

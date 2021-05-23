@@ -1,7 +1,8 @@
 package com.storyhasyou.kratos.utils;
 
-import java.util.Optional;
 import org.slf4j.MDC;
+
+import java.util.Optional;
 
 /**
  * The type Trace id utils.
@@ -22,7 +23,7 @@ public class TraceIdUtils {
      */
     public static String getCurrentTraceId() {
         String traceId = MDC.get(TRACE_ID);
-        return Optional.ofNullable(traceId).orElse(IdentifierUtils.uuid());
+        return Optional.ofNullable(traceId).orElse(IdUtils.uuid());
     }
 
     /**

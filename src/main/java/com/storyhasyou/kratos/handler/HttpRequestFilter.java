@@ -1,21 +1,22 @@
 package com.storyhasyou.kratos.handler;
 
-import com.storyhasyou.kratos.utils.IdentifierUtils;
+import com.storyhasyou.kratos.utils.IdUtils;
 import com.storyhasyou.kratos.utils.TraceIdUtils;
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.StopWatch;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The type Http request filter.
@@ -51,7 +52,7 @@ public class HttpRequestFilter extends OncePerRequestFilter {
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
         String traceId = request.getHeader(TraceIdUtils.TRACE_ID);
         if (StringUtils.isBlank(traceId)) {
-            traceId = IdentifierUtils.uuid();
+            traceId = IdUtils.uuid();
         }
         TraceIdUtils.putCurrentTraceId(traceId);
         StopWatch stopWatch = new StopWatch(traceId);
