@@ -89,10 +89,7 @@ public class BladesOfChaosConfig {
     @Bean
     @ConditionalOnMissingBean(RestTemplate.class)
     public RestTemplate restTemplate() {
-        return new RestTemplateBuilder()
-                .messageConverters(mappingJackson2HttpMessageConverter())
-                .requestFactory(() -> new OkHttp3ClientHttpRequestFactory(OkHttpUtils.getOkHttpClient()))
-                .build();
+        return new RestTemplateBuilder().build();
     }
     
 

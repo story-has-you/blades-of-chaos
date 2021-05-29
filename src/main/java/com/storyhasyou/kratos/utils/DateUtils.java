@@ -3,8 +3,10 @@ package com.storyhasyou.kratos.utils;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import com.storyhasyou.kratos.toolkit.DatePattern;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.GregorianCalendar;
@@ -52,7 +54,7 @@ public class DateUtils extends LocalDateTimeUtil {
     /**
      * 获取今年年份
      *
-     * @return int
+     * @return int int
      */
     public static int thisYear() {
         return LocalDate.now().getYear();
@@ -61,7 +63,7 @@ public class DateUtils extends LocalDateTimeUtil {
     /**
      * 获取当前月份
      *
-     * @return int
+     * @return int int
      */
     public static int thisMonth() {
         return LocalDate.now().getMonthValue();
@@ -89,6 +91,7 @@ public class DateUtils extends LocalDateTimeUtil {
     /**
      * 获取当前时间距离第二天凌晨时间
      *
+     * @param chronoUnit the chrono unit
      * @return 返回值单位为[ {@link ChronoUnit} ]
      */
     public static long getSecondsNextEarlyMorning(ChronoUnit chronoUnit) {
@@ -105,6 +108,28 @@ public class DateUtils extends LocalDateTimeUtil {
      */
     public static long toTimestamp(LocalDateTime time) {
         return time.toInstant(ZoneOffset.of("+8")).toEpochMilli();
+    }
+
+    /**
+     * 将毫秒转成LocalDateTime
+     *
+     * @param millisecond the millisecond
+     * @return local date time
+     */
+    public static LocalDateTime ofMillisecond(long millisecond) {
+        Instant instant = Instant.ofEpochMilli(millisecond);
+        ZoneId zone = ZoneId.systemDefault();
+        return LocalDateTime.ofInstant(instant, zone);
+    }
+
+    /**
+     * Of seconds local date time.
+     *
+     * @param seconds the seconds
+     * @return the local date time
+     */
+    public static LocalDateTime ofSeconds(long seconds) {
+        return LocalDateTime.ofEpochSecond(seconds, 0, ZoneOffset.ofHours(8));
     }
 
 }

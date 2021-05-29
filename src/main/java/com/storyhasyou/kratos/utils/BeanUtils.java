@@ -1,5 +1,6 @@
 package com.storyhasyou.kratos.utils;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.storyhasyou.kratos.toolkit.StringPool;
 import org.apache.commons.lang3.StringUtils;
@@ -154,25 +155,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
      * @return map map
      */
     public static Map<String, Object> describe(Object obj) {
-        if (obj == null) {
-            return null;
-        }
-        try {
-            Class<?> clazz = obj.getClass();
-            Field[] fields = clazz.getDeclaredFields();
-            Map<String, Object> result = new HashMap<>(fields.length);
-            for (Field field : fields) {
-                field.setAccessible(true);
-                Object value = field.get(obj);
-                if (value != null) {
-                    result.put(field.getName(), value);
-                }
-            }
-            return result;
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return toMap(obj);
     }
 
     /**
@@ -191,6 +174,22 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         if (CollectionUtils.isNotEmpty(constraintViolations)) {
             throw new ValidationException(convertErrorMsg(constraintViolations));
         }
+    }
+
+    public static Map<String, Object> toMap(Object bean) {
+        return BeanUtil.beanToMap(bean);
+    }
+
+    /**
+     * To bean t.
+     *
+     * @param <T>  the type parameter
+     * @param map  the map
+     * @param type the type
+     * @return the t
+     */
+    public static <T> T toBean(Map<String, Object> map, Class<T> type) {
+        return BeanUtil.toBean(map, type);
     }
 
 
