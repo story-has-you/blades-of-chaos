@@ -383,6 +383,9 @@ public class RedisService {
         return Optional.ofNullable(increment).orElseThrow(() -> new RuntimeException("decr fail"));
     }
 
+    public RedisTemplate<String, Object> getRedisTemplate() {
+        return redisTemplate;
+    }
 
     public ValueOperations<String, Object> opsForValue() {
         return redisTemplate.opsForValue();
