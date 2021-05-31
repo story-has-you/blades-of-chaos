@@ -225,6 +225,16 @@ public class Result<T> implements Serializable {
     }
 
     /**
+     * Gets ok.
+     *
+     * @return the ok
+     */
+    @JsonIgnore
+    public boolean isOk() {
+        return ok;
+    }
+
+    /**
      * Service data t.
      *
      * @param <E>               the type parameter
@@ -246,7 +256,7 @@ public class Result<T> implements Serializable {
      * @return the t
      */
     public T data() {
-        return data(Function.identity(), () -> new BusinessException(message));
+        return data;
     }
 
     /**
@@ -308,14 +318,6 @@ public class Result<T> implements Serializable {
         this.message = message;
     }
 
-    /**
-     * Gets data.
-     *
-     * @return the data
-     */
-    public T getData() {
-        return data;
-    }
 
     /**
      * Sets data.
@@ -335,12 +337,4 @@ public class Result<T> implements Serializable {
         this.ok = ok;
     }
 
-    /**
-     * Gets ok.
-     *
-     * @return the ok
-     */
-    public Boolean getOk() {
-        return ok;
-    }
 }

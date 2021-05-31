@@ -29,7 +29,7 @@ public class DateUtils extends LocalDateTimeUtil {
      * @return the string
      */
     public static String nowStr() {
-        return format(now(), DatePattern.CHINESE_DATE_FORMAT);
+        return format(now(), DatePattern.NORM_DATETIME_PATTERN);
     }
 
 
@@ -39,7 +39,7 @@ public class DateUtils extends LocalDateTimeUtil {
      * @return the string
      */
     public static String currentDateTime() {
-        return now().format(DatePattern.CHINESE_DATE_FORMAT);
+        return now().format(DatePattern.NORM_DATETIME_FORMAT);
     }
 
     /**

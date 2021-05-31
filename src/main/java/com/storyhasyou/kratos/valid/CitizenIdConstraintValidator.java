@@ -2,6 +2,7 @@ package com.storyhasyou.kratos.valid;
 
 import com.storyhasyou.kratos.annotation.CitizenId;
 import com.storyhasyou.kratos.annotation.Mobile;
+import com.storyhasyou.kratos.utils.IdcardUtils;
 import com.storyhasyou.kratos.utils.RegexUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,6 +21,6 @@ public class CitizenIdConstraintValidator implements ConstraintValidator<Citizen
         if (StringUtils.isBlank(value)) {
             return false;
         }
-        return RegexUtils.isCitizenId(value);
+        return IdcardUtils.isValidCard(value);
     }
 }

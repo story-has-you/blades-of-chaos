@@ -32,12 +32,7 @@ import java.util.stream.Collectors;
  *
  * @author fangxi
  */
-public class BeanUtils extends org.springframework.beans.BeanUtils {
-
-    /**
-     * SerializedLambda 反序列化缓存
-     */
-    private static final Map<Class<?>, WeakReference<SerializedLambda>> FUNC_CACHE = new ConcurrentHashMap<>(1 << 8);
+public class BeanUtils extends BeanUtil {
 
     private static final int PARALLEL_STREAM_COUNT = 10000;
 
@@ -92,29 +87,6 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
     public static void copyProperties(Object source, Object target) {
         BeanCopier beanCopier = BeanCopier.create(source.getClass(), target.getClass(), false);
         beanCopier.copy(source, target, null);
-    }
-
-
-    /**
-     * 通过Lambda的get方法引用拿到私有属性名
-     *
-     * @param <T>      字段类型
-     * @param function lambda表达式
-     * @return 返回字段名 string
-     */
-    public static <T> String convertToFieldName(Function<T, ?> function) {
-        Class<?> clazz = function.getClass();
-        return Optional.ofNullable(FUNC_CACHE.get(clazz))
-                .map(WeakReference::get)
-                .map(SerializedLambda::getImplMethodName)
-                .map(BeanUtils::removeFreFix)
-                .orElseGet(() -> {
-                    SerializedLambda lambda = resolve(function);
-                    String methodName = lambda.getImplMethodName();
-                    FUNC_CACHE.put(clazz, new WeakReference<>(lambda));
-                    return removeFreFix(methodName);
-                });
-
     }
 
     /**
@@ -177,19 +149,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
     }
 
     public static Map<String, Object> toMap(Object bean) {
-        return BeanUtil.beanToMap(bean);
-    }
-
-    /**
-     * To bean t.
-     *
-     * @param <T>  the type parameter
-     * @param map  the map
-     * @param type the type
-     * @return the t
-     */
-    public static <T> T toBean(Map<String, Object> map, Class<T> type) {
-        return BeanUtil.toBean(map, type);
+        return beanToMap(bean, false, true);
     }
 
 
@@ -204,51 +164,4 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         return set.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(StringPool.COMMA));
     }
 
-
-    /**
-     * Remove fre fix string.
-     *
-     * @param methodName the method name
-     * @return the string
-     */
-    private static String removeFreFix(String methodName) {
-        String prefix = null;
-        if (methodName.startsWith("get")) {
-            prefix = "get";
-        } else if (methodName.startsWith("is")) {
-            prefix = "is";
-        }
-        if (prefix == null) {
-            throw new RuntimeException("无效的getter方法: " + methodName);
-        }
-        String replace = methodName.replace(prefix, StringPool.EMPTY);
-        if (Character.isLowerCase(replace.charAt(0))) {
-            return replace;
-        } else {
-            return Character.toLowerCase(replace.charAt(0)) + replace.substring(1);
-        }
-    }
-
-    /**
-     * Resolve serialized lambda.
-     *
-     * @param <T>    the type parameter
-     * @param lambda the lambda
-     * @return the serialized lambda
-     */
-    private static <T> SerializedLambda resolve(Function<T, ?> lambda) {
-        try {
-            Class<?> clazz = lambda.getClass();
-            if (!clazz.isSynthetic()) {
-                throw new RuntimeException("该方法仅能传入 lambda 表达式产生的合成类");
-            }
-            // 提取SerializedLambda并缓存
-            Method method = lambda.getClass().getDeclaredMethod("writeReplace");
-            method.setAccessible(Boolean.TRUE);
-            return (SerializedLambda) method.invoke(lambda);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }
