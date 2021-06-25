@@ -56,8 +56,8 @@ public interface BaseService<Entity extends BaseEntity> extends IService<Entity>
         Assert.isTrue(current > 0, "current must be greater than or equal to 1");
         Assert.isTrue(limit > 0, "limit must be greater than 0");
         Page<Entity> page = lambdaQuery()
-                .setEntity(entity)
                 .orderByDesc(BaseEntity::getCreateTime)
+                .setEntity(entity)
                 .page(new Page<>(current, limit));
         return PageResponse.of(page);
     }
@@ -75,19 +75,31 @@ public interface BaseService<Entity extends BaseEntity> extends IService<Entity>
 
 
     /**
-     * 根据ids返回map
+     * 根据ids分组
      *
      * @param ids the ids
      * @return map map
      */
-    default Map<Long, Entity> mapByIds(List<Long> ids) {
-        Assert.notEmpty(ids, "ids must not null or empty");
-        List<Entity> entities = listByIds(ids);
+    default Map<Long, Entity> grouping(List<Long> ids) {
+        return grouping(ids, BaseEntity::getId);
+    }
+
+    /**
+     * 根据字段分组
+     *
+     * @param <T>       the type parameter
+     * @param ids       the ids
+     * @param sFunction the s function
+     * @return map map
+     */
+    default <T> Map<T, Entity> grouping(List<T> ids, SFunction<Entity, T> sFunction) {
+        List<Entity> entities = lambdaQuery().in(sFunction, ids).list();
         if (CollectionUtils.isEmpty(entities)) {
             return Collections.emptyMap();
         }
-        return entities.stream().collect(Collectors.toMap(Entity::getId, Function.identity()));
+        return entities.stream().collect(Collectors.toMap(sFunction, Function.identity()));
     }
+
 
     /**
      * Uniqueness boolean.
@@ -98,5 +110,15 @@ public interface BaseService<Entity extends BaseEntity> extends IService<Entity>
      */
     default boolean exists(SFunction<Entity, ?> column, Object value) {
         return lambdaQuery().eq(column, value).count() > 0;
+    }
+
+    /**
+     * Uniqueness boolean.
+     *
+     * @param params the params
+     * @return the boolean
+     */
+    default boolean exists(Map<SFunction<Entity, ?>, Object> params) {
+        return lambdaQuery().allEq(params).count() > 0;
     }
 }

@@ -136,7 +136,7 @@ public class Result<T> implements Serializable {
      * @return the result
      */
     public static <T> Result<T> error(String message) {
-        return error(ResultCode.FAILED, message);
+        return error(ResultCode.FAILURE, message);
     }
 
     /**
@@ -146,7 +146,7 @@ public class Result<T> implements Serializable {
      * @return the result
      */
     public static <T> Result<T> error() {
-        return error(ResultCode.FAILED);
+        return error(ResultCode.FAILURE);
     }
 
     /**
@@ -155,8 +155,8 @@ public class Result<T> implements Serializable {
      * @param <T> the type parameter
      * @return the result
      */
-    public static <T> Result<T> validateFailed() {
-        return error(ResultCode.VALIDATE_FAILED);
+    public static <T> Result<T> validateFAILURE() {
+        return error(ResultCode.PARAM_VALID_ERROR);
     }
 
     /**
@@ -166,7 +166,7 @@ public class Result<T> implements Serializable {
      * @return the result
      */
     public static <T> Result<T> unauthorized() {
-        return error(ResultCode.UNAUTHORIZED);
+        return error(ResultCode.UN_AUTHORIZED);
     }
 
     /**

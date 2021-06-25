@@ -13,7 +13,7 @@ public class NotFountException extends BusinessException {
      * Instantiates a new Not fount exception.
      */
     public NotFountException() {
-        super(ResultCode.NOT_FOUNT);
+        super(ResultCode.NOT_FOUND);
     }
 
     /**
@@ -22,7 +22,7 @@ public class NotFountException extends BusinessException {
      * @param message the message
      */
     public NotFountException(String message) {
-        super(ResultCode.NOT_FOUNT.getCode(), message);
+        super(ResultCode.NOT_FOUND.getCode(), message);
     }
 
 }

@@ -9,30 +9,19 @@ import org.springframework.http.HttpStatus;
  * @author fangxi
  */
 public enum ResultCode implements IntBaseEnum {
-    /**
-     * Success result code.
-     */
-    SUCCESS(HttpStatus.OK.value(), "操作成功"),
-    /**
-     * Failed result code.
-     */
-    FAILED(HttpStatus.INTERNAL_SERVER_ERROR.value(), "操作失败"),
-    /**
-     * Not fount result code.
-     */
-    NOT_FOUNT(HttpStatus.NOT_FOUND.value(), "找不到资源"),
-    /**
-     * Validate failed result code.
-     */
-    VALIDATE_FAILED(HttpStatus.BAD_REQUEST.value(), "参数检验失败"),
-    /**
-     * Unauthorized result code.
-     */
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED.value(), "暂未登录或token已经过期"),
-    /**
-     * Forbidden result code.
-     */
-    FORBIDDEN(HttpStatus.FORBIDDEN.value(), "没有相关权限");
+    SUCCESS(200, "操作成功"),
+    FAILURE(400, "业务异常"),
+    UN_AUTHORIZED(401, "请求未授权"),
+    NOT_FOUND(404, "404 没找到请求"),
+    MSG_NOT_READABLE(400, "消息不能读取"),
+    METHOD_NOT_SUPPORTED(405, "不支持当前请求方法"),
+    MEDIA_TYPE_NOT_SUPPORTED(415, "不支持当前媒体类型"),
+    REQ_REJECT(403, "请求被拒绝"),
+    INTERNAL_SERVER_ERROR(500, "服务器异常"),
+    PARAM_MISS(400, "缺少必要的请求参数"),
+    PARAM_TYPE_ERROR(400, "请求参数类型错误"),
+    PARAM_BIND_ERROR(400, "请求参数绑定错误"),
+    PARAM_VALID_ERROR(400, "参数校验失败");
 
     private final int code;
     private final String message;
