@@ -2,6 +2,7 @@ package com.storyhasyou.kratos.base;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
  * @param <Entity> the type parameter
  * @author fangxi created by 2020/6/18
  */
+@SuppressWarnings("all")
 public interface BaseService<Entity extends BaseEntity> extends IService<Entity> {
 
     /**
@@ -56,8 +58,9 @@ public interface BaseService<Entity extends BaseEntity> extends IService<Entity>
         Assert.isTrue(current > 0, "current must be greater than or equal to 1");
         Assert.isTrue(limit > 0, "limit must be greater than 0");
         Page<Entity> page = lambdaQuery()
-                .orderByDesc(BaseEntity::getCreateTime)
                 .setEntity(entity)
+                .setEntityClass((Class<Entity>) entity.getClass())
+                .orderByDesc(BaseEntity::getCreateTime)
                 .page(new Page<>(current, limit));
         return PageResponse.of(page);
     }

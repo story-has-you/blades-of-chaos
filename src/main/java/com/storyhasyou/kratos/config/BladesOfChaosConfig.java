@@ -48,7 +48,7 @@ public class BladesOfChaosConfig {
     @Bean
     @ConditionalOnMissingBean(MappingJackson2HttpMessageConverter.class)
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
-        return JacksonUtils.mappingJackson2HttpMessageConverter();
+        return JacksonUtils.mappingJackson2HttpMessageConverter(true);
     }
 
     /**
