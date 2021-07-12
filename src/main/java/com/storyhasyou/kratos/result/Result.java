@@ -1,12 +1,13 @@
 package com.storyhasyou.kratos.result;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Maps;
-import com.storyhasyou.kratos.enums.IntBaseEnum;
 import com.storyhasyou.kratos.exceptions.BusinessException;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -18,30 +19,17 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("all")
 public class Result<T> implements Serializable {
-    /**
-     * The Status.
-     */
-    private Integer status;
-    /**
-     * The Message.
-     */
-    private String message;
-    /**
-     * The Data.
-     */
-    private T data;
-    /**
-     * The Ok.
-     */
-    private Boolean ok;
-
     @JsonIgnore
     private final Map<String, Object> responseBody = Maps.newHashMap();
+    private Integer status;
+    private String message;
+    private T data;
+    private Boolean ok;
 
     /**
      * Instantiates a new Result.
      */
-    public Result() {
+    private Result() {
     }
 
     /**
@@ -52,7 +40,7 @@ public class Result<T> implements Serializable {
      * @param data    the data
      * @param ok      the ok
      */
-    public Result(Integer status, String message, T data, Boolean ok) {
+    private Result(Integer status, String message, T data, Boolean ok) {
         this.status = status;
         this.message = message;
         this.data = data;
@@ -92,17 +80,6 @@ public class Result<T> implements Serializable {
         return new Result<>(ResultCode.SUCCESS.getCode(), message, data, true);
     }
 
-    /**
-     * 失败返回结果
-     *
-     * @param <T>       the type parameter
-     * @param errorCode 错误码
-     * @return the result
-     */
-    public static <T> Result<T> error(IntBaseEnum errorCode) {
-        return error(errorCode, null);
-    }
-
 
     /**
      * 失败返回结果
@@ -124,7 +101,7 @@ public class Result<T> implements Serializable {
      * @param message   错误信息
      * @return the result
      */
-    public static <T> Result<T> error(IntBaseEnum errorCode, String message) {
+    public static <T> Result<T> error(ResultCode errorCode, String message) {
         return new Result<>(errorCode.getCode(), message, null, false);
     }
 
@@ -146,28 +123,9 @@ public class Result<T> implements Serializable {
      * @return the result
      */
     public static <T> Result<T> error() {
-        return error(ResultCode.FAILURE);
+        return error(ResultCode.FAILURE, ResultCode.FAILURE.getMessage());
     }
 
-    /**
-     * 参数验证失败返回结果
-     *
-     * @param <T> the type parameter
-     * @return the result
-     */
-    public static <T> Result<T> validateFAILURE() {
-        return error(ResultCode.PARAM_VALID_ERROR);
-    }
-
-    /**
-     * Unauthorized result.
-     *
-     * @param <T> the type parameter
-     * @return the result
-     */
-    public static <T> Result<T> unauthorized() {
-        return error(ResultCode.UN_AUTHORIZED);
-    }
 
     /**
      * Body result.
@@ -221,7 +179,7 @@ public class Result<T> implements Serializable {
      */
     @JsonIgnore
     public boolean isError() {
-        return !ok;
+        return status != 200;
     }
 
     /**
@@ -231,7 +189,16 @@ public class Result<T> implements Serializable {
      */
     @JsonIgnore
     public boolean isOk() {
-        return ok;
+        return status == 200;
+    }
+
+    /**
+     * Sets ok.
+     *
+     * @param ok the ok
+     */
+    public void setOk(Boolean ok) {
+        this.ok = ok;
     }
 
     /**
@@ -243,7 +210,10 @@ public class Result<T> implements Serializable {
      * @param exceptionSupplier the exception supplier
      * @return the t
      */
-    public <E extends BusinessException, R> R data(Function<T, R> function, Supplier<? extends E> exceptionSupplier) {
+    public <E extends BusinessException, R> R data(Function<T, R> function, Supplier<? extends E> exceptionSupplier, Supplier<R> defaultValue) {
+        if (defaultValue != null) {
+            return defaultValue.get();
+        }
         if (isError()) {
             throw exceptionSupplier.get();
         }
@@ -267,9 +237,30 @@ public class Result<T> implements Serializable {
      * @return the t
      */
     public <E extends BusinessException> T data(Supplier<? extends E> exceptionSupplier) {
-        return data(Function.identity(), exceptionSupplier);
+        return data(Function.identity(), exceptionSupplier, null);
     }
 
+    /**
+     * Service data t.
+     *
+     * @param <R>      the type parameter
+     * @param function the function
+     * @return the t
+     */
+    public <R> R data(Function<T, R> function, R defaultValue) {
+        return data(function, () -> new BusinessException(message), () -> defaultValue);
+    }
+
+    /**
+     * Service data t.
+     *
+     * @param <R>      the type parameter
+     * @param function the function
+     * @return the t
+     */
+    public <R> R data(Function<T, R> function, Supplier<R> defaultValue) {
+        return data(function, () -> new BusinessException(message), defaultValue);
+    }
 
     /**
      * Service data t.
@@ -279,7 +270,19 @@ public class Result<T> implements Serializable {
      * @return the t
      */
     public <R> R data(Function<T, R> function) {
-        return data(function, () -> new BusinessException(message));
+        return data(function, () -> new BusinessException(message), null);
+    }
+
+    /**
+     * Service data t.
+     *
+     * @param consumer the consumer
+     * @return the t
+     */
+    public void data(Consumer<T> consumer) {
+        if (isOk()) {
+            consumer.accept(this.data);
+        }
     }
 
     /**
@@ -318,7 +321,6 @@ public class Result<T> implements Serializable {
         this.message = message;
     }
 
-
     /**
      * Sets data.
      *
@@ -326,15 +328,6 @@ public class Result<T> implements Serializable {
      */
     public void setData(T data) {
         this.data = data;
-    }
-
-    /**
-     * Sets ok.
-     *
-     * @param ok the ok
-     */
-    public void setOk(Boolean ok) {
-        this.ok = ok;
     }
 
 }

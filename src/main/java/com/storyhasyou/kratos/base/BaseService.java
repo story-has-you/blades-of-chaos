@@ -84,7 +84,7 @@ public interface BaseService<Entity extends BaseEntity> extends IService<Entity>
      * @return map map
      */
     default Map<Long, Entity> grouping(List<Long> ids) {
-        return grouping(ids, BaseEntity::getId);
+        return grouping(BaseEntity::getId, ids);
     }
 
     /**
@@ -95,7 +95,7 @@ public interface BaseService<Entity extends BaseEntity> extends IService<Entity>
      * @param sFunction the s function
      * @return map map
      */
-    default <T> Map<T, Entity> grouping(List<T> ids, SFunction<Entity, T> sFunction) {
+    default <T> Map<T, Entity> grouping(SFunction<Entity, T> sFunction, List<T> ids) {
         List<Entity> entities = lambdaQuery().in(sFunction, ids).list();
         if (CollectionUtils.isEmpty(entities)) {
             return Collections.emptyMap();
