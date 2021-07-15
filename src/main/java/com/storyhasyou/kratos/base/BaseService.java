@@ -2,7 +2,6 @@ package com.storyhasyou.kratos.base;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -35,6 +34,27 @@ public interface BaseService<Entity extends BaseEntity> extends IService<Entity>
     default Entity get(Long id) {
         return getOpt(id).orElseThrow(() -> new NotFountException(StrUtil.format("找不到id={}的对象", id)));
     }
+
+    /**
+     * 获取
+     * @param column
+     * @param value
+     * @return
+     */
+    default Entity get(SFunction<Entity, ?> column, Object value) {
+        return lambdaQuery().eq(column, value).one();
+    }
+
+    /**
+     * 获取
+     * @param column
+     * @param value
+     * @return
+     */
+    default Optional<Entity> getOpt(SFunction<Entity, ?> column, Object value) {
+        return Optional.ofNullable(get(column, value));
+    }
+
 
     /**
      * 获取
