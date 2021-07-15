@@ -397,7 +397,7 @@ public class OkHttpUtils {
     }
 
 
-    private static X509TrustManager x509TrustManager() {
+    public static X509TrustManager x509TrustManager() {
         return new X509TrustManager() {
             @Override
             public void checkClientTrusted(X509Certificate[] x509Certificates, String s) {
@@ -414,7 +414,7 @@ public class OkHttpUtils {
         };
     }
 
-    private static SSLSocketFactory sslSocketFactory() {
+    public static SSLSocketFactory sslSocketFactory() {
         try {
             //信任任何链接
             SSLContext sslContext = SSLContext.getInstance("TLS");
