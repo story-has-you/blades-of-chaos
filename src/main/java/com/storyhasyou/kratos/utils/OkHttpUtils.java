@@ -44,7 +44,7 @@ public class OkHttpUtils {
 
     private static final int OK = 200;
 
-    private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
+    private static OkHttpClient OK_HTTP_CLIENT = new OkHttpClient.Builder()
             .connectTimeout(Duration.ofSeconds(6))
             .readTimeout(Duration.ofMinutes(1))
             .writeTimeout(Duration.ofMinutes(1))
@@ -61,6 +61,10 @@ public class OkHttpUtils {
      */
     public static OkHttpClient getOkHttpClient() {
         return OK_HTTP_CLIENT;
+    }
+
+    public static void setOkHttpClient(OkHttpClient okHttpClient) {
+        OK_HTTP_CLIENT = okHttpClient;
     }
 
     /**
