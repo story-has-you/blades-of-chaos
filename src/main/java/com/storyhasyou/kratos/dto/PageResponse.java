@@ -75,6 +75,14 @@ public class PageResponse<T> implements Serializable {
         return getResponse(page.getCurrent(), page.getSize(), 0, 0, false);
     }
 
+    public static <T> PageResponse<T> empty(long current, long limit) {
+        return getResponse(current, limit, 0, 0, false);
+    }
+
+    public static <T> PageResponse<T> empty() {
+        return getResponse(0, 0, 0, 0, false);
+    }
+
     private static <R> PageResponse<R> getResponse(long current, long size, long total, long pages, boolean b) {
         PageResponse<R> response = new PageResponse<>();
         response.setCurrent(current);
