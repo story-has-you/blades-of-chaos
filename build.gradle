@@ -1,0 +1,119 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'org.springframework.boot' version '3.5.5'
+    id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'com.storyhasyou.kratos'
+version = '3.3.2'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://packages.aliyun.com/maven/repository/public/'
+    }
+}
+
+dependencies {
+    // 核心必需依赖
+    implementation 'commons-io:commons-io:2.18.0'
+    implementation 'org.apache.commons:commons-lang3:3.18.0'
+    implementation 'com.google.guava:guava:33.3.1-jre'
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'cn.hutool:hutool-all:5.8.32'
+    implementation 'commons-codec:commons-codec'
+    
+    // 可选依赖 - 编译时需要，但不传递给使用者
+    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compileOnly 'org.springframework.boot:spring-boot-starter-validation'
+    compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+    compileOnly 'org.springframework.boot:spring-boot-starter-aop'
+    compileOnly 'org.springframework.boot:spring-boot-starter-data-redis'
+    compileOnly 'org.projectlombok:lombok'
+    compileOnly 'com.github.pagehelper:pagehelper-spring-boot-starter:2.1.0'
+    
+    // 测试依赖
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    
+    // 注解处理器
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-parameters']
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+// 自定义源码JAR任务，确保与Maven行为一致
+tasks.named('sourcesJar') {
+    archiveClassifier = 'sources'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            
+            pom {
+                name = 'blades-of-chaos'
+                description = 'A comprehensive Java utility library for enterprise development'
+                url = 'https://github.com/storyhasyou/blades-of-chaos'
+                
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                
+                developers {
+                    developer {
+                        id = 'fangxi'
+                        name = 'fangxi'
+                        email = 'fangxi@storyhasyou.com'
+                    }
+                }
+            }
+        }
+    }
+    
+    repositories {
+        maven {
+            name = 'AliyunReleases'
+            url = 'https://packages.aliyun.com/maven/repository/2099844-release-pXeqHB/'
+            credentials {
+                username = findProperty('aliyun.maven.username') ?: System.getenv('ALIYUN_MAVEN_USERNAME')
+                password = findProperty('aliyun.maven.password') ?: System.getenv('ALIYUN_MAVEN_PASSWORD')
+            }
+        }
+    }
+}
+
+// 禁用 Spring Boot 的可执行 JAR 任务，因为这是一个库项目
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+
+bootJar {
+    enabled = false
+}
+
+// 确保构建任务包含源码JAR
+assemble.dependsOn sourcesJar

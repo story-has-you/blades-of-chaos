@@ -1,0 +1,17 @@
+rootProject.name = 'blades-of-chaos'
+
+// 优化依赖解析，使用阿里云镜像加速下载
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+    repositories {
+        mavenCentral()
+        maven {
+            name = 'Aliyun Maven Central'
+            url = 'https://packages.aliyun.com/maven/repository/public/'
+        }
+    }
+}
+
+// 启用 Gradle 功能预览
+enableFeaturePreview('STABLE_CONFIGURATION_CACHE')
+enableFeaturePreview('TYPESAFE_PROJECT_ACCESSORS')
