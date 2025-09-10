@@ -1,20 +1,16 @@
 package com.storyhasyou.kratos.toolkit;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
+import java.util.*;
 import java.util.concurrent.*;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.IntStream;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * Sequence单元测试类
@@ -570,7 +566,7 @@ public class SequenceTest {
             executor.submit(() -> {
                 while (!shouldStop.get()) {
                     Long id = sequence.nextId();
-                    if (id != null && id > 0) {
+                    if (id > 0) {
                         idCount.incrementAndGet();
                         uniqueIds.add(id);
                     }
