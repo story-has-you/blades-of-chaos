@@ -45,9 +45,25 @@ import java.util.concurrent.ThreadLocalRandom;
 public final class Sequence {
 
     /**
-     * 起始时间戳
+     * 起始时间戳 (2018-02-27 17:19:37.809)
+     * 此时间戳用于计算时间偏移量，确保生成的ID按时间递增
      **/
-    private final static long START_TIME = 1519740777809L;
+    private static final long START_TIME = 1519740777809L;
+
+    /**
+     * IP地址最后一个字节掩码（0xFF = 255）
+     **/
+    private static final int IP_LAST_BYTE_MASK = 0x000000FF;
+
+    /**
+     * MAC地址倒数第二个字节掩码
+     **/
+    private static final long MAC_SECOND_LAST_BYTE_MASK = 0x000000FF;
+
+    /**
+     * MAC地址最后一个字节掩码（左移8位后）
+     **/
+    private static final long MAC_LAST_BYTE_MASK = 0x0000FF00;
 
     /**
      * dataCenterId占用的位数：2
@@ -80,7 +96,7 @@ public final class Sequence {
      * 用mask防止溢出:位与运算保证计算的结果范围始终是 0-4095
      **/
     private final static long SEQUENCE_MASK = ~(-1L << SEQUENCE_BITS);
-    private static byte LAST_IP = 0;
+    private static final byte LAST_IP = getLastIpAddressInternal();
     private final long workerId;
     private final long dataCenterId;
     private final ThreadLocalRandom tlr = ThreadLocalRandom.current();
@@ -97,11 +113,11 @@ public final class Sequence {
     }
 
     public Sequence(long dataCenterId) {
-        this(dataCenterId, 0x000000FF & getLastIpAddress(), true, 5L, false);
+        this(dataCenterId, IP_LAST_BYTE_MASK & getLastIpAddress(), true, 5L, false);
     }
 
     public Sequence(long dataCenterId, boolean clock, boolean randomSequence) {
-        this(dataCenterId, 0x000000FF & getLastIpAddress(), clock, 5L, randomSequence);
+        this(dataCenterId, IP_LAST_BYTE_MASK & getLastIpAddress(), clock, 5L, randomSequence);
     }
 
     /**
@@ -136,19 +152,23 @@ public final class Sequence {
      * @return last IP
      */
     public static byte getLastIpAddress() {
-        if (LAST_IP != 0) {
-            return LAST_IP;
-        }
+        return LAST_IP;
+    }
 
+    /**
+     * 获取本机IP地址的最后一个字节
+     * 【强制】此方法仅在类加载时调用一次，确保线程安全
+     *
+     * @return IP地址最后一个字节
+     */
+    private static byte getLastIpAddressInternal() {
         try {
             InetAddress inetAddress = InetAddress.getLocalHost();
             byte[] addressByte = inetAddress.getAddress();
-            LAST_IP = addressByte[addressByte.length - 1];
+            return addressByte[addressByte.length - 1];
         } catch (Exception e) {
             throw new RuntimeException("Unknown Host Exception", e);
         }
-
-        return LAST_IP;
     }
 
     private static long getMaxWorkerId(long datacenterId) {
@@ -177,7 +197,7 @@ public final class Sequence {
             } else {
                 byte[] mac = network.getHardwareAddress();
                 if (null != mac) {
-                    id = ((0x000000FF & (long) mac[mac.length - 2]) | (0x0000FF00 & (((long) mac[mac.length - 1]) << 8))) >> 6;
+                    id = ((MAC_SECOND_LAST_BYTE_MASK & (long) mac[mac.length - 2]) | (MAC_LAST_BYTE_MASK & (((long) mac[mac.length - 1]) << 8))) >> 6;
                     id = id % (Sequence.MAX_DATA_CENTER_ID + 1);
                 }
             }
@@ -205,8 +225,10 @@ public final class Sequence {
 
             try {
                 // 时间回退timeOffset毫秒内，则允许等待2倍的偏移量后重新获取，解决小范围的时间回拨问题
-                this.wait(offset << 1);
-            } catch (Exception e) {
+                // 【强制】使用Thread.sleep()替代wait()，避免在synchronized方法中的不当使用
+                Thread.sleep(offset << 1);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 throw new RuntimeException(e);
             }
             // 再次获取

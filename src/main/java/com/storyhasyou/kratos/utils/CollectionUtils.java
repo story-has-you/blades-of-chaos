@@ -180,15 +180,14 @@ public class CollectionUtils extends CollectionUtil {
      * @param candidates the candidates to search for
      * @return the first present object, or {@code null} if not found
      */
-    @SuppressWarnings("unchecked")
     @Nullable
     public static <E> E findFirstMatch(Collection<?> source, Collection<E> candidates) {
         if (isEmpty(source) || isEmpty(candidates)) {
             return null;
         }
-        for (Object candidate : candidates) {
+        for (E candidate : candidates) {
             if (source.contains(candidate)) {
-                return (E) candidate;
+                return candidate;
             }
         }
         return null;
@@ -333,7 +332,7 @@ public class CollectionUtils extends CollectionUtil {
         if (isEmpty(list)) {
             return null;
         }
-        return list.get(0);
+        return list.getFirst();
     }
 
     /**
@@ -379,7 +378,7 @@ public class CollectionUtils extends CollectionUtil {
         if (isEmpty(list)) {
             return null;
         }
-        return list.get(list.size() - 1);
+        return list.getLast();
     }
 
     /**
