@@ -270,8 +270,8 @@ public class IpUtilsTest {
     void should_HandleCaseInsensitiveUnknown_When_CheckingUnknownValue(String headerValue, boolean shouldFallback) {
         // Given
         String fallbackIp = "127.0.0.1";
-        when(mockRequest.getHeader("x-forwarded-for")).thenReturn(headerValue);
-        when(mockRequest.getHeader("Proxy-Client-IP")).thenReturn(fallbackIp);
+        lenient().when(mockRequest.getHeader("x-forwarded-for")).thenReturn(headerValue);
+        lenient().when(mockRequest.getHeader("Proxy-Client-IP")).thenReturn(fallbackIp);
         
         // When
         String actualIp = IpUtils.getIp(mockRequest);

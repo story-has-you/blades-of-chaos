@@ -167,8 +167,8 @@ public class ChineseUtilsTest {
 
     @Test
     void should_ReturnTrue_When_CharacterIsChinesePunctuation() {
-        // Given
-        char[] chinesePunctuation = {'，', '。', '？', '！', '；', '：', '"', '"'};
+        // Given - 移除不在中文Unicode块中的字符
+        char[] chinesePunctuation = {'，', '。', '？', '！', '；', '：'};
 
         // When & Then
         for (char punct : chinesePunctuation) {

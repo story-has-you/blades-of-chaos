@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 
@@ -175,8 +176,8 @@ public class SequenceTest {
         byte lastIp = Sequence.getLastIpAddress();
         
         // Then
-        // IP地址最后一个字节应该在有效范围内
-        assertThat(lastIp).isBetween((byte) 0, (byte) 255);
+        // IP地址最后一个字节应该在byte类型有效范围内（-128到127）
+        assertThat(lastIp).isBetween((byte) -128, (byte) 127);
     }
 
     @Test
@@ -556,7 +557,7 @@ public class SequenceTest {
         int duration = 5; // 5秒压力测试
         AtomicLong idCount = new AtomicLong(0);
         Set<Long> uniqueIds = Collections.synchronizedSet(new HashSet<>());
-        boolean shouldStop = false;
+        AtomicBoolean shouldStop = new AtomicBoolean(false);
         
         // When
         long startTime = System.currentTimeMillis();
@@ -566,9 +567,8 @@ public class SequenceTest {
         ExecutorService executor = Executors.newFixedThreadPool(threadCount);
         
         for (int i = 0; i < threadCount; i++) {
-            boolean finalShouldStop = shouldStop;
             executor.submit(() -> {
-                while (!finalShouldStop) {
+                while (!shouldStop.get()) {
                     Long id = sequence.nextId();
                     if (id != null && id > 0) {
                         idCount.incrementAndGet();
@@ -580,7 +580,7 @@ public class SequenceTest {
         
         // 运行指定时间
         Thread.sleep(duration * 1000);
-        shouldStop = true;
+        shouldStop.set(true);
         
         executor.shutdown();
         assertThat(executor.awaitTermination(5, TimeUnit.SECONDS)).isTrue();

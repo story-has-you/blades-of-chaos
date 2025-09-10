@@ -19,6 +19,9 @@ public class ChineseUtils {
      * @warn 不能校验是否为中文标点符号
      */
     public static boolean isContainChinese(String str) {
+        if (StringUtils.isBlank(str)) {
+            return false;
+        }
         return PATTERN.matcher(str).find();
     }
 
