@@ -74,41 +74,19 @@ tasks.named('sourcesJar') {
 }
 
 publishing {
-    publications {
-        maven(MavenPublication) {
-            from components.java
-            
-            pom {
-                name = 'blades-of-chaos'
-                description = 'A comprehensive Java utility library for enterprise development'
-                url = 'https://github.com/storyhasyou/blades-of-chaos'
-                
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                
-                developers {
-                    developer {
-                        id = 'fangxi'
-                        name = 'fangxi'
-                        email = 'fangxi@storyhasyou.com'
-                    }
-                }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/story-has-you/blades-of-chaos")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
             }
         }
     }
-    
-    repositories {
-        maven {
-            name = 'AliyunReleases'
-            url = 'https://packages.aliyun.com/maven/repository/2099844-release-pXeqHB/'
-            credentials {
-                username = findProperty('aliyun.maven.username') ?: System.getenv('ALIYUN_MAVEN_USERNAME')
-                password = findProperty('aliyun.maven.password') ?: System.getenv('ALIYUN_MAVEN_PASSWORD')
-            }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
         }
     }
 }

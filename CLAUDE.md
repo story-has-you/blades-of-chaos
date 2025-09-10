@@ -94,5 +94,5 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 启用并行构建和配置缓存优化
 - 支持源码 JAR 自动生成
 - 禁用 Spring Boot 可执行 JAR（这是一个库项目）
-- 发布到阿里云 Maven 私有仓库，需要配置 `aliyun.maven.username` 和 `aliyun.maven.password`
+- 发布到 GitHub Packages，需要配置 `gpr.user` 和 `gpr.key` 属性或 `USERNAME` 和 `TOKEN` 环境变量
 - 支持 UTF-8 编码和 `-parameters` 编译参数
