@@ -133,16 +133,16 @@ public class UserRequest {
 
 ```bash
 # 编译项目
-mvn clean compile
+./mvnw clean compile
 
 # 运行测试
-mvn test
+./mvnw test
 
 # 构建JAR包
-mvn clean package
+./mvnw clean package
 
 # 安装到本地仓库
-mvn clean install
+./mvnw clean install
 ```
 
 ## 项目结构

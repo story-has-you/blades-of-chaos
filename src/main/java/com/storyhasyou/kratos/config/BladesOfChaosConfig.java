@@ -46,7 +46,6 @@ public class BladesOfChaosConfig {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplateBuilder()
-                .requestFactory(OkHttp3ClientHttpRequestFactory.class)
                 .messageConverters(JacksonUtils.mappingJackson2HttpMessageConverter(true))
                 .build();
     }

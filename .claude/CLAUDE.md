@@ -9,13 +9,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 构建和测试命令
 
 ### Maven 命令
-- `mvn clean compile` - 编译项目
-- `mvn clean package` - 构建 JAR 包
-- `mvn test` - 运行所有测试
-- `mvn test -Dtest=ClassNameTest` - 运行单个测试类
-- `mvn test -Dtest=ClassNameTest#methodName` - 运行单个测试方法
-- `mvn clean install` - 编译、测试并安装到本地 Maven 仓库
-- `mvn clean deploy` - 发布到阿里云私有仓库
+- `./mvnw clean compile` - 编译项目
+- `./mvnw clean package` - 构建 JAR 包
+- `./mvnw test` - 运行所有测试
+- `./mvnw test -Dtest=ClassNameTest` - 运行单个测试类
+- `./mvnw test -Dtest=ClassNameTest#methodName` - 运行单个测试方法
+- `./mvnw clean install` - 编译、测试并安装到本地 Maven 仓库
+- `./mvnw clean deploy` - 发布到阿里云私有仓库
 
 ## 核心架构
 

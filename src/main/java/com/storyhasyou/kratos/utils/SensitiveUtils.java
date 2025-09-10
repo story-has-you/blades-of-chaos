@@ -75,7 +75,7 @@ public class SensitiveUtils {
             return StringPool.EMPTY;
         }
         final String name = StringUtils.left(idCard, 1);
-        return StringUtils.rightPad(name, StringUtils.length(idCard), StringPool.EMPTY);
+        return StringUtils.rightPad(name, StringUtils.length(idCard), StringPool.ASTERISK);
     }
 
     /**
@@ -101,7 +101,7 @@ public class SensitiveUtils {
         int size = length - (headOff + tailOff);
         if (size > 0) {
             while (size > 0) {
-                sb.append(StringPool.EMPTY);
+                sb.append(StringPool.ASTERISK);
                 size--;
             }
         }
