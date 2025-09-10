@@ -47,11 +47,19 @@
 
 ### 1. 添加依赖
 
+#### Gradle
+```groovy
+dependencies {
+    implementation 'com.storyhasyou.kratos:blades-of-chaos:3.3.2'
+}
+```
+
+#### Maven
 ```xml
 <dependency>
-    <groupId>com.storyhasyou</groupId>
+    <groupId>com.storyhasyou.kratos</groupId>
     <artifactId>blades-of-chaos</artifactId>
-    <version>1.0.0</version>
+    <version>3.3.2</version>
 </dependency>
 ```
 
@@ -124,8 +132,8 @@ public class UserRequest {
 ## 技术栈
 
 - **Java 21**
-- **Spring Boot 3.1.5**
-- **Maven** 依赖管理
+- **Spring Boot 3.5.5**
+- **Gradle 8.10.2** 构建工具
 - **Redis** 分布式缓存和锁
 - **Lombok** 减少模板代码
 
@@ -133,16 +141,22 @@ public class UserRequest {
 
 ```bash
 # 编译项目
-./mvnw clean compile
+./gradlew clean compileJava
 
 # 运行测试
-./mvnw test
+./gradlew test
 
 # 构建JAR包
-./mvnw clean package
+./gradlew build
 
 # 安装到本地仓库
-./mvnw clean install
+./gradlew publishToMavenLocal
+
+# 发布到阿里云仓库
+./gradlew publish
+
+# 查看所有可用任务
+./gradlew tasks
 ```
 
 ## 项目结构
