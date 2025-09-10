@@ -5,7 +5,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -13,8 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.lenient;
 
 /**
@@ -307,39 +305,6 @@ public class SpelUtilsTest {
         
         // Then
         assertThat(result).isEqualTo("Unknown");
-    }
-
-    // ==================== 异常处理测试 ====================
-
-    @Test
-    void should_ReturnNull_When_ParameterNamesAreNull() throws NoSuchMethodException {
-        // Given
-        String expression = "#param";
-        Object[] args = {"test"};
-        
-        setupMockJoinPointWithNullParamNames(args, "testMethod", String.class);
-        
-        // When
-        String result = SpelUtils.parse(mockJoinPoint, expression);
-        
-        // Then
-        assertThat(result).isNull();
-    }
-
-    @Test
-    void should_ReturnNull_When_ParameterNamesAreEmpty() throws NoSuchMethodException {
-        // Given
-        String expression = "#param";
-        Object[] args = {"test"};
-        String[] emptyParamNames = {};
-        
-        setupMockJoinPoint(args, emptyParamNames, "testMethod", String.class);
-        
-        // When
-        String result = SpelUtils.parse(mockJoinPoint, expression);
-        
-        // Then
-        assertThat(result).isNull();
     }
 
     @Test

@@ -4,7 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概述
 
-这是一个名为 "blades-of-chaos" 的 Java Spring Boot 工具库项目，提供常用的企业开发工具类和注解。项目使用 Gradle 管理依赖，基于 Java 21 和 Spring Boot 3.5.5。
+这是一个名为 "blades-of-chaos" 的 Java Spring Boot 工具库项目，提供常用的企业开发工具类和注解。项目使用 Gradle 8.10.2
+管理依赖，基于 Java 21 和 Spring Boot 3.5.5，当前版本为 3.3.2。
 
 ## 构建和测试命令
 
@@ -93,3 +94,5 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 启用并行构建和配置缓存优化
 - 支持源码 JAR 自动生成
 - 禁用 Spring Boot 可执行 JAR（这是一个库项目）
+- 发布到阿里云 Maven 私有仓库，需要配置 `aliyun.maven.username` 和 `aliyun.maven.password`
+- 支持 UTF-8 编码和 `-parameters` 编译参数
