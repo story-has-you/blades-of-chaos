@@ -524,7 +524,7 @@ public class CollectionUtils extends CollectionUtil {
      */
     public static <T, K> Map<T, K> zip(Collection<T> keys, Collection<K> values) {
         if (isEmpty(keys) || isEmpty(values)) {
-            return null;
+            return new HashMap<>();
         }
 
         final List<T> keyList = new ArrayList<>(keys);
