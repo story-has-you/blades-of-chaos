@@ -4,18 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概述
 
-这是一个名为 "blades-of-chaos" 的 Java Spring Boot 工具库项目，提供常用的企业开发工具类和注解。项目使用 Maven 管理依赖，基于 Java 21 和 Spring Boot 3.1.5。
+这是一个名为 "blades-of-chaos" 的 Java Spring Boot 工具库项目，提供常用的企业开发工具类和注解。项目使用 Gradle 管理依赖，基于 Java 21 和 Spring Boot 3.5.5。
 
 ## 构建和测试命令
 
-### Maven 命令
-- `./mvnw clean compile` - 编译项目
-- `./mvnw clean package` - 构建 JAR 包
-- `./mvnw test` - 运行所有测试
-- `./mvnw test -Dtest=ClassNameTest` - 运行单个测试类
-- `./mvnw test -Dtest=ClassNameTest#methodName` - 运行单个测试方法
-- `./mvnw clean install` - 编译、测试并安装到本地 Maven 仓库
-- `./mvnw clean deploy` - 发布到阿里云私有仓库
+### Gradle 命令
+- `./gradlew clean compileJava` - 编译项目
+- `./gradlew build` - 构建 JAR 包
+- `./gradlew test` - 运行所有测试
+- `./gradlew test --tests ClassNameTest` - 运行单个测试类
+- `./gradlew test --tests ClassNameTest.methodName` - 运行单个测试方法
+- `./gradlew publishToMavenLocal` - 编译、测试并安装到本地 Maven 仓库
+- `./gradlew publish` - 发布到阿里云私有仓库
+- `./gradlew tasks` - 查看所有可用任务
 
 ## 核心架构
 
@@ -76,6 +77,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 主要测试工具类的核心方法
 
 ### 依赖管理
-- 核心依赖：Spring Boot 3.1.5, Java 21
-- 工具库：Hutool, Guava, Commons Lang3
-- 可选依赖：JPA, Validation, Redis, PageHelper (标记为 optional)
+- 核心依赖：Spring Boot 3.5.5, Java 21
+- 工具库：Hutool, Guava, Commons Lang3, OkHttp
+- 可选依赖：JPA, Validation, Redis, PageHelper (使用 compileOnly 配置)
+
+## Gradle 特定配置
+
+### 依赖配置说明
+- `implementation` - 核心必需依赖，会传递给使用者
+- `compileOnly` - 可选依赖，编译时需要但不传递给使用者（原 Maven 的 optional 依赖）
+- `testImplementation` - 测试依赖
+
+### 构建特性
+- 使用 Gradle 8.10.2
+- 启用并行构建和配置缓存优化
+- 支持源码 JAR 自动生成
+- 禁用 Spring Boot 可执行 JAR（这是一个库项目）
