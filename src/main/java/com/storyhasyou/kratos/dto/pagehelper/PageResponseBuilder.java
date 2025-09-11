@@ -17,18 +17,15 @@ public final class PageResponseBuilder {
 
     public static <R, T> PageResponse<R> of(PageInfo<T> page, Function<T, R> function) {
         List<T> records = page.getList();
-        PageResponse<R> response = getResponse(page.getPageNum(), page.getPageSize(), page.getTotal(), page.getPages(), page.isHasNextPage());
-        response.setRows(CollectionUtils.map(records, function));
-        return response;
+        List<R> mappedRows = CollectionUtils.map(records, function);
+        return getResponse(page.getPageNum(), page.getPageSize(), page.getTotal(), page.getPages(), page.isHasNextPage(), mappedRows);
     }
 
 
     public static <R, T> PageResponse<R> of(PageInfo<T> page, Class<R> clazz) {
         List<T> records = page.getList();
         List<R> rows = BeanUtils.copyProperties(records, clazz);
-        PageResponse<R> response = getResponse(page.getPageNum(), page.getPageSize(), page.getTotal(), page.getPages(), page.isHasNextPage());
-        response.setRows(rows);
-        return response;
+        return getResponse(page.getPageNum(), page.getPageSize(), page.getTotal(), page.getPages(), page.isHasNextPage(), rows);
     }
 
 
@@ -38,26 +35,35 @@ public final class PageResponseBuilder {
 
 
     public static <T, R> PageResponse<R> of(PageInfo<T> page, List<R> rows) {
-        PageResponse<R> response = getResponse(page.getPageNum(), page.getPageSize(), page.getTotal(), page.getPages(), page.isHasNextPage());
-        response.setRows(rows);
-        return response;
+        return getResponse(page.getPageNum(), page.getPageSize(), page.getTotal(), page.getPages(), page.isHasNextPage(), rows);
     }
 
     public static <T> PageResponse<T> empty(long current, long limit) {
-        return getResponse(current, limit, 0, 0, false);
+        return getResponse(current, limit, 0, 0, false, List.of());
     }
 
     public static <T> PageResponse<T> empty() {
-        return getResponse(0, 0, 0, 0, false);
+        return getResponse(0, 0, 0, 0, false, List.of());
     }
 
-    private static <R> PageResponse<R> getResponse(long current, long size, long total, long pages, boolean b) {
+    private static <R> PageResponse<R> getResponse(long current, long size, long total, long pages, boolean hasNext) {
         return PageResponse.<R>builder()
                 .current(current)
                 .size(size)
                 .records(total)
                 .pages(pages)
-                .hasNext(b)
+                .hasNext(hasNext)
+                .build();
+    }
+
+    private static <R> PageResponse<R> getResponse(long current, long size, long total, long pages, boolean hasNext, List<R> rows) {
+        return PageResponse.<R>builder()
+                .rows(rows)
+                .current(current)
+                .size(size)
+                .records(total)
+                .pages(pages)
+                .hasNext(hasNext)
                 .build();
     }
 
