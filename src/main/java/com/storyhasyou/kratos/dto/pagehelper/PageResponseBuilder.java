@@ -49,7 +49,7 @@ public final class PageResponseBuilder {
     private static <R> PageResponse<R> getResponse(long current, long size, long total, long pages, boolean hasNext) {
         return PageResponse.<R>builder()
                 .current(current)
-                .size(size)
+                .limit(size)
                 .records(total)
                 .pages(pages)
                 .hasNext(hasNext)
@@ -60,7 +60,7 @@ public final class PageResponseBuilder {
         return PageResponse.<R>builder()
                 .rows(rows)
                 .current(current)
-                .size(size)
+                .limit(size)
                 .records(total)
                 .pages(pages)
                 .hasNext(hasNext)

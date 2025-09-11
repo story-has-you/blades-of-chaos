@@ -18,7 +18,7 @@ import java.util.Objects;
  * @param <T> 分页数据的泛型类型
  * @param rows    分页数据列表，不可为null
  * @param current 当前页码，从1开始
- * @param size    每页显示数量
+ * @param limit    每页显示数量
  * @param records 总记录数
  * @param pages   总页数
  * @param hasNext 是否有下一页
@@ -30,7 +30,7 @@ import java.util.Objects;
 public record PageResponse<T>(
         List<T> rows,
         Long current,
-        Long size,
+        Long limit,
         Long records,
         Long pages,
         Boolean hasNext
@@ -56,7 +56,7 @@ public record PageResponse<T>(
         if (current != null && current < 1L) {
             throw new IllegalArgumentException("当前页码必须大于等于1");
         }
-        if (size != null && size < 0L) {
+        if (limit != null && limit < 0L) {
             throw new IllegalArgumentException("每页数量不能为负数");
         }
         if (records != null && records < 0L) {
@@ -162,7 +162,7 @@ public record PageResponse<T>(
     public static final class PageResponseBuilder<T> {
         private List<T> rows;
         private Long current;
-        private Long size;
+        private Long limit;
         private Long records;
         private Long pages;
         private Boolean hasNext;
@@ -195,11 +195,11 @@ public record PageResponse<T>(
         /**
          * 设置每页数量
          *
-         * @param size 每页数量
+         * @param limit 每页数量
          * @return Builder实例
          */
-        public PageResponseBuilder<T> size(Long size) {
-            this.size = size;
+        public PageResponseBuilder<T> limit(Long limit) {
+            this.limit = limit;
             return this;
         }
 
@@ -244,9 +244,9 @@ public record PageResponse<T>(
         public PageResponse<T> build() {
             // 【强制】确保rows不为null，提供默认值
             if (rows == null) {
-                rows = Collections.emptyList();
+                rows = List.of();
             }
-            return new PageResponse<>(rows, current, size, records, pages, hasNext);
+            return new PageResponse<>(rows, current, limit, records, pages, hasNext);
         }
     }
 }

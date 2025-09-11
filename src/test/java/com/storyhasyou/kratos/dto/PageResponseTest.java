@@ -35,7 +35,7 @@ class PageResponseTest {
         PageResponse<String> response = PageResponse.<String>builder()
                 .rows(testData)
                 .current(1L)
-                .size(10L)
+                .limit(10L)
                 .records(3L)
                 .pages(1L)
                 .hasNext(false)
@@ -46,7 +46,7 @@ class PageResponseTest {
         assertEquals(3, response.getCurrentPageSize());
         assertEquals(testData.size(), response.rows().size());
         assertEquals(1L, response.current());
-        assertEquals(10L, response.size());
+        assertEquals(10L, response.limit());
         assertEquals(3L, response.records());
         assertEquals(1L, response.pages());
         assertFalse(response.hasNext());
@@ -62,7 +62,7 @@ class PageResponseTest {
         
         assertEquals(testData.size(), response.rows().size());
         assertEquals(1L, response.current());
-        assertEquals(10L, response.size());
+        assertEquals(10L, response.limit());
         assertEquals(2L, response.records());
         assertEquals(1L, response.pages());
         assertFalse(response.hasNext());
@@ -74,7 +74,7 @@ class PageResponseTest {
         PageResponse<String> response = PageResponse.<String>builder()
                 .rows(originalData)
                 .current(1L)
-                .size(10L)
+                .limit(10L)
                 .records(2L)
                 .pages(1L)
                 .hasNext(false)
@@ -112,7 +112,7 @@ class PageResponseTest {
         PageResponse<String> response1 = PageResponse.<String>builder()
                 .rows(testData)
                 .current(1L)
-                .size(10L)
+                .limit(10L)
                 .records(2L)
                 .pages(1L)
                 .hasNext(false)
@@ -121,7 +121,7 @@ class PageResponseTest {
         PageResponse<String> response2 = PageResponse.<String>builder()
                 .rows(testData)
                 .current(1L)
-                .size(10L)
+                .limit(10L)
                 .records(2L)
                 .pages(1L)
                 .hasNext(false)
