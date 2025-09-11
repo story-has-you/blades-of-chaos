@@ -22,3 +22,6 @@ build/
 .claude/settings.local.json
 
 /target
+
+.DS_Store
+Thumbs.db
