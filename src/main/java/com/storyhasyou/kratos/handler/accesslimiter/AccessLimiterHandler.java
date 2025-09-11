@@ -30,7 +30,8 @@ public class AccessLimiterHandler {
      * @param limit 限流个数，默认每秒的限流个数
      */
     public void limitAccess(String key, Integer limit, Long timeout) {
-        // 执行Lua脚本, Collections.singletonList(key) lua脚本中的key
+        // 执行Lua脚本，使用JDK 21现代化API：List.of(key)替代Collections.singletonList(key)
+        // List.of()是JDK 9+引入的工厂方法，创建不可变列表，性能更优且代码更简洁
         Boolean acquired = redisTemplate.execute(rateLimitLua, StringRedisSerializer.UTF_8, new BooleanRedisSerializer(), List.of(key), limit.toString(), timeout.toString());
         if (Boolean.FALSE.equals(acquired)) {
             // 被拦截了
