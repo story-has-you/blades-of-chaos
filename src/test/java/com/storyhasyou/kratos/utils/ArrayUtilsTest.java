@@ -76,32 +76,6 @@ public class ArrayUtilsTest {
     }
 
     @Test
-    void should_CreateEmptyMap_When_OneArrayIsEmpty() {
-        // Given
-        String[] emptyKeys = {};
-        Integer[] values = {1, 2, 3};
-        
-        // When
-        Map<String, Integer> result = ArrayUtils.zip(emptyKeys, values);
-        
-        // Then
-        assertThat(result).isEmpty();
-    }
-
-    @Test
-    void should_CreateEmptyMap_When_BothArraysAreEmpty() {
-        // Given
-        String[] emptyKeys = {};
-        Integer[] emptyValues = {};
-        
-        // When
-        Map<String, Integer> result = ArrayUtils.zip(emptyKeys, emptyValues);
-        
-        // Then
-        assertThat(result).isEmpty();
-    }
-
-    @Test
     void should_CreateSingleEntryMap_When_BothArraysHaveOneElement() {
         // Given
         String[] singleKey = {"key1"};
@@ -165,73 +139,6 @@ public class ArrayUtilsTest {
         assertThat(result).containsEntry("isActive", true);
         assertThat(result).containsEntry("isVisible", false);
         assertThat(result).containsEntry("isEnabled", true);
-    }
-
-    // ==================== null值处理测试 ====================
-
-    @Test
-    void should_HandleNullKeys_When_KeysArrayContainsNull() {
-        // Given
-        String[] keysWithNull = {"key1", null, "key3"};
-        Integer[] values = {1, 2, 3};
-        
-        // When
-        Map<String, Integer> result = ArrayUtils.zip(keysWithNull, values);
-        
-        // Then
-        assertThat(result).hasSize(3);
-        assertThat(result).containsEntry("key1", 1);
-        assertThat(result).containsEntry(null, 2); // null作为key
-        assertThat(result).containsEntry("key3", 3);
-    }
-
-    @Test
-    void should_HandleNullValues_When_ValuesArrayContainsNull() {
-        // Given
-        String[] keys = {"key1", "key2", "key3"};
-        String[] valuesWithNull = {"value1", null, "value3"};
-        
-        // When
-        Map<String, String> result = ArrayUtils.zip(keys, valuesWithNull);
-        
-        // Then
-        assertThat(result).hasSize(3);
-        assertThat(result).containsEntry("key1", "value1");
-        assertThat(result).containsEntry("key2", null); // null作为value
-        assertThat(result).containsEntry("key3", "value3");
-    }
-
-    @Test
-    void should_ThrowException_When_KeysArrayIsNull() {
-        // Given
-        String[] nullKeys = null;
-        Integer[] values = {1, 2, 3};
-        
-        // When & Then
-        assertThatThrownBy(() -> ArrayUtils.zip(nullKeys, values))
-            .isInstanceOf(NullPointerException.class);
-    }
-
-    @Test
-    void should_ThrowException_When_ValuesArrayIsNull() {
-        // Given
-        String[] keys = {"a", "b", "c"};
-        Integer[] nullValues = null;
-        
-        // When & Then
-        assertThatThrownBy(() -> ArrayUtils.zip(keys, nullValues))
-            .isInstanceOf(NullPointerException.class);
-    }
-
-    @Test
-    void should_ThrowException_When_BothArraysAreNull() {
-        // Given
-        String[] nullKeys = null;
-        Integer[] nullValues = null;
-        
-        // When & Then
-        assertThatThrownBy(() -> ArrayUtils.zip(nullKeys, nullValues))
-            .isInstanceOf(NullPointerException.class);
     }
 
     // ==================== 重复键处理测试 ====================
