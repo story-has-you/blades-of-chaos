@@ -2,7 +2,7 @@ package com.storyhasyou.kratos.utils;
 
 import cn.hutool.core.util.ArrayUtil;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,7 +18,7 @@ public class ArrayUtils extends ArrayUtil {
      * 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
      * 如果两个数组长度不同，则只对应最短部分
      * 
-     * <p>使用JDK 21现代化API：Arrays.asList()替代Guava的Lists.newArrayList()
+     * <p>使用JDK 21现代化API：List.of()替代Guava的Lists.newArrayList()
      * 减少外部依赖，提升性能和可读性
      *
      * @param <T>    the type parameter
@@ -28,6 +28,6 @@ public class ArrayUtils extends ArrayUtil {
      * @return Map map
      */
     public static <T, K> Map<T, K> zip(T[] keys, K[] values) {
-        return CollectionUtils.zip(Arrays.asList(keys), Arrays.asList(values));
+        return CollectionUtils.zip(List.of(keys), List.of(values));
     }
 }
